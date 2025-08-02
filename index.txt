@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Albateck Solar Power Calculator</title>
+    
+    <!-- PWA Manifest and Theme -->
+    <meta name="theme-color" content="#1d4ed8"/>
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/1d4ed8/ffffff?text=Solar">
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIlNvbGFyIFBvd2VyIENhbGN1bGF0b3IiLAogICJzaG9ydF9uYW1lIjogIlNvbGFyQ2FsYyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZjlmYWZiIiwKICAidGhlbWVfY29sb3IiOiAiIzFkNGVkOCIsCiAgImRlc2NyaXB0aW9uIjogIk9mZmxpbmUgY2FsY3VsYXRvciBmb3Igc29sYXIgcG93ZXIgbmVlZHMuIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9wbGFjZWhvbGQuY28vMTkyeDE5Mi8xZDRlZDgvZmZmZmZmP3RleHQ9U29sYXIiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9wbGFjZWhvbGQuY28vNTEyeDUxMi8xZDRlZDgvZmZmZmZmP3RleHQ9U29sYXIiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0KICBdCn0=">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .table-row-animate {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        #install-prompt {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800">
+
+    <!-- Install Prompt Banner -->
+    <div id="install-prompt" class="hidden fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg z-50 flex items-center space-x-4 transform translate-y-20 opacity-0">
+        <span>Install App for Offline Use</span>
+        <button id="install-btn" class="bg-white text-blue-600 font-bold py-1 px-3 rounded-md hover:bg-gray-100">Install</button>
+    </div>
+
+    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Solar Power Needs Calculator</h1>
+            <p class="mt-2 text-md text-gray-600">A tool to help solar installers provide accurate quotations.</p>
+        </header>
+
+        <main class="space-y-8">
+            <!-- Appliance Input Form -->
+            <div class="bg-white p-6 rounded-xl shadow-lg fade-in">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">1. Add Appliances</h2>
+                <form id="appliance-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
+                    <div>
+                        <label for="appliance-name" class="block text-sm font-medium text-gray-700">Appliance</label>
+                        <select id="appliance-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="Custom">Custom...</option>
+                            <option value="LED Bulb" data-watts="10">LED Bulb (10W)</option>
+                            <option value="TV (LED 42')" data-watts="80">TV (LED 42") (80W)</option>
+                            <option value="Refrigerator" data-watts="150">Refrigerator (150W)</option>
+                            <option value="Laptop Charger" data-watts="65">Laptop Charger (65W)</option>
+                            <option value="Phone Charger" data-watts="15">Phone Charger (15W)</option>
+                            <option value="Fan" data-watts="75">Fan (75W)</option>
+                            <option value="Microwave" data-watts="1200">Microwave (1200W)</option>
+                            <option value="Water Pump (0.5 HP)" data-watts="375">Water Pump (0.5 HP) (375W)</option>
+                            <option value="Iron Box" data-watts="1000">Iron Box (1000W)</option>
+                        </select>
+                         <input type="text" id="custom-appliance-name" placeholder="Custom Appliance Name" class="hidden mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="power" class="block text-sm font-medium text-gray-700">Power (Watts)</label>
+                        <input type="number" id="power" placeholder="e.g., 60" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                        <input type="number" id="quantity" value="1" min="1" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <div>
+                        <label for="hours" class="block text-sm font-medium text-gray-700">Hours/Day</label>
+                        <input type="number" id="hours" placeholder="e.g., 4" step="0.5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                    </div>
+                    <button type="submit" class="w-full lg:w-auto bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center space-x-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Add</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Appliance List -->
+            <div class="bg-white p-6 rounded-xl shadow-lg fade-in" style="animation-delay: 0.1s;">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">2. Appliance List</h2>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appliance</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Power (W)</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hours/Day</th>
+                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Energy (Wh/day)</th>
+                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appliance-list" class="bg-white divide-y divide-gray-200">
+                            <!-- Rows will be inserted here by JavaScript -->
+                             <tr id="no-items-row">
+                                <td colspan="6" class="text-center py-8 text-gray-500">No appliances added yet.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Summary & Recommendations -->
+            <div class="bg-white p-6 rounded-xl shadow-lg fade-in" style="animation-delay: 0.2s;">
+                <h2 class="text-xl font-bold mb-4 border-b pb-2">3. System Requirements Summary</h2>
+                <div id="summary" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Calculation Results -->
+                    <div class="space-y-4 bg-gray-50 p-4 rounded-lg">
+                        <h3 class="font-bold text-lg text-gray-800">Load Calculation</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Total Peak Power:</span>
+                            <span id="total-power" class="font-bold text-blue-600 text-lg">0 W</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Total Daily Energy:</span>
+                            <span id="total-energy" class="font-bold text-blue-600 text-lg">0 kWh/day</span>
+                        </div>
+                         <p class="text-xs text-gray-500 pt-2">This is the total power your system needs to support if all listed appliances run simultaneously.</p>
+                    </div>
+                    <!-- System Recommendations -->
+                    <div class="space-y-4 bg-green-50 p-4 rounded-lg border border-green-200">
+                        <h3 class="font-bold text-lg text-green-800">System Recommendations</h3>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Inverter Size:</span>
+                            <span id="inverter-size" class="font-bold text-green-700 text-lg">0 W</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Solar Panel Array:</span>
+                            <span id="panel-size" class="font-bold text-green-700 text-lg">0 W</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="font-medium">Battery Bank (12V):</span>
+                            <span id="battery-size" class="font-bold text-green-700 text-lg">0 Ah</span>
+                        </div>
+                        <p class="text-xs text-gray-500 pt-2">Recommendations include a 25% buffer for the inverter and assume 5 peak sun hours. Battery size is for 1 day of autonomy with 50% DoD.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // --- PWA Service Worker and Install Logic ---
+        if ('serviceWorker' in navigator) {
+            // The service worker code is created as a string.
+            const swCode = `
+                const CACHE_NAME = 'solar-calculator-cache-v1';
+                // We cache the current page ('/'), the CSS, and the font files.
+                const urlsToCache = [
+                    './',
+                    'https://cdn.tailwindcss.com',
+                    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
+                ];
+
+                // Install event: opens a cache and adds our assets to it.
+                self.addEventListener('install', event => {
+                    event.waitUntil(
+                        caches.open(CACHE_NAME)
+                            .then(cache => {
+                                console.log('Opened cache');
+                                // Use a more robust fetch that doesn't fail if one resource is unavailable
+                                const cachePromises = urlsToCache.map(urlToCache => {
+                                    return fetch(new Request(urlToCache, {mode: 'no-cors'}))
+                                        .then(response => cache.put(urlToCache, response))
+                                        .catch(err => console.warn('Failed to cache:', urlToCache, err));
+                                });
+                                return Promise.all(cachePromises);
+                            })
+                    );
+                });
+
+                // Fetch event: serves assets from cache first.
+                self.addEventListener('fetch', event => {
+                    event.respondWith(
+                        caches.match(event.request)
+                            .then(response => {
+                                // If we have a cached response, return it.
+                                if (response) {
+                                    return response;
+                                }
+                                // Otherwise, fetch from the network.
+                                return fetch(event.request);
+                            })
+                    );
+                });
+            `;
+            
+            // Create a Blob from the service worker string.
+            const swBlob = new Blob([swCode], { type: 'application/javascript' });
+            // Create an object URL for the Blob.
+            const swUrl = URL.createObjectURL(swBlob);
+
+            // Register the service worker using the object URL.
+            navigator.serviceWorker.register(swUrl)
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }).catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+        }
+
+        // --- PWA Install Prompt ---
+        let deferredPrompt;
+        const installPrompt = document.getElementById('install-prompt');
+        const installBtn = document.getElementById('install-btn');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            // Prevent Chrome 67 and earlier from automatically showing the prompt
+            e.preventDefault();
+            // Stash the event so it can be triggered later.
+            deferredPrompt = e;
+            // Show the install button
+            installPrompt.classList.remove('hidden');
+            setTimeout(() => {
+                 installPrompt.classList.remove('translate-y-20', 'opacity-0');
+            }, 100);
+        });
+
+        installBtn.addEventListener('click', async () => {
+            // Hide our user interface that shows our A2HS button
+            installPrompt.classList.add('translate-y-20', 'opacity-0');
+            // Show the prompt
+            deferredPrompt.prompt();
+            // Wait for the user to respond to the prompt
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+            // We've used the prompt, and can't use it again, throw it away
+            deferredPrompt = null;
+        });
+
+        // --- Application Logic (unchanged) ---
+
+        // DOM element references
+        const form = document.getElementById('appliance-form');
+        const applianceNameSelect = document.getElementById('appliance-name');
+        const customApplianceNameInput = document.getElementById('custom-appliance-name');
+        const powerInput = document.getElementById('power');
+        const quantityInput = document.getElementById('quantity');
+        const hoursInput = document.getElementById('hours');
+        const applianceList = document.getElementById('appliance-list');
+        const noItemsRow = document.getElementById('no-items-row');
+
+        // Summary elements
+        const totalPowerEl = document.getElementById('total-power');
+        const totalEnergyEl = document.getElementById('total-energy');
+        const inverterSizeEl = document.getElementById('inverter-size');
+        const panelSizeEl = document.getElementById('panel-size');
+        const batterySizeEl = document.getElementById('battery-size');
+
+        // Application state
+        let appliances = [];
+        let nextId = 0;
+
+        // --- Event Listeners ---
+        applianceNameSelect.addEventListener('change', (e) => {
+            const selectedOption = e.target.selectedOptions[0];
+            const watts = selectedOption.dataset.watts;
+            if (watts) {
+                powerInput.value = watts;
+                customApplianceNameInput.classList.add('hidden');
+                customApplianceNameInput.value = '';
+            } else {
+                powerInput.value = '';
+                powerInput.focus();
+                customApplianceNameInput.classList.remove('hidden');
+            }
+        });
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = applianceNameSelect.value === 'Custom' ? customApplianceNameInput.value : applianceNameSelect.value;
+            const power = parseFloat(powerInput.value);
+            const quantity = parseInt(quantityInput.value);
+            const hours = parseFloat(hoursInput.value);
+            if (!name || isNaN(power) || isNaN(quantity) || isNaN(hours) || power <= 0 || quantity <= 0 || hours < 0) {
+                // Using a custom modal/alert in the future would be better than window.alert
+                const messageBox = document.createElement('div');
+                messageBox.textContent = 'Please fill in all fields with valid numbers.';
+                messageBox.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: #ef4444; color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;';
+                document.body.appendChild(messageBox);
+                setTimeout(() => messageBox.remove(), 3000);
+                return;
+            }
+            addAppliance(name, power, quantity, hours);
+            form.reset();
+            customApplianceNameInput.classList.add('hidden');
+            applianceNameSelect.focus();
+        });
+
+        applianceList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn') || e.target.closest('.delete-btn')) {
+                const button = e.target.closest('.delete-btn');
+                const id = parseInt(button.dataset.id);
+                removeAppliance(id);
+            }
+        });
+
+        // --- Core Functions ---
+        function addAppliance(name, power, quantity, hours) {
+            const appliance = {
+                id: nextId++,
+                name,
+                power,
+                quantity,
+                hours,
+                dailyEnergy: power * quantity * hours
+            };
+            appliances.push(appliance);
+            updateUI();
+        }
+
+        function removeAppliance(id) {
+            appliances = appliances.filter(app => app.id !== id);
+            updateUI();
+        }
+
+        function updateUI() {
+            renderApplianceList();
+            calculateAndDisplaySummary();
+            // Save to local storage for persistence between sessions
+            localStorage.setItem('solarAppliances', JSON.stringify(appliances));
+        }
+
+        function renderApplianceList() {
+            applianceList.innerHTML = '';
+            if (appliances.length === 0) {
+                applianceList.appendChild(noItemsRow);
+                return;
+            }
+            appliances.forEach(app => {
+                const row = document.createElement('tr');
+                row.className = 'table-row-animate';
+                row.innerHTML = `
+                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${app.name}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${app.power.toLocaleString()} W</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${app.quantity}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${app.hours}</td>
+                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-semibold">${app.dailyEnergy.toLocaleString()} Wh</td>
+                    <td class="px-4 py-3 text-center">
+                        <button data-id="${app.id}" class="delete-btn text-red-500 hover:text-red-700 p-1 rounded-full">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
+                        </button>
+                    </td>
+                `;
+                applianceList.appendChild(row);
+            });
+        }
+
+        function calculateAndDisplaySummary() {
+            const totalPeakPower = appliances.reduce((sum, app) => sum + (app.power * app.quantity), 0);
+            const totalDailyEnergyWh = appliances.reduce((sum, app) => sum + app.dailyEnergy, 0);
+            const totalDailyEnergyKWh = totalDailyEnergyWh / 1000;
+            const recommendedInverter = Math.ceil(totalPeakPower * 1.25);
+            const peakSunHours = 5;
+            const systemLossFactor = 1.4;
+            const recommendedPanels = Math.ceil((totalDailyEnergyWh * systemLossFactor) / peakSunHours);
+            const batteryVoltage = 12;
+            const depthOfDischarge = 0.50;
+            const daysOfAutonomy = 1;
+            const recommendedBatteryAh = Math.ceil((totalDailyEnergyWh * daysOfAutonomy) / (batteryVoltage * depthOfDischarge));
+
+            totalPowerEl.textContent = `${totalPeakPower.toLocaleString()} W`;
+            totalEnergyEl.textContent = `${totalDailyEnergyKWh.toFixed(2)} kWh/day`;
+            inverterSizeEl.textContent = `${recommendedInverter.toLocaleString()} W`;
+            panelSizeEl.textContent = `${recommendedPanels.toLocaleString()} W`;
+            batterySizeEl.textContent = `${recommendedBatteryAh.toLocaleString()} Ah`;
+        }
+        
+        // Load data from local storage on startup
+        function loadFromStorage() {
+            const storedAppliances = localStorage.getItem('solarAppliances');
+            if (storedAppliances) {
+                appliances = JSON.parse(storedAppliances);
+                // Ensure nextId is higher than any loaded ID
+                nextId = appliances.reduce((maxId, app) => Math.max(app.id, maxId), -1) + 1;
+            }
+        }
+
+        // Initial call to set up the UI correctly on page load
+        loadFromStorage();
+        updateUI();
+    </script>
+</body>
+</html>
+
+
