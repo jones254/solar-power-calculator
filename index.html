@@ -3,401 +3,672 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Albateck Solar Power Calculator</title>
-    
-    <!-- PWA Manifest and Theme -->
-    <meta name="theme-color" content="#1d4ed8"/>
-    <link rel="apple-touch-icon" href="https://placehold.co/192x192/1d4ed8/ffffff?text=Solar">
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIlNvbGFyIFBvd2VyIENhbGN1bGF0b3IiLAogICJzaG9ydF9uYW1lIjogIlNvbGFyQ2FsYyIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZjlmYWZiIiwKICAidGhlbWVfY29sb3IiOiAiIzFkNGVkOCIsCiAgImRlc2NyaXB0aW9uIjogIk9mZmxpbmUgY2FsY3VsYXRvciBmb3Igc29sYXIgcG93ZXIgbmVlZHMuIiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9wbGFjZWhvbGQuY28vMTkyeDE5Mi8xZDRlZDgvZmZmZmZmP3RleHQ9U29sYXIiLAogICAgICAic2l6ZXMiOiAiMTkyeDE5MiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0sCiAgICB7CiAgICAgICJzcmMiOiAiaHR0cHM6Ly9wbGFjZWhvbGQuY28vNTEyeDUxMi8xZDRlZDgvZmZmZmZmP3RleHQ9U29sYXIiLAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3BuZyIKICAgIH0KICBdCn0=">
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Football Match Predictor</title>
     <style>
+        :root {
+            --primary-color: #007bff;
+            --secondary-color: #f8f9fa;
+            --border-color: #dee2e6;
+            --text-color: #333;
+            --light-text: #6c757d;
+            --background-color: #f0f2f5;
+            --card-bg: #ffffff;
+            --danger-color: #dc3545;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
         }
-        .fade-in {
-            animation: fadeIn 0.5s ease-in-out;
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background-color: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 20px;
         }
-        .table-row-animate {
-            animation: slideIn 0.3s ease-out;
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+            margin: 0;
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
+
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 20px;
         }
-        #install-prompt {
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+
+        .team-box, .odds-box {
+            background-color: var(--secondary-color);
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .odds-box {
+            grid-column: 1 / -1; /* Span both columns */
+        }
+        
+        .team-box h2, .odds-box h2 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 20px;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: var(--light-text);
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        #predictBtn {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #fff;
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #predictBtn:hover {
+            background-color: #0056b3;
+        }
+
+        #results-section {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .result-card {
+            background: var(--secondary-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .result-card h3 {
+            margin-top: 0;
+            text-align: center;
+            color: var(--primary-color);
+        }
+        
+        #wagering-advice {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            border-radius: 5px;
+        }
+        
+        .advice-avoid {
+            background-color: #ffc107;
+            color: #333;
+        }
+
+        .advice-bet {
+            background-color: #28a745;
+            color: white;
+        }
+        
+        .probabilities-grid, .stats-grid, .breakdown-grid {
+            display: grid;
+            gap: 15px;
+            text-align: center;
+        }
+        
+        .probabilities-grid { grid-template-columns: repeat(3, 1fr); }
+        .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        
+        .prob-item, .stat-item {
+            padding: 10px;
+        }
+        
+        .prob-item .label, .stat-item .label {
+            font-size: 14px;
+            color: var(--light-text);
+        }
+        
+        .prob-item .value, .stat-item .value {
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        .breakdown-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .breakdown-item:last-child {
+            border-bottom: none;
+        }
+        
+        .breakdown-item .model-name {
+            font-weight: 500;
+        }
+        
+        .breakdown-item .model-probs {
+            font-family: monospace;
+            font-size: 14px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body>
 
-    <!-- Install Prompt Banner -->
-    <div id="install-prompt" class="hidden fixed bottom-4 right-4 bg-blue-600 text-white p-4 rounded-lg shadow-lg z-50 flex items-center space-x-4 transform translate-y-20 opacity-0">
-        <span>Install App for Offline Use</span>
-        <button id="install-btn" class="bg-white text-blue-600 font-bold py-1 px-3 rounded-md hover:bg-gray-100">Install</button>
-    </div>
-
-    <div class="container mx-auto p-4 sm:p-6 lg:p-8 max-w-4xl">
-        <!-- Header -->
-        <header class="text-center mb-8">
-            <h1 class="text-3xl sm:text-4xl font-bold text-gray-900">Solar Power Needs Calculator</h1>
-            <p class="mt-2 text-md text-gray-600">A tool to help solar installers provide accurate quotations.</p>
+    <div class="container">
+        <header>
+            <h1>⚽ Football Match Predictor</h1>
         </header>
 
-        <main class="space-y-8">
-            <!-- Appliance Input Form -->
-            <div class="bg-white p-6 rounded-xl shadow-lg fade-in">
-                <h2 class="text-xl font-bold mb-4 border-b pb-2">1. Add Appliances</h2>
-                <form id="appliance-form" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 items-end">
-                    <div>
-                        <label for="appliance-name" class="block text-sm font-medium text-gray-700">Appliance</label>
-                        <select id="appliance-name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                            <option value="Custom">Custom...</option>
-                            <option value="LED Bulb" data-watts="10">LED Bulb (10W)</option>
-                            <option value="TV (LED 42')" data-watts="80">TV (LED 42") (80W)</option>
-                            <option value="Refrigerator" data-watts="150">Refrigerator (150W)</option>
-                            <option value="Laptop Charger" data-watts="65">Laptop Charger (65W)</option>
-                            <option value="Phone Charger" data-watts="15">Phone Charger (15W)</option>
-                            <option value="Fan" data-watts="75">Fan (75W)</option>
-                            <option value="Microwave" data-watts="1200">Microwave (1200W)</option>
-                            <option value="Water Pump (0.5 HP)" data-watts="375">Water Pump (0.5 HP) (375W)</option>
-                            <option value="Iron Box" data-watts="1000">Iron Box (1000W)</option>
-                        </select>
-                         <input type="text" id="custom-appliance-name" placeholder="Custom Appliance Name" class="hidden mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    </div>
-                    <div>
-                        <label for="power" class="block text-sm font-medium text-gray-700">Power (Watts)</label>
-                        <input type="number" id="power" placeholder="e.g., 60" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    </div>
-                    <div>
-                        <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
-                        <input type="number" id="quantity" value="1" min="1" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    </div>
-                    <div>
-                        <label for="hours" class="block text-sm font-medium text-gray-700">Hours/Day</label>
-                        <input type="number" id="hours" placeholder="e.g., 4" step="0.5" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
-                    </div>
-                    <button type="submit" class="w-full lg:w-auto bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 flex items-center justify-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                          <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" />
-                        </svg>
-                        <span>Add</span>
-                    </button>
-                </form>
-            </div>
-
-            <!-- Appliance List -->
-            <div class="bg-white p-6 rounded-xl shadow-lg fade-in" style="animation-delay: 0.1s;">
-                <h2 class="text-xl font-bold mb-4 border-b pb-2">2. Appliance List</h2>
-                <div class="overflow-x-auto">
-                    <table class="min-w-full divide-y divide-gray-200">
-                        <thead class="bg-gray-50">
-                            <tr>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Appliance</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Power (W)</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Qty</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hours/Day</th>
-                                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Energy (Wh/day)</th>
-                                <th class="px-4 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody id="appliance-list" class="bg-white divide-y divide-gray-200">
-                            <!-- Rows will be inserted here by JavaScript -->
-                             <tr id="no-items-row">
-                                <td colspan="6" class="text-center py-8 text-gray-500">No appliances added yet.</td>
-                            </tr>
-                        </tbody>
-                    </table>
+        <div class="input-grid">
+            <div class="team-box">
+                <h2>Home Team</h2>
+                <div class="form-group">
+                    <label for="home_avg_score">Average Scored</label>
+                    <input type="number" id="home_avg_score" step="0.01" value="1.11">
+                </div>
+                <div class="form-group">
+                    <label for="home_avg_conceded">Average Conceded</label>
+                    <input type="number" id="home_avg_conceded" step="0.01" value="1.44">
+                </div>
+                <div class="form-group">
+                    <label for="home_score_percentage">Scoring Percentage (%)</label>
+                    <input type="number" id="home_score_percentage" step="1" value="59">
+                </div>
+                <div class="form-group">
+                    <label for="home_cleansheet">Clean Sheet (%)</label>
+                    <input type="number" id="home_cleansheet" step="1" value="19">
+                </div>
+                <div class="form-group">
+                    <label for="home_difficulty">Difficulty (1-5)</label>
+                    <input type="number" id="home_difficulty" step="1" min="1" max="5" value="4">
                 </div>
             </div>
 
-            <!-- Summary & Recommendations -->
-            <div class="bg-white p-6 rounded-xl shadow-lg fade-in" style="animation-delay: 0.2s;">
-                <h2 class="text-xl font-bold mb-4 border-b pb-2">3. System Requirements Summary</h2>
-                <div id="summary" class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <!-- Calculation Results -->
-                    <div class="space-y-4 bg-gray-50 p-4 rounded-lg">
-                        <h3 class="font-bold text-lg text-gray-800">Load Calculation</h3>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium">Total Peak Power:</span>
-                            <span id="total-power" class="font-bold text-blue-600 text-lg">0 W</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium">Total Daily Energy:</span>
-                            <span id="total-energy" class="font-bold text-blue-600 text-lg">0 kWh/day</span>
-                        </div>
-                         <p class="text-xs text-gray-500 pt-2">This is the total power your system needs to support if all listed appliances run simultaneously.</p>
+            <div class="team-box">
+                <h2>Away Team</h2>
+                <div class="form-group">
+                    <label for="away_avg_score">Average Scored</label>
+                    <input type="number" id="away_avg_score" step="0.01" value="1.70">
+                </div>
+                <div class="form-group">
+                    <label for="away_avg_conceded">Average Conceded</label>
+                    <input type="number" id="away_avg_conceded" step="0.01" value="1.33">
+                </div>
+                <div class="form-group">
+                    <label for="away_score_percentage">Scoring Percentage (%)</label>
+                    <input type="number" id="away_score_percentage" step="1" value="89">
+                </div>
+                <div class="form-group">
+                    <label for="away_cleansheet">Clean Sheet (%)</label>
+                    <input type="number" id="away_cleansheet" step="1" value="33">
+                </div>
+                <div class="form-group">
+                    <label for="away_difficulty">Difficulty (1-5)</label>
+                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="3">
+                </div>
+            </div>
+            
+            <div class="odds-box">
+                <h2>Match Odds</h2>
+                 <div class="probabilities-grid">
+                    <div class="form-group">
+                        <label for="home_odds">Home Win Odds</label>
+                        <input type="number" id="home_odds" step="0.01" value="2.60">
                     </div>
-                    <!-- System Recommendations -->
-                    <div class="space-y-4 bg-green-50 p-4 rounded-lg border border-green-200">
-                        <h3 class="font-bold text-lg text-green-800">System Recommendations</h3>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium">Inverter Size:</span>
-                            <span id="inverter-size" class="font-bold text-green-700 text-lg">0 W</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium">Solar Panel Array:</span>
-                            <span id="panel-size" class="font-bold text-green-700 text-lg">0 W</span>
-                        </div>
-                        <div class="flex justify-between items-center">
-                            <span class="font-medium">Battery Bank (12V):</span>
-                            <span id="battery-size" class="font-bold text-green-700 text-lg">0 Ah</span>
-                        </div>
-                        <p class="text-xs text-gray-500 pt-2">Recommendations include a 25% buffer for the inverter and assume 5 peak sun hours. Battery size is for 1 day of autonomy with 50% DoD.</p>
+                    <div class="form-group">
+                        <label for="draw_odds">Draw Odds</label>
+                        <input type="number" id="draw_odds" step="0.01" value="3.40">
+                    </div>
+                    <div class="form-group">
+                        <label for="away_odds">Away Win Odds</label>
+                        <input type="number" id="away_odds" step="0.01" value="2.30">
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+
+        <button id="predictBtn">🔮 Predict Match</button>
+
+        <div id="results-section" class="hidden">
+            <div class="result-card">
+                 <h3>Wagering Advice</h3>
+                 <div id="wagering-advice">AVOID</div>
+            </div>
+            
+            <div class="result-card">
+                <h3>📊 Prediction Analysis</h3>
+                <p style="text-align:center; color: var(--light-text);">Predicted Outcome: <strong id="predicted-outcome">Home Win</strong> with <strong id="confidence-level">0.0%</strong> confidence.</p>
+
+                <h4>Final Probabilities:</h4>
+                <div class="probabilities-grid">
+                    <div class="prob-item">
+                        <div class="label">Home Win</div>
+                        <div class="value" id="final-prob-home">0.0%</div>
+                    </div>
+                    <div class="prob-item">
+                        <div class="label">Draw</div>
+                        <div class="value" id="final-prob-draw">0.0%</div>
+                    </div>
+                    <div class="prob-item">
+                        <div class="label">Away Win</div>
+                        <div class="value" id="final-prob-away">0.0%</div>
+                    </div>
+                </div>
+
+                <h4 style="margin-top: 25px;">Expected Goals:</h4>
+                 <div class="stats-grid">
+                     <div class="stat-item">
+                         <div class="label">Home Team</div>
+                         <div class="value" id="expected-goals-home">0.00</div>
+                     </div>
+                     <div class="stat-item">
+                         <div class="label">Away Team</div>
+                         <div class="value" id="expected-goals-away">0.00</div>
+                     </div>
+                 </div>
+
+                <h4 style="margin-top: 25px;">Team Quality Scores:</h4>
+                 <div class="stats-grid">
+                     <div class="stat-item">
+                         <div class="label">Home Team</div>
+                         <div class="value" id="quality-score-home">0.00</div>
+                     </div>
+                     <div class="stat-item">
+                         <div class="label">Away Team</div>
+                         <div class="value" id="quality-score-away">0.00</div>
+                     </div>
+                 </div>
+
+                <h4 style="margin-top: 25px;">Model Breakdown:</h4>
+                <div class="breakdown-grid">
+                    <div id="breakdown-poisson" class="breakdown-item"></div>
+                    <div id="breakdown-form_based" class="breakdown-item"></div>
+                    <div id="breakdown-defensive_strength" class="breakdown-item"></div>
+                    <div id="breakdown-market_sentiment" class="breakdown-item"></div>
+                    <div id="breakdown-composite_rating" class="breakdown-item"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
-        // --- PWA Service Worker and Install Logic ---
-        if ('serviceWorker' in navigator) {
-            // The service worker code is created as a string.
-            const swCode = `
-                const CACHE_NAME = 'solar-calculator-cache-v1';
-                // We cache the current page ('/'), the CSS, and the font files.
-                const urlsToCache = [
-                    './',
-                    'https://cdn.tailwindcss.com',
-                    'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap'
-                ];
+        class FootballPredictor {
+            constructor() {
+                this.weights = {
+                    'poisson': 0.25,
+                    'form_based': 0.20,
+                    'defensive_strength': 0.15,
+                    'market_sentiment': 0.20,
+                    'composite_rating': 0.20
+                };
+                this.factorialCache = {0: 1};
+            }
 
-                // Install event: opens a cache and adds our assets to it.
-                self.addEventListener('install', event => {
-                    event.waitUntil(
-                        caches.open(CACHE_NAME)
-                            .then(cache => {
-                                console.log('Opened cache');
-                                // Use a more robust fetch that doesn't fail if one resource is unavailable
-                                const cachePromises = urlsToCache.map(urlToCache => {
-                                    return fetch(new Request(urlToCache, {mode: 'no-cors'}))
-                                        .then(response => cache.put(urlToCache, response))
-                                        .catch(err => console.warn('Failed to cache:', urlToCache, err));
-                                });
-                                return Promise.all(cachePromises);
-                            })
-                    );
-                });
+            _factorial(n) {
+                if (n in this.factorialCache) return this.factorialCache[n];
+                if (n < 0) return NaN;
+                if (n === 0) return 1;
+                let result = this.factorialCache[n-1] ? this.factorialCache[n-1] * n : 1;
+                if (!this.factorialCache[n-1]){
+                   for (let i = 2; i <= n; i++) {
+                       result *= i;
+                   }
+                }
+                this.factorialCache[n] = result;
+                return result;
+            }
 
-                // Fetch event: serves assets from cache first.
-                self.addEventListener('fetch', event => {
-                    event.respondWith(
-                        caches.match(event.request)
-                            .then(response => {
-                                // If we have a cached response, return it.
-                                if (response) {
-                                    return response;
-                                }
-                                // Otherwise, fetch from the network.
-                                return fetch(event.request);
-                            })
-                    );
-                });
-            `;
+            _poissonProb(k, lam) {
+                if (lam <= 0) {
+                    return k === 0 ? 1.0 : 0.0;
+                }
+                return (Math.pow(lam, k) * Math.exp(-lam)) / this._factorial(k);
+            }
+
+            calculatePoissonProbabilities(matchData) {
+                const homeAttackStrength = matchData.home_avg_score * (6 - matchData.away_difficulty) / 5;
+                const awayAttackStrength = matchData.away_avg_score * (6 - matchData.home_difficulty) / 5;
+                const homeDefenseStrength = matchData.home_avg_conceded * (matchData.away_difficulty / 5);
+                const awayDefenseStrength = matchData.away_avg_conceded * (matchData.home_difficulty / 5);
+                const homeExpectedGoals = (homeAttackStrength + awayDefenseStrength) / 2;
+                const awayExpectedGoals = (awayAttackStrength + homeDefenseStrength) / 2;
+
+                const maxGoals = 6;
+                let homeWin = 0, draw = 0, awayWin = 0;
+                
+                for (let h = 0; h <= maxGoals; h++) {
+                    for (let a = 0; a <= maxGoals; a++) {
+                        const probH = this._poissonProb(h, homeExpectedGoals);
+                        const probA = this._poissonProb(a, awayExpectedGoals);
+                        const cellProb = probH * probA;
+                        if (h > a) homeWin += cellProb;
+                        else if (h === a) draw += cellProb;
+                        else awayWin += cellProb;
+                    }
+                }
+                
+                return {
+                    home_win: homeWin,
+                    draw: draw,
+                    away_win: awayWin,
+                    expected_goals: { home: homeExpectedGoals, away: awayExpectedGoals }
+                };
+            }
+
+            calculateFormBasedPrediction(matchData) {
+                let homeForm = matchData.home_score_percentage / 100.0;
+                let awayForm = matchData.away_score_percentage / 100.0;
+                const totalForm = homeForm + awayForm;
+                let homeFormAdvantage = 0.5, awayFormAdvantage = 0.5;
+
+                if (totalForm > 0) {
+                    homeFormAdvantage = homeForm / totalForm;
+                    awayFormAdvantage = awayForm / totalForm;
+                }
+
+                const homeAdvantageBoost = 0.07;
+                homeFormAdvantage += homeAdvantageBoost;
+                const formSum = homeFormAdvantage + awayFormAdvantage;
+                homeFormAdvantage /= formSum;
+                awayFormAdvantage /= formSum;
+
+                const formDifference = Math.abs(homeFormAdvantage - awayFormAdvantage);
+                let drawProb = 0.35 - (formDifference * 0.2);
+                drawProb = Math.max(0.15, Math.min(0.45, drawProb));
+
+                const remainingProb = 1.0 - drawProb;
+                const homeWinProb = homeFormAdvantage * remainingProb;
+                const awayWinProb = awayFormAdvantage * remainingProb;
+
+                return { home_win: homeWinProb, draw: drawProb, away_win: awayWinProb };
+            }
+
+            calculateDefensiveStrengthModel(matchData) {
+                const homeDefenseRating = (matchData.home_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.home_avg_conceded));
+                const awayDefenseRating = (matchData.away_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.away_avg_conceded));
+                const homeAttackVsAwayDefense = matchData.home_avg_score / Math.max(0.1, matchData.away_avg_conceded);
+                const awayAttackVsHomeDefense = matchData.away_avg_score / Math.max(0.1, matchData.home_avg_conceded);
+                const totalAttackRatio = homeAttackVsAwayDefense + awayAttackVsHomeDefense;
+                let homeAttackNorm = 0.5, awayAttackNorm = 0.5;
+
+                if (totalAttackRatio > 0) {
+                    homeAttackNorm = homeAttackVsAwayDefense / totalAttackRatio;
+                    awayAttackNorm = awayAttackVsHomeDefense / totalAttackRatio;
+                }
+
+                const avgDefenseStrength = (homeDefenseRating + awayDefenseRating) / 2;
+                const drawBoost = Math.min(0.15, avgDefenseStrength * 0.3);
+                const baseDraw = 0.25 + drawBoost;
+                const remainingProb = 1.0 - baseDraw;
+
+                return { home_win: homeAttackNorm * remainingProb, draw: baseDraw, away_win: awayAttackNorm * remainingProb };
+            }
+
+            calculateMarketSentimentModel(matchData) {
+                const homeImplied = 1 / matchData.home_odds;
+                const drawImplied = 1 / matchData.draw_odds;
+                const awayImplied = 1 / matchData.away_odds;
+                const totalImplied = homeImplied + drawImplied + awayImplied;
+
+                return {
+                    home_win: homeImplied / totalImplied,
+                    draw: drawImplied / totalImplied,
+                    away_win: awayImplied / totalImplied
+                };
+            }
+
+            calculateCompositeRatingModel(matchData) {
+                const homeQuality = (
+                    matchData.home_avg_score * 0.3 +
+                    (1 / Math.max(0.1, matchData.home_avg_conceded)) * 0.2 +
+                    (matchData.home_score_percentage / 100) * 0.25 +
+                    (matchData.home_cleansheet / 100) * 0.15 +
+                    ((6 - matchData.home_difficulty) / 5) * 0.1
+                );
+                const awayQuality = (
+                    matchData.away_avg_score * 0.3 +
+                    (1 / Math.max(0.1, matchData.away_avg_conceded)) * 0.2 +
+                    (matchData.away_score_percentage / 100) * 0.25 +
+                    (matchData.away_cleansheet / 100) * 0.15 +
+                    ((6 - matchData.away_difficulty) / 5) * 0.1
+                );
+
+                const qualityDiff = homeQuality - awayQuality;
+                const qualitySum = homeQuality + awayQuality;
+                let homeBaseProb = 0.5, awayBaseProb = 0.5;
+
+                if (qualitySum > 0) {
+                    homeBaseProb = 1 / (1 + Math.exp(-qualityDiff * 3));
+                    awayBaseProb = 1 - homeBaseProb;
+                }
+
+                const contextFactor = Math.sqrt(homeQuality * awayQuality);
+                let drawProb = 0.2 + (contextFactor * 0.15);
+                drawProb = Math.min(0.4, drawProb);
+
+                const remaining = 1.0 - drawProb;
+                return {
+                    home_win: homeBaseProb * remaining,
+                    draw: drawProb,
+                    away_win: awayBaseProb * remaining,
+                    home_quality: homeQuality,
+                    away_quality: awayQuality
+                };
+            }
+
+            predictMatch(matchData) {
+                const poissonPred = this.calculatePoissonProbabilities(matchData);
+                const formPred = this.calculateFormBasedPrediction(matchData);
+                const defensePred = this.calculateDefensiveStrengthModel(matchData);
+                const marketPred = this.calculateMarketSentimentModel(matchData);
+                const compositePred = this.calculateCompositeRatingModel(matchData);
+
+                let finalHome = 0, finalDraw = 0, finalAway = 0;
+                const models = { poisson: poissonPred, form_based: formPred, defensive_strength: defensePred, market_sentiment: marketPred, composite_rating: compositePred };
+                
+                for (const modelName in this.weights) {
+                    finalHome += models[modelName]['home_win'] * this.weights[modelName];
+                    finalDraw += models[modelName]['draw'] * this.weights[modelName];
+                    finalAway += models[modelName]['away_win'] * this.weights[modelName];
+                }
+
+                const total = finalHome + finalDraw + finalAway;
+                finalHome /= total;
+                finalDraw /= total;
+                finalAway /= total;
+
+                const maxProb = Math.max(finalHome, finalDraw, finalAway);
+                let predictedOutcome = "Away Win";
+                if (maxProb === finalHome) predictedOutcome = "Home Win";
+                else if (maxProb === finalDraw) predictedOutcome = "Draw";
+
+                const probs = [finalHome, finalDraw, finalAway];
+                const entropy = -probs.reduce((sum, p) => sum + p * Math.log(p + 1e-10), 0);
+                const maxEntropy = Math.log(3);
+                const confidence = 1 - (entropy / maxEntropy);
+
+                return {
+                    predicted_outcome: predictedOutcome,
+                    probabilities: { home_win: finalHome, draw: finalDraw, away_win: finalAway },
+                    confidence: confidence,
+                    expected_goals: poissonPred.expected_goals,
+                    model_breakdown: {
+                        poisson: poissonPred,
+                        form_based: formPred,
+                        defensive_strength: defensePred,
+                        market_sentiment: marketPred,
+                        composite_rating: compositePred
+                    },
+                    team_quality_scores: { home: compositePred.home_quality, away: compositePred.away_quality }
+                };
+            }
+        }
+
+        function getWageringAdvice(prediction) {
+            const finalProbs = prediction.probabilities;
+            const poissonProbs = prediction.model_breakdown.poisson;
+            const compositeProbs = prediction.model_breakdown.composite_rating;
+            const formProbs = prediction.model_breakdown.form_based;
+            const defenseProbs = prediction.model_breakdown.defensive_strength;
+            const marketProbs = prediction.model_breakdown.market_sentiment;
+
+            const homPie = poissonProbs.home_win - finalProbs.home_win;
+            const awyPie = poissonProbs.away_win - finalProbs.away_win;
+            const hcon = defenseProbs.home_win / formProbs.home_win;
+            const acon = defenseProbs.away_win / formProbs.away_win;
+            const hhcon = marketProbs.home_win - compositeProbs.home_win;
+            const aacon = marketProbs.away_win - compositeProbs.away_win;
+            const fh = formProbs.home_win - defenseProbs.away_win;
+            const fa = formProbs.away_win - defenseProbs.home_win;
             
-            // Create a Blob from the service worker string.
-            const swBlob = new Blob([swCode], { type: 'application/javascript' });
-            // Create an object URL for the Blob.
-            const swUrl = URL.createObjectURL(swBlob);
+            // *** CORRECTION: Added rounding to match Python script ***
+            const h_odd = parseFloat(((defenseProbs.away_win + formProbs.home_win) * 50).toFixed(1));
+            const a_odd = parseFloat(((defenseProbs.home_win + formProbs.away_win) * 50).toFixed(1));
 
-            // Register the service worker using the object URL.
-            navigator.serviceWorker.register(swUrl)
-                .then(registration => {
-                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                }).catch(error => {
-                    console.log('ServiceWorker registration failed: ', error);
-                });
+            const hom = marketProbs.home_win > marketProbs.away_win;
+            const awy = marketProbs.home_win < marketProbs.away_win;
+
+            const hch_calc = ((h_odd - (compositeProbs.home_win * 100)) / (compositeProbs.home_win * 100) + (((compositeProbs.away_win * 100) - a_odd) / a_odd)) * 100;
+            const ach_calc = ((a_odd - (compositeProbs.away_win * 100)) / (compositeProbs.away_win * 100) + (((compositeProbs.home_win * 100) - h_odd) / h_odd)) * 100;
+            const h_calc = (((marketProbs.home_win * 100) - (compositeProbs.home_win * 100)) / (compositeProbs.home_win * 100) + (((compositeProbs.away_win * 100) - (marketProbs.away_win * 100)) / (marketProbs.away_win * 100))) * 100;
+            const a_calc = (((marketProbs.away_win * 100) - (compositeProbs.away_win * 100)) / (compositeProbs.away_win * 100) + (((compositeProbs.home_win * 100) - (marketProbs.home_win * 100)) / (marketProbs.home_win * 100))) * 100;
+
+            // *** CORRECTION: Added rounding to match Python script ***
+            const hch = parseFloat(hch_calc.toFixed(1));
+            const ach = parseFloat(ach_calc.toFixed(1));
+            const h = parseFloat(h_calc.toFixed(1));
+            const a = parseFloat(a_calc.toFixed(1));
+
+            if (fh > fa && hom && poissonProbs.home_win > poissonProbs.away_win && (hcon > acon || hhcon > aacon) && h / 2 > hch && hch < ach && h > a && homPie > awyPie) return 'HOME WIN';
+            if (fh < fa && awy && poissonProbs.home_win < poissonProbs.away_win && (hcon < acon || hhcon < aacon) && a / 2 > ach && ach < hch && h < a && awyPie > homPie) return 'AWAY WIN';
+            if (fh > fa && hom && poissonProbs.home_win > poissonProbs.away_win && (hcon > acon || hhcon > aacon) && h / 2 > hch && hch < ach && h > a) return 'HOME-DNB';
+            if (fh < fa && awy && poissonProbs.home_win < poissonProbs.away_win && (hcon < acon || hhcon < aacon) && a / 2 > ach && ach < hch && h < a) return 'AWAY-DNB';
+            if (fh > fa && hom && poissonProbs.home_win > poissonProbs.away_win && (hcon > acon || hhcon > aacon) && h / 2 > hch && hch < ach && homPie > awyPie) return 'HOME DRAW';
+            if (fh < fa && awy && poissonProbs.home_win < poissonProbs.away_win && (hcon < acon || hhcon < aacon) && a / 2 > ach && ach < hch && awyPie > homPie) return 'AWAY DRAW';
+            if (fh > fa && !hom && h / 2 > hch && hch > ach) return 'HOME CHANCE TRUE';
+            if (fh < fa && hom && a / 2 > ach && ach > hch) return 'AWAY CHANCE TRUE';
+            if (fh > fa && !hom && h / 2 < hch && hch < ach) return 'HOME CHANCE FALSE';
+            if (fh < fa && hom && a / 2 < ach && ach < hch) return 'AWAY CHANCE FALSE';
+            
+            return 'AVOID';
         }
 
-        // --- PWA Install Prompt ---
-        let deferredPrompt;
-        const installPrompt = document.getElementById('install-prompt');
-        const installBtn = document.getElementById('install-btn');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
-            e.preventDefault();
-            // Stash the event so it can be triggered later.
-            deferredPrompt = e;
-            // Show the install button
-            installPrompt.classList.remove('hidden');
-            setTimeout(() => {
-                 installPrompt.classList.remove('translate-y-20', 'opacity-0');
-            }, 100);
-        });
-
-        installBtn.addEventListener('click', async () => {
-            // Hide our user interface that shows our A2HS button
-            installPrompt.classList.add('translate-y-20', 'opacity-0');
-            // Show the prompt
-            deferredPrompt.prompt();
-            // Wait for the user to respond to the prompt
-            const { outcome } = await deferredPrompt.userChoice;
-            console.log(`User response to the install prompt: ${outcome}`);
-            // We've used the prompt, and can't use it again, throw it away
-            deferredPrompt = null;
-        });
-
-        // --- Application Logic (unchanged) ---
-
-        // DOM element references
-        const form = document.getElementById('appliance-form');
-        const applianceNameSelect = document.getElementById('appliance-name');
-        const customApplianceNameInput = document.getElementById('custom-appliance-name');
-        const powerInput = document.getElementById('power');
-        const quantityInput = document.getElementById('quantity');
-        const hoursInput = document.getElementById('hours');
-        const applianceList = document.getElementById('appliance-list');
-        const noItemsRow = document.getElementById('no-items-row');
-
-        // Summary elements
-        const totalPowerEl = document.getElementById('total-power');
-        const totalEnergyEl = document.getElementById('total-energy');
-        const inverterSizeEl = document.getElementById('inverter-size');
-        const panelSizeEl = document.getElementById('panel-size');
-        const batterySizeEl = document.getElementById('battery-size');
-
-        // Application state
-        let appliances = [];
-        let nextId = 0;
-
-        // --- Event Listeners ---
-        applianceNameSelect.addEventListener('change', (e) => {
-            const selectedOption = e.target.selectedOptions[0];
-            const watts = selectedOption.dataset.watts;
-            if (watts) {
-                powerInput.value = watts;
-                customApplianceNameInput.classList.add('hidden');
-                customApplianceNameInput.value = '';
-            } else {
-                powerInput.value = '';
-                powerInput.focus();
-                customApplianceNameInput.classList.remove('hidden');
-            }
-        });
-
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = applianceNameSelect.value === 'Custom' ? customApplianceNameInput.value : applianceNameSelect.value;
-            const power = parseFloat(powerInput.value);
-            const quantity = parseInt(quantityInput.value);
-            const hours = parseFloat(hoursInput.value);
-            if (!name || isNaN(power) || isNaN(quantity) || isNaN(hours) || power <= 0 || quantity <= 0 || hours < 0) {
-                // Using a custom modal/alert in the future would be better than window.alert
-                const messageBox = document.createElement('div');
-                messageBox.textContent = 'Please fill in all fields with valid numbers.';
-                messageBox.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background-color: #ef4444; color: white; padding: 1rem; border-radius: 0.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); z-index: 100;';
-                document.body.appendChild(messageBox);
-                setTimeout(() => messageBox.remove(), 3000);
-                return;
-            }
-            addAppliance(name, power, quantity, hours);
-            form.reset();
-            customApplianceNameInput.classList.add('hidden');
-            applianceNameSelect.focus();
-        });
-
-        applianceList.addEventListener('click', (e) => {
-            if (e.target.classList.contains('delete-btn') || e.target.closest('.delete-btn')) {
-                const button = e.target.closest('.delete-btn');
-                const id = parseInt(button.dataset.id);
-                removeAppliance(id);
-            }
-        });
-
-        // --- Core Functions ---
-        function addAppliance(name, power, quantity, hours) {
-            const appliance = {
-                id: nextId++,
-                name,
-                power,
-                quantity,
-                hours,
-                dailyEnergy: power * quantity * hours
+        document.getElementById('predictBtn').addEventListener('click', () => {
+            const matchData = {
+                home_avg_score: parseFloat(document.getElementById('home_avg_score').value),
+                away_avg_score: parseFloat(document.getElementById('away_avg_score').value),
+                home_avg_conceded: parseFloat(document.getElementById('home_avg_conceded').value),
+                away_avg_conceded: parseFloat(document.getElementById('away_avg_conceded').value),
+                home_score_percentage: parseFloat(document.getElementById('home_score_percentage').value),
+                away_score_percentage: parseFloat(document.getElementById('away_score_percentage').value),
+                home_cleansheet: parseFloat(document.getElementById('home_cleansheet').value),
+                away_cleansheet: parseFloat(document.getElementById('away_cleansheet').value),
+                home_difficulty: parseInt(document.getElementById('home_difficulty').value),
+                away_difficulty: parseInt(document.getElementById('away_difficulty').value),
+                home_odds: parseFloat(document.getElementById('home_odds').value),
+                draw_odds: parseFloat(document.getElementById('draw_odds').value),
+                away_odds: parseFloat(document.getElementById('away_odds').value)
             };
-            appliances.push(appliance);
-            updateUI();
-        }
-
-        function removeAppliance(id) {
-            appliances = appliances.filter(app => app.id !== id);
-            updateUI();
-        }
-
-        function updateUI() {
-            renderApplianceList();
-            calculateAndDisplaySummary();
-            // Save to local storage for persistence between sessions
-            localStorage.setItem('solarAppliances', JSON.stringify(appliances));
-        }
-
-        function renderApplianceList() {
-            applianceList.innerHTML = '';
-            if (appliances.length === 0) {
-                applianceList.appendChild(noItemsRow);
-                return;
+            
+            for (const key in matchData) {
+                if (isNaN(matchData[key])) {
+                    alert(`Please enter a valid number for ${key.replace(/_/g, ' ')}.`);
+                    return;
+                }
             }
-            appliances.forEach(app => {
-                const row = document.createElement('tr');
-                row.className = 'table-row-animate';
-                row.innerHTML = `
-                    <td class="px-4 py-3 whitespace-nowrap text-sm font-medium text-gray-900">${app.name}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${app.power.toLocaleString()} W</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${app.quantity}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500">${app.hours}</td>
-                    <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 font-semibold">${app.dailyEnergy.toLocaleString()} Wh</td>
-                    <td class="px-4 py-3 text-center">
-                        <button data-id="${app.id}" class="delete-btn text-red-500 hover:text-red-700 p-1 rounded-full">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm4 0a1 1 0 012 0v6a1 1 0 11-2 0V8z" clip-rule="evenodd" /></svg>
-                        </button>
-                    </td>
+
+            const predictor = new FootballPredictor();
+            const prediction = predictor.predictMatch(matchData);
+            const advice = getWageringAdvice(prediction);
+            
+            const resultsSection = document.getElementById('results-section');
+            resultsSection.classList.remove('hidden');
+
+            const adviceDiv = document.getElementById('wagering-advice');
+            adviceDiv.textContent = advice;
+            adviceDiv.className = (advice === 'AVOID') ? 'advice-avoid' : 'advice-bet';
+
+            document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome;
+            document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%';
+            
+            document.getElementById('final-prob-home').textContent = (prediction.probabilities.home_win * 100).toFixed(1) + '%';
+            document.getElementById('final-prob-draw').textContent = (prediction.probabilities.draw * 100).toFixed(1) + '%';
+            document.getElementById('final-prob-away').textContent = (prediction.probabilities.away_win * 100).toFixed(1) + '%';
+
+            document.getElementById('expected-goals-home').textContent = prediction.expected_goals.home.toFixed(2);
+            document.getElementById('expected-goals-away').textContent = prediction.expected_goals.away.toFixed(2);
+            
+            document.getElementById('quality-score-home').textContent = prediction.team_quality_scores.home.toFixed(3);
+            document.getElementById('quality-score-away').textContent = prediction.team_quality_scores.away.toFixed(3);
+
+            for(const modelName in prediction.model_breakdown) {
+                const probs = prediction.model_breakdown[modelName];
+                const cleanName = modelName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                const breakdownEl = document.getElementById(`breakdown-${modelName}`);
+                breakdownEl.innerHTML = `
+                    <span class="model-name">${cleanName}</span>
+                    <span class="model-probs">
+                        H: ${(probs.home_win * 100).toFixed(1)}% | 
+                        D: ${(probs.draw * 100).toFixed(1)}% | 
+                        A: ${(probs.away_win * 100).toFixed(1)}%
+                    </span>
                 `;
-                applianceList.appendChild(row);
-            });
-        }
-
-        function calculateAndDisplaySummary() {
-            const totalPeakPower = appliances.reduce((sum, app) => sum + (app.power * app.quantity), 0);
-            const totalDailyEnergyWh = appliances.reduce((sum, app) => sum + app.dailyEnergy, 0);
-            const totalDailyEnergyKWh = totalDailyEnergyWh / 1000;
-            const recommendedInverter = Math.ceil(totalPeakPower * 1.25);
-            const peakSunHours = 5;
-            const systemLossFactor = 1.4;
-            const recommendedPanels = Math.ceil((totalDailyEnergyWh * systemLossFactor) / peakSunHours);
-            const batteryVoltage = 12;
-            const depthOfDischarge = 0.50;
-            const daysOfAutonomy = 1;
-            const recommendedBatteryAh = Math.ceil((totalDailyEnergyWh * daysOfAutonomy) / (batteryVoltage * depthOfDischarge));
-
-            totalPowerEl.textContent = `${totalPeakPower.toLocaleString()} W`;
-            totalEnergyEl.textContent = `${totalDailyEnergyKWh.toFixed(2)} kWh/day`;
-            inverterSizeEl.textContent = `${recommendedInverter.toLocaleString()} W`;
-            panelSizeEl.textContent = `${recommendedPanels.toLocaleString()} W`;
-            batterySizeEl.textContent = `${recommendedBatteryAh.toLocaleString()} Ah`;
-        }
-        
-        // Load data from local storage on startup
-        function loadFromStorage() {
-            const storedAppliances = localStorage.getItem('solarAppliances');
-            if (storedAppliances) {
-                appliances = JSON.parse(storedAppliances);
-                // Ensure nextId is higher than any loaded ID
-                nextId = appliances.reduce((maxId, app) => Math.max(app.id, maxId), -1) + 1;
             }
-        }
-
-        // Initial call to set up the UI correctly on page load
-        loadFromStorage();
-        updateUI();
+        });
     </script>
+
 </body>
 </html>
-
-
