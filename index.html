@@ -13,7 +13,6 @@
             --light-text: #6c757d;
             --background-color: #f0f2f5;
             --card-bg: #ffffff;
-            --danger-color: #dc3545;
         }
 
         body {
@@ -64,7 +63,7 @@
         }
 
         .odds-box {
-            grid-column: 1 / -1; /* Span both columns */
+            grid-column: 1 / -1;
         }
         
         .team-box h2, .odds-box h2 {
@@ -141,7 +140,7 @@
             border-radius: 5px;
         }
         
-        .advice-avoid {
+        .advice-pass {
             background-color: #ffc107;
             color: #333;
         }
@@ -151,7 +150,7 @@
             color: white;
         }
         
-        .probabilities-grid, .stats-grid, .breakdown-grid {
+        .probabilities-grid, .stats-grid {
             display: grid;
             gap: 15px;
             text-align: center;
@@ -217,23 +216,23 @@
                 <h2>Home Team</h2>
                 <div class="form-group">
                     <label for="home_avg_score">Average Scored</label>
-                    <input type="number" id="home_avg_score" step="0.01" value="1.11">
+                    <input type="number" id="home_avg_score" step="0.01" value="1.6">
                 </div>
                 <div class="form-group">
                     <label for="home_avg_conceded">Average Conceded</label>
-                    <input type="number" id="home_avg_conceded" step="0.01" value="1.44">
+                    <input type="number" id="home_avg_conceded" step="0.01" value="0.7">
                 </div>
                 <div class="form-group">
                     <label for="home_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="home_score_percentage" step="1" value="59">
+                    <input type="number" id="home_score_percentage" step="1" value="75">
                 </div>
                 <div class="form-group">
                     <label for="home_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="home_cleansheet" step="1" value="19">
+                    <input type="number" id="home_cleansheet" step="1" value="50">
                 </div>
                 <div class="form-group">
                     <label for="home_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="home_difficulty" step="1" min="1" max="5" value="4">
+                    <input type="number" id="home_difficulty" step="1" min="1" max="5" value="2">
                 </div>
             </div>
 
@@ -241,19 +240,19 @@
                 <h2>Away Team</h2>
                 <div class="form-group">
                     <label for="away_avg_score">Average Scored</label>
-                    <input type="number" id="away_avg_score" step="0.01" value="1.70">
+                    <input type="number" id="away_avg_score" step="0.01" value="1.16">
                 </div>
                 <div class="form-group">
                     <label for="away_avg_conceded">Average Conceded</label>
-                    <input type="number" id="away_avg_conceded" step="0.01" value="1.33">
+                    <input type="number" id="away_avg_conceded" step="0.01" value="1.37">
                 </div>
                 <div class="form-group">
                     <label for="away_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="away_score_percentage" step="1" value="89">
+                    <input type="number" id="away_score_percentage" step="1" value="74">
                 </div>
                 <div class="form-group">
                     <label for="away_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="away_cleansheet" step="1" value="33">
+                    <input type="number" id="away_cleansheet" step="1" value="21">
                 </div>
                 <div class="form-group">
                     <label for="away_difficulty">Difficulty (1-5)</label>
@@ -266,15 +265,15 @@
                  <div class="probabilities-grid">
                     <div class="form-group">
                         <label for="home_odds">Home Win Odds</label>
-                        <input type="number" id="home_odds" step="0.01" value="2.60">
+                        <input type="number" id="home_odds" step="0.01" value="1.75">
                     </div>
                     <div class="form-group">
                         <label for="draw_odds">Draw Odds</label>
-                        <input type="number" id="draw_odds" step="0.01" value="3.40">
+                        <input type="number" id="draw_odds" step="0.01" value="3.50">
                     </div>
                     <div class="form-group">
                         <label for="away_odds">Away Win Odds</label>
-                        <input type="number" id="away_odds" step="0.01" value="2.30">
+                        <input type="number" id="away_odds" step="0.01" value="5.00">
                     </div>
                 </div>
             </div>
@@ -285,7 +284,7 @@
         <div id="results-section" class="hidden">
             <div class="result-card">
                  <h3>Wagering Advice</h3>
-                 <div id="wagering-advice">AVOID</div>
+                 <div id="wagering-advice">PASS</div>
             </div>
             
             <div class="result-card">
@@ -361,11 +360,9 @@
                 if (n in this.factorialCache) return this.factorialCache[n];
                 if (n < 0) return NaN;
                 if (n === 0) return 1;
-                let result = this.factorialCache[n-1] ? this.factorialCache[n-1] * n : 1;
-                if (!this.factorialCache[n-1]){
-                   for (let i = 2; i <= n; i++) {
-                       result *= i;
-                   }
+                let result = 1;
+                for (let i = 2; i <= n; i++) {
+                    result *= i;
                 }
                 this.factorialCache[n] = result;
                 return result;
@@ -385,8 +382,9 @@
                 const awayDefenseStrength = matchData.away_avg_conceded * (matchData.home_difficulty / 5);
                 const homeExpectedGoals = (homeAttackStrength + awayDefenseStrength) / 2;
                 const awayExpectedGoals = (awayAttackStrength + homeDefenseStrength) / 2;
-
-                const maxGoals = 6;
+                
+                // *** UPDATED based on new_version.py ***
+                const maxGoals = 4;
                 let homeWin = 0, draw = 0, awayWin = 0;
                 
                 for (let h = 0; h <= maxGoals; h++) {
@@ -430,10 +428,11 @@
                 drawProb = Math.max(0.15, Math.min(0.45, drawProb));
 
                 const remainingProb = 1.0 - drawProb;
-                const homeWinProb = homeFormAdvantage * remainingProb;
-                const awayWinProb = awayFormAdvantage * remainingProb;
-
-                return { home_win: homeWinProb, draw: drawProb, away_win: awayWinProb };
+                return { 
+                    home_win: homeFormAdvantage * remainingProb, 
+                    draw: drawProb, 
+                    away_win: awayFormAdvantage * remainingProb 
+                };
             }
 
             calculateDefensiveStrengthModel(matchData) {
@@ -454,7 +453,11 @@
                 const baseDraw = 0.25 + drawBoost;
                 const remainingProb = 1.0 - baseDraw;
 
-                return { home_win: homeAttackNorm * remainingProb, draw: baseDraw, away_win: awayAttackNorm * remainingProb };
+                return { 
+                    home_win: homeAttackNorm * remainingProb, 
+                    draw: baseDraw, 
+                    away_win: awayAttackNorm * remainingProb 
+                };
             }
 
             calculateMarketSentimentModel(matchData) {
@@ -487,19 +490,12 @@
                 );
 
                 const qualityDiff = homeQuality - awayQuality;
-                const qualitySum = homeQuality + awayQuality;
-                let homeBaseProb = 0.5, awayBaseProb = 0.5;
-
-                if (qualitySum > 0) {
-                    homeBaseProb = 1 / (1 + Math.exp(-qualityDiff * 3));
-                    awayBaseProb = 1 - homeBaseProb;
-                }
-
+                const homeBaseProb = 1 / (1 + Math.exp(-qualityDiff * 3));
+                const awayBaseProb = 1 - homeBaseProb;
                 const contextFactor = Math.sqrt(homeQuality * awayQuality);
-                let drawProb = 0.2 + (contextFactor * 0.15);
-                drawProb = Math.min(0.4, drawProb);
-
+                let drawProb = Math.min(0.4, 0.2 + (contextFactor * 0.15));
                 const remaining = 1.0 - drawProb;
+
                 return {
                     home_win: homeBaseProb * remaining,
                     draw: drawProb,
@@ -510,15 +506,15 @@
             }
 
             predictMatch(matchData) {
-                const poissonPred = this.calculatePoissonProbabilities(matchData);
-                const formPred = this.calculateFormBasedPrediction(matchData);
-                const defensePred = this.calculateDefensiveStrengthModel(matchData);
-                const marketPred = this.calculateMarketSentimentModel(matchData);
-                const compositePred = this.calculateCompositeRatingModel(matchData);
+                const models = {
+                    poisson: this.calculatePoissonProbabilities(matchData),
+                    form_based: this.calculateFormBasedPrediction(matchData),
+                    defensive_strength: this.calculateDefensiveStrengthModel(matchData),
+                    market_sentiment: this.calculateMarketSentimentModel(matchData),
+                    composite_rating: this.calculateCompositeRatingModel(matchData)
+                };
 
                 let finalHome = 0, finalDraw = 0, finalAway = 0;
-                const models = { poisson: poissonPred, form_based: formPred, defensive_strength: defensePred, market_sentiment: marketPred, composite_rating: compositePred };
-                
                 for (const modelName in this.weights) {
                     finalHome += models[modelName]['home_win'] * this.weights[modelName];
                     finalDraw += models[modelName]['draw'] * this.weights[modelName];
@@ -537,26 +533,20 @@
 
                 const probs = [finalHome, finalDraw, finalAway];
                 const entropy = -probs.reduce((sum, p) => sum + p * Math.log(p + 1e-10), 0);
-                const maxEntropy = Math.log(3);
-                const confidence = 1 - (entropy / maxEntropy);
+                const confidence = 1 - (entropy / Math.log(3));
 
                 return {
                     predicted_outcome: predictedOutcome,
                     probabilities: { home_win: finalHome, draw: finalDraw, away_win: finalAway },
                     confidence: confidence,
-                    expected_goals: poissonPred.expected_goals,
-                    model_breakdown: {
-                        poisson: poissonPred,
-                        form_based: formPred,
-                        defensive_strength: defensePred,
-                        market_sentiment: marketPred,
-                        composite_rating: compositePred
-                    },
-                    team_quality_scores: { home: compositePred.home_quality, away: compositePred.away_quality }
+                    expected_goals: models.poisson.expected_goals,
+                    model_breakdown: models,
+                    team_quality_scores: { home: models.composite_rating.home_quality, away: models.composite_rating.away_quality }
                 };
             }
         }
 
+        // *** UPDATED based on new_version.py ***
         function getWageringAdvice(prediction) {
             const finalProbs = prediction.probabilities;
             const poissonProbs = prediction.model_breakdown.poisson;
@@ -565,45 +555,28 @@
             const defenseProbs = prediction.model_breakdown.defensive_strength;
             const marketProbs = prediction.model_breakdown.market_sentiment;
 
-            const homPie = poissonProbs.home_win - finalProbs.home_win;
-            const awyPie = poissonProbs.away_win - finalProbs.away_win;
-            const hcon = defenseProbs.home_win / formProbs.home_win;
-            const acon = defenseProbs.away_win / formProbs.away_win;
-            const hhcon = marketProbs.home_win - compositeProbs.home_win;
-            const aacon = marketProbs.away_win - compositeProbs.away_win;
+            
+            const hom_pie = poissonProbs.home_win - finalProbs.home_win;
+            const awy_pie = poissonProbs.away_win - finalProbs.away_win;
+            const hcon = poissonProbs.home_win - compositeProbs.home_win;
+            const acon = poissonProbs.away_win - compositeProbs.away_win;
+            const hhcon = marketProbs.home_win > marketProbs.away_win;
+            const aacon = marketProbs.home_win < marketProbs.away_win;
             const fh = formProbs.home_win - defenseProbs.away_win;
             const fa = formProbs.away_win - defenseProbs.home_win;
+            const hom = (fh * 100) + (compositeProbs.home_win * 100);
+            const awy = (fa * 100) + (compositeProbs.away_win * 100);
+            const hch = compositeProbs.home_win > defenseProbs.home_win;
+            const ach = compositeProbs.away_win > defenseProbs.away_win;
+            const h = defenseProbs.home_win;
+            const a = defenseProbs.away_win;
+
+            if (awy_pie < hom_pie && fh > fa && hcon > acon && h > a && hhcon) return 'H';
+            if (awy_pie > hom_pie && fh < fa && hcon < acon && a > h && aacon) return 'A';
+            if (hom > (finalProbs.home_win * 100) && awy < (finalProbs.away_win * 100) && hch) return '1X';
+            if (hom < (finalProbs.home_win * 100) && awy > (finalProbs.away_win * 100) && ach) return '2X';
             
-            // *** CORRECTION: Added rounding to match Python script ***
-            const h_odd = parseFloat(((defenseProbs.away_win + formProbs.home_win) * 50).toFixed(1));
-            const a_odd = parseFloat(((defenseProbs.home_win + formProbs.away_win) * 50).toFixed(1));
-
-            const hom = marketProbs.home_win > marketProbs.away_win;
-            const awy = marketProbs.home_win < marketProbs.away_win;
-
-            const hch_calc = ((h_odd - (compositeProbs.home_win * 100)) / (compositeProbs.home_win * 100) + (((compositeProbs.away_win * 100) - a_odd) / a_odd)) * 100;
-            const ach_calc = ((a_odd - (compositeProbs.away_win * 100)) / (compositeProbs.away_win * 100) + (((compositeProbs.home_win * 100) - h_odd) / h_odd)) * 100;
-            const h_calc = (((marketProbs.home_win * 100) - (compositeProbs.home_win * 100)) / (compositeProbs.home_win * 100) + (((compositeProbs.away_win * 100) - (marketProbs.away_win * 100)) / (marketProbs.away_win * 100))) * 100;
-            const a_calc = (((marketProbs.away_win * 100) - (compositeProbs.away_win * 100)) / (compositeProbs.away_win * 100) + (((compositeProbs.home_win * 100) - (marketProbs.home_win * 100)) / (marketProbs.home_win * 100))) * 100;
-
-            // *** CORRECTION: Added rounding to match Python script ***
-            const hch = parseFloat(hch_calc.toFixed(1));
-            const ach = parseFloat(ach_calc.toFixed(1));
-            const h = parseFloat(h_calc.toFixed(1));
-            const a = parseFloat(a_calc.toFixed(1));
-
-            if (fh > fa && hom && poissonProbs.home_win > poissonProbs.away_win && (hcon > acon || hhcon > aacon) && h / 2 > hch && hch < ach && h > a && homPie > awyPie) return 'HOME WIN';
-            if (fh < fa && awy && poissonProbs.home_win < poissonProbs.away_win && (hcon < acon || hhcon < aacon) && a / 2 > ach && ach < hch && h < a && awyPie > homPie) return 'AWAY WIN';
-            if (fh > fa && hom && poissonProbs.home_win > poissonProbs.away_win && (hcon > acon || hhcon > aacon) && h / 2 > hch && hch < ach && h > a) return 'HOME-DNB';
-            if (fh < fa && awy && poissonProbs.home_win < poissonProbs.away_win && (hcon < acon || hhcon < aacon) && a / 2 > ach && ach < hch && h < a) return 'AWAY-DNB';
-            if (fh > fa && hom && poissonProbs.home_win > poissonProbs.away_win && (hcon > acon || hhcon > aacon) && h / 2 > hch && hch < ach && homPie > awyPie) return 'HOME DRAW';
-            if (fh < fa && awy && poissonProbs.home_win < poissonProbs.away_win && (hcon < acon || hhcon < aacon) && a / 2 > ach && ach < hch && awyPie > homPie) return 'AWAY DRAW';
-            if (fh > fa && !hom && h / 2 > hch && hch > ach) return 'HOME CHANCE TRUE';
-            if (fh < fa && hom && a / 2 > ach && ach > hch) return 'AWAY CHANCE TRUE';
-            if (fh > fa && !hom && h / 2 < hch && hch < ach) return 'HOME CHANCE FALSE';
-            if (fh < fa && hom && a / 2 < ach && ach < hch) return 'AWAY CHANCE FALSE';
-            
-            return 'AVOID';
+            return 'PASS';
         }
 
         document.getElementById('predictBtn').addEventListener('click', () => {
@@ -639,7 +612,7 @@
 
             const adviceDiv = document.getElementById('wagering-advice');
             adviceDiv.textContent = advice;
-            adviceDiv.className = (advice === 'AVOID') ? 'advice-avoid' : 'advice-bet';
+            adviceDiv.className = (advice === 'PASS') ? 'advice-pass' : 'advice-bet';
 
             document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome;
             document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%';
@@ -669,6 +642,5 @@
             }
         });
     </script>
-
 </body>
-</html>
+                        </html>
