@@ -424,6 +424,8 @@
                         else awayWin += cellProb;
                     }
                 }
+                // In the python script, this function returns rounded values, but they are not used as such in the final dict.
+                // To be safe and match potential floating point differences, we return the raw values.
                 return { home_win: homeWin, draw: draw, away_win: awayWin };
             }
 
@@ -518,7 +520,7 @@
             }
         }
         
-        // *** UPDATED based on the new wagering advice logic ***
+        // *** UPDATED based on the new wagering advice logic in me.txt ***
         function getWageringAdvice(prediction) {
             const finalProbs = prediction.probabilities;
             const compositeProbs = prediction.model_breakdown.composite_rating;
@@ -528,8 +530,8 @@
 
             const hpit = finalProbs.home_win - compositeProbs.home_win;
             const apit = finalProbs.away_win - compositeProbs.away_win;
-            const htry = ((marketProbs.home_win - compositeProbs.home_win) * (3/4)) + defenseProbs.home_win > formProbs.home_win;
-            const atry = ((marketProbs.away_win - compositeProbs.away_win) * (3/4)) + defenseProbs.away_win > formProbs.away_win;
+            const htry = ((marketProbs.home_win - compositeProbs.home_win) * 0.75) + defenseProbs.home_win > formProbs.home_win;
+            const atry = ((marketProbs.away_win - compositeProbs.away_win) * 0.75) + defenseProbs.away_win > formProbs.away_win;
             const fh = formProbs.home_win - defenseProbs.away_win;
             const fa = formProbs.away_win - defenseProbs.home_win;
             const h_odd = compositeProbs.home_win > compositeProbs.away_win;
