@@ -548,10 +548,17 @@
                 adviceLines.push(`AWAY    CONFIDENCE  -> ${confVal1} > ${confVal2} >>> ${confVal3}`);
             }
 
-            // Block 2: Sure Bet Advice
+            // Block 2: Favored Team
             const hub = (formProbs.home_win - defenseProbs.home_win) > (formProbs.away_win - defenseProbs.away_win);
             const aub = (formProbs.home_win - defenseProbs.home_win) < (formProbs.away_win - defenseProbs.away_win);
 
+            if (hub) {
+                adviceLines.push('HOME FAV');
+            } else if (aub) {
+                adviceLines.push('AWAY FAV');
+            }
+
+            // Block 3: Sure Bet Advice
             if (marketProbs.home_win > marketProbs.away_win && finalProbs.home_win > finalProbs.away_win && ho < awa && hub && poissonProbs.home_win > poissonProbs.away_win) {
                 adviceLines.push('H_O_M_E-----> W-I-N');
             } else if (marketProbs.home_win > marketProbs.away_win && finalProbs.home_win > finalProbs.away_win && ho < awa && hub) {
@@ -568,11 +575,12 @@
                 adviceLines.push('home-----> draw');
             } else if (marketProbs.home_win < marketProbs.away_win && finalProbs.home_win < finalProbs.away_win && ho < awa && aub && compositeProbs.home_win < compositeProbs.away_win) {
                 adviceLines.push('away-----> draw');
+
             } else {
                 adviceLines.push('SURE-----> AVOID');
             }
 
-            // Block 3: Try Bet Advice
+            // Block 4: Try Bet Advice
             if (compositeProbs.home_win < qp.home_win && qp.home_win < finalProbs.home_win && compositeProbs.home_win > compositeProbs.away_win) {
                 adviceLines.push('TRY HOME WIN');
             } else if (compositeProbs.away_win < qp.away_win && qp.away_win < finalProbs.away_win && compositeProbs.away_win > compositeProbs.home_win) {
@@ -632,4 +640,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
