@@ -219,19 +219,19 @@
                 <h2>Home Team</h2>
                 <div class="form-group">
                     <label for="home_avg_score">Average Scored</label>
-                    <input type="number" id="home_avg_score" step="0.01" value="1.5">
+                    <input type="number" id="home_avg_score" step="0.01" value="1.64">
                 </div>
                 <div class="form-group">
                     <label for="home_avg_conceded">Average Conceded</label>
-                    <input type="number" id="home_avg_conceded" step="0.01" value="0.73">
+                    <input type="number" id="home_avg_conceded" step="0.01" value="1.2">
                 </div>
                 <div class="form-group">
                     <label for="home_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="home_score_percentage" step="1" value="73">
+                    <input type="number" id="home_score_percentage" step="1" value="80">
                 </div>
                 <div class="form-group">
                     <label for="home_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="home_cleansheet" step="1" value="46">
+                    <input type="number" id="home_cleansheet" step="1" value="28">
                 </div>
                 <div class="form-group">
                     <label for="home_difficulty">Difficulty (1-5)</label>
@@ -243,23 +243,23 @@
                 <h2>Away Team</h2>
                 <div class="form-group">
                     <label for="away_avg_score">Average Scored</label>
-                    <input type="number" id="away_avg_score" step="0.01" value="0.75">
+                    <input type="number" id="away_avg_score" step="0.01" value="2.04">
                 </div>
                 <div class="form-group">
                     <label for="away_avg_conceded">Average Conceded</label>
-                    <input type="number" id="away_avg_conceded" step="0.01" value="1.54">
+                    <input type="number" id="away_avg_conceded" step="0.01" value="1.0">
                 </div>
                 <div class="form-group">
                     <label for="away_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="away_score_percentage" step="1" value="54">
+                    <input type="number" id="away_score_percentage" step="1" value="92">
                 </div>
                 <div class="form-group">
                     <label for="away_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="away_cleansheet" step="1" value="21">
+                    <input type="number" id="away_cleansheet" step="1" value="32">
                 </div>
                 <div class="form-group">
                     <label for="away_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="1">
+                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="5">
                 </div>
             </div>
             
@@ -268,7 +268,7 @@
                  <div class="probabilities-grid">
                     <div class="form-group">
                         <label for="home_odds">Home Win Odds</label>
-                        <input type="number" id="home_odds" step="0.01" value="1.6">
+                        <input type="number" id="home_odds" step="0.01" value="2.7">
                     </div>
                     <div class="form-group">
                         <label for="draw_odds">Draw Odds</label>
@@ -276,7 +276,7 @@
                     </div>
                     <div class="form-group">
                         <label for="away_odds">Away Win Odds</label>
-                        <input type="number" id="away_odds" step="0.01" value="6.25">
+                        <input type="number" id="away_odds" step="0.01" value="2.1">
                     </div>
                 </div>
             </div>
@@ -525,14 +525,14 @@
             const finalProbs = prediction.probabilities;
             const poissonProbs = prediction.model_breakdown.poisson;
             const compositeProbs = prediction.model_breakdown.composite_rating;
-            const formProbs = prediction.model_breakdown.form_based;
-            const defenseProbs = prediction.model_breakdown.defensive_strength;
             const marketProbs = prediction.model_breakdown.market_sentiment;
             const qp = prediction.quality_poisson;
+            const defenseProbs = prediction.model_breakdown.defensive_strength; // Added this line
+            const formProbs = prediction.model_breakdown.form_based; // Added this line
             
             let adviceLines = [];
 
-            // Block 1: Try Bet Advice (now first)
+            // Block 1: Try Bet Advice
             if (compositeProbs.home_win < qp.home_win && qp.home_win < finalProbs.home_win && compositeProbs.home_win > compositeProbs.away_win) {
                 adviceLines.push('TRY HOME WIN');
             } else if (compositeProbs.away_win < qp.away_win && qp.away_win < finalProbs.away_win && compositeProbs.away_win > compositeProbs.home_win) {
@@ -542,88 +542,107 @@
             // Block 2: Main Bet Advice
             const ho = qp.home_win - compositeProbs.home_win;
             const awa = qp.away_win - compositeProbs.away_win;
+            const h_odd = defenseProbs.home_win - defenseProbs.draw;
+            const a_odd = defenseProbs.away_win - defenseProbs.draw;
+            const htry = parseFloat((((marketProbs.home_win + compositeProbs.home_win) - poissonProbs.home_win) / poissonProbs.home_win * 100).toFixed(1));
+            const atry = parseFloat((((marketProbs.away_win + compositeProbs.away_win) - poissonProbs.away_win) / poissonProbs.away_win * 100).toFixed(1));
+            const htip = compositeProbs.home_win > compositeProbs.away_win;
+            const atip = compositeProbs.away_win > compositeProbs.home_win;
             const hub = (formProbs.home_win - defenseProbs.home_win) > (formProbs.away_win - defenseProbs.away_win);
             const aub = (formProbs.home_win - defenseProbs.home_win) < (formProbs.away_win - defenseProbs.away_win);
             const hbet = (defenseProbs.away_win * 100 - parseFloat((finalProbs.home_win * 100 - formProbs.home_win * 100).toFixed(1))) > defenseProbs.home_win * 100;
             const abet = (defenseProbs.home_win * 100 - parseFloat((finalProbs.away_win * 100 - formProbs.away_win * 100).toFixed(1))) > defenseProbs.away_win * 100;
             const hbee = (marketProbs.home_win > marketProbs.away_win || marketProbs.home_win > compositeProbs.home_win) && (marketProbs.home_win > qp.home_win);
             const abee = (marketProbs.home_win < marketProbs.away_win || marketProbs.away_win > compositeProbs.away_win) && (marketProbs.away_win > qp.away_win);
-            
-            if (ho > awa && aub && !abee) {
+
+            if (ho > awa && aub && atry < htry && !abee) {
                 adviceLines.push('H-O-M-E__W-I-N');
-            } else if (ho > awa && aub && abee) {
-                adviceLines.push('H-O-M-E__D-R-A-W');
-            } else if (ho < awa && hub && !hbee) {
+            } else if (ho > awa && aub && atry < htry && abee && htry < atry && (marketProbs.home_win + compositeProbs.home_win) > (marketProbs.away_win + compositeProbs.away_win) && h_odd > a_odd) {
+                adviceLines.push('HOME');
+            } else if (ho > awa && aub && atry < htry && abee) {
+                adviceLines.push('AWAY-DRAW');
+            } else if (ho < awa && hub && htry < atry && !hbee) {
                 adviceLines.push('A-W-A-Y__W-I-N');
-            } else if (ho < awa && hub && hbee) {
-                adviceLines.push('A-W-A-Y__D-R-A-W');
-            } else if (ho > awa && aub && abee) { // Note: This condition is repeated from above in the python script
-                adviceLines.push('A-W-A-Y__D-N-B');
-            } else if (ho < awa && hub && hbee) { // Note: This condition is repeated from above in the python script
+            } else if (ho < awa && hub && htry < atry && hbee && htry > atry && (marketProbs.home_win + compositeProbs.home_win) < (marketProbs.away_win + compositeProbs.away_win) && h_odd < a_odd) {
+                adviceLines.push('AWAY');
+            } else if (ho < awa && hub && htry < atry && hbee) {
+                adviceLines.push('HOME-DRAW');
+            } else if (ho > awa && aub && atry > htry && abee && ho > awa && htry < atry && h_odd > a_odd) {
+                adviceLines.push(`HOME-DNB ----W   ${htip}`);
+            } else if (ho > awa && aub && atry > htry && abee) {
                 adviceLines.push('H-O-M-E__D-N-B');
-            } else if (ho > awa && hub && hbee && hbet) {
+            } else if (ho < awa && hub && htry > atry && hbee && ho < awa && htry > atry && h_odd < a_odd) {
+                adviceLines.push(`AWAY-DNB -----W   ${atip}`);
+            } else if (ho < awa && hub && htry > atry && hbee) {
+                adviceLines.push('A-W-A-Y__D-N-B');
+            } else if (ho > awa && hub && atry > htry && hbee && hbet && compositeProbs.home_win > compositeProbs.away_win) {
                 adviceLines.push('H->O->M->E--->W->I->N');
-            } else if (ho > awa && hub && hbet && marketProbs.home_win < compositeProbs.home_win) {
+            } else if (ho > awa && hub && atry > htry && hbet && marketProbs.home_win < compositeProbs.home_win) {
                 adviceLines.push('H->O->M->E--->D->R->A->W');
-            } else if (ho < awa && aub && abee && abet) {
+            } else if (ho < awa && aub && atry < htry && abee && abet && compositeProbs.home_win < compositeProbs.away_win) {
                 adviceLines.push('A->W->A->Y--->W->I->N');
-            } else if (ho < awa && aub && abet && marketProbs.away_win < compositeProbs.away_win) {
+            } else if (ho < awa && aub && atry < htry && abet && marketProbs.away_win < compositeProbs.away_win) {
                 adviceLines.push('A->W->A->Y--->D->R->A->Y');
             } else {
                 adviceLines.push('AVOID');
             }
-
+            
             return adviceLines.join('\n\n');
         }
 
         document.getElementById('predictBtn').addEventListener('click', () => {
-            const matchData = {
-                home_avg_score: parseFloat(document.getElementById('home_avg_score').value), away_avg_score: parseFloat(document.getElementById('away_avg_score').value),
-                home_avg_conceded: parseFloat(document.getElementById('home_avg_conceded').value), away_avg_conceded: parseFloat(document.getElementById('away_avg_conceded').value),
-                home_score_percentage: parseFloat(document.getElementById('home_score_percentage').value), away_score_percentage: parseFloat(document.getElementById('away_score_percentage').value),
-                home_cleansheet: parseFloat(document.getElementById('home_cleansheet').value), away_cleansheet: parseFloat(document.getElementById('away_cleansheet').value),
-                home_difficulty: parseInt(document.getElementById('home_difficulty').value), away_difficulty: parseInt(document.getElementById('away_difficulty').value),
-                home_odds: parseFloat(document.getElementById('home_odds').value), draw_odds: parseFloat(document.getElementById('draw_odds').value), away_odds: parseFloat(document.getElementById('away_odds').value)
-            };
-            
-            for (const key in matchData) { if (isNaN(matchData[key])) { alert(`Please enter a valid number for ${key.replace(/_/g, ' ')}.`); return; } }
+            try {
+                const matchData = {
+                    home_avg_score: parseFloat(document.getElementById('home_avg_score').value), away_avg_score: parseFloat(document.getElementById('away_avg_score').value),
+                    home_avg_conceded: parseFloat(document.getElementById('home_avg_conceded').value), away_avg_conceded: parseFloat(document.getElementById('away_avg_conceded').value),
+                    home_score_percentage: parseFloat(document.getElementById('home_score_percentage').value), away_score_percentage: parseFloat(document.getElementById('away_score_percentage').value),
+                    home_cleansheet: parseFloat(document.getElementById('home_cleansheet').value), away_cleansheet: parseFloat(document.getElementById('away_cleansheet').value),
+                    home_difficulty: parseInt(document.getElementById('home_difficulty').value), away_difficulty: parseInt(document.getElementById('away_difficulty').value),
+                    home_odds: parseFloat(document.getElementById('home_odds').value), draw_odds: parseFloat(document.getElementById('draw_odds').value), away_odds: parseFloat(document.getElementById('away_odds').value)
+                };
+                
+                for (const key in matchData) { if (isNaN(matchData[key])) { alert(`Please enter a valid number for ${key.replace(/_/g, ' ')}.`); return; } }
 
-            const predictor = new FootballPredictor();
-            const prediction = predictor.predictMatch(matchData);
-            const advice = getWageringAdvice(prediction);
-            
-            document.getElementById('results-section').classList.remove('hidden');
+                const predictor = new FootballPredictor();
+                const prediction = predictor.predictMatch(matchData);
+                const advice = getWageringAdvice(prediction);
+                
+                document.getElementById('results-section').classList.remove('hidden');
 
-            const adviceDiv = document.getElementById('wagering-advice');
-            adviceDiv.textContent = advice;
-            adviceDiv.className = advice.includes('AVOID') ? 'advice-avoid' : 'advice-bet';
+                const adviceDiv = document.getElementById('wagering-advice');
+                adviceDiv.textContent = advice;
+                adviceDiv.className = advice.includes('AVOID') ? 'advice-avoid' : 'advice-bet';
 
-            document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome;
-            document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%';
-            
-            document.getElementById('final-prob-home').textContent = (prediction.probabilities.home_win * 100).toFixed(1) + '%';
-            document.getElementById('final-prob-draw').textContent = (prediction.probabilities.draw * 100).toFixed(1) + '%';
-            document.getElementById('final-prob-away').textContent = (prediction.probabilities.away_win * 100).toFixed(1) + '%';
+                document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome;
+                document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%';
+                
+                document.getElementById('final-prob-home').textContent = (prediction.probabilities.home_win * 100).toFixed(1) + '%';
+                document.getElementById('final-prob-draw').textContent = (prediction.probabilities.draw * 100).toFixed(1) + '%';
+                document.getElementById('final-prob-away').textContent = (prediction.probabilities.away_win * 100).toFixed(1) + '%';
 
-            document.getElementById('expected-goals-home').textContent = prediction.expected_goals.home.toFixed(2);
-            document.getElementById('expected-goals-away').textContent = prediction.expected_goals.away.toFixed(2);
-            
-            document.getElementById('quality-score-home').textContent = prediction.team_quality_scores.home.toFixed(3);
-            document.getElementById('quality-score-away').textContent = prediction.team_quality_scores.away.toFixed(3);
+                document.getElementById('expected-goals-home').textContent = prediction.expected_goals.home.toFixed(2);
+                document.getElementById('expected-goals-away').textContent = prediction.expected_goals.away.toFixed(2);
+                
+                document.getElementById('quality-score-home').textContent = prediction.team_quality_scores.home.toFixed(3);
+                document.getElementById('quality-score-away').textContent = prediction.team_quality_scores.away.toFixed(3);
 
-            const qp = prediction.quality_poisson;
-            document.getElementById('q-poisson-hcheck').textContent = qp.hcheck.toFixed(3);
-            document.getElementById('q-poisson-acheck').textContent = qp.acheck.toFixed(3);
-            document.getElementById('q-prob-home').textContent = (qp.home_win * 100).toFixed(1) + '%';
-            document.getElementById('q-prob-draw').textContent = (qp.draw * 100).toFixed(1) + '%';
-            document.getElementById('q-prob-away').textContent = (qp.away_win * 100).toFixed(1) + '%';
+                const qp = prediction.quality_poisson;
+                document.getElementById('q-poisson-hcheck').textContent = qp.hcheck.toFixed(3);
+                document.getElementById('q-poisson-acheck').textContent = qp.acheck.toFixed(3);
+                document.getElementById('q-prob-home').textContent = (qp.home_win * 100).toFixed(1) + '%';
+                document.getElementById('q-prob-draw').textContent = (qp.draw * 100).toFixed(1) + '%';
+                document.getElementById('q-prob-away').textContent = (qp.away_win * 100).toFixed(1) + '%';
 
-            for(const modelName in prediction.model_breakdown) {
-                const probs = prediction.model_breakdown[modelName];
-                const cleanName = modelName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-                document.getElementById(`breakdown-${modelName}`).innerHTML = `<span class="model-name">${cleanName}</span><span class="model-probs">H: ${(probs.home_win * 100).toFixed(1)}% | D: ${(probs.draw * 100).toFixed(1)}% | A: ${(probs.away_win * 100).toFixed(1)}%</span>`;
+                for(const modelName in prediction.model_breakdown) {
+                    const probs = prediction.model_breakdown[modelName];
+                    const cleanName = modelName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    document.getElementById(`breakdown-${modelName}`).innerHTML = `<span class="model-name">${cleanName}</span><span class="model-probs">H: ${(probs.home_win * 100).toFixed(1)}% | D: ${(probs.draw * 100).toFixed(1)}% | A: ${(probs.away_win * 100).toFixed(1)}%</span>`;
+                }
+            } catch (error) {
+                console.error("An error occurred during prediction:", error);
+                alert("An error occurred. Please check the console for details and ensure all inputs are valid.");
             }
         });
     </script>
 </body>
-    </html>
+</html>
