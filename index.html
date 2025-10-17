@@ -219,19 +219,19 @@
                 <h2>Home Team</h2>
                 <div class="form-group">
                     <label for="home_avg_score">Average Scored</label>
-                    <input type="number" id="home_avg_score" step="0.01" value="1.64">
+                    <input type="number" id="home_avg_score" step="0.01" value="0.78">
                 </div>
                 <div class="form-group">
                     <label for="home_avg_conceded">Average Conceded</label>
-                    <input type="number" id="home_avg_conceded" step="0.01" value="1.2">
+                    <input type="number" id="home_avg_conceded" step="0.01" value="1.26">
                 </div>
                 <div class="form-group">
                     <label for="home_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="home_score_percentage" step="1" value="80">
+                    <input type="number" id="home_score_percentage" step="1" value="56">
                 </div>
                 <div class="form-group">
                     <label for="home_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="home_cleansheet" step="1" value="28">
+                    <input type="number" id="home_cleansheet" step="1" value="37">
                 </div>
                 <div class="form-group">
                     <label for="home_difficulty">Difficulty (1-5)</label>
@@ -243,23 +243,23 @@
                 <h2>Away Team</h2>
                 <div class="form-group">
                     <label for="away_avg_score">Average Scored</label>
-                    <input type="number" id="away_avg_score" step="0.01" value="2.04">
+                    <input type="number" id="away_avg_score" step="0.01" value="1.48">
                 </div>
                 <div class="form-group">
                     <label for="away_avg_conceded">Average Conceded</label>
-                    <input type="number" id="away_avg_conceded" step="0.01" value="1.0">
+                    <input type="number" id="away_avg_conceded" step="0.01" value="1.44">
                 </div>
                 <div class="form-group">
                     <label for="away_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="away_score_percentage" step="1" value="92">
+                    <input type="number" id="away_score_percentage" step="1" value="78">
                 </div>
                 <div class="form-group">
                     <label for="away_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="away_cleansheet" step="1" value="32">
+                    <input type="number" id="away_cleansheet" step="1" value="19">
                 </div>
                 <div class="form-group">
                     <label for="away_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="5">
+                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="4">
                 </div>
             </div>
             
@@ -268,15 +268,15 @@
                  <div class="probabilities-grid">
                     <div class="form-group">
                         <label for="home_odds">Home Win Odds</label>
-                        <input type="number" id="home_odds" step="0.01" value="2.7">
+                        <input type="number" id="home_odds" step="0.01" value="3.0">
                     </div>
                     <div class="form-group">
                         <label for="draw_odds">Draw Odds</label>
-                        <input type="number" id="draw_odds" step="0.01" value="3.7">
+                        <input type="number" id="draw_odds" step="0.01" value="3.2">
                     </div>
                     <div class="form-group">
                         <label for="away_odds">Away Win Odds</label>
-                        <input type="number" id="away_odds" step="0.01" value="2.1">
+                        <input type="number" id="away_odds" step="0.01" value="2.25">
                     </div>
                 </div>
             </div>
@@ -527,8 +527,8 @@
             const compositeProbs = prediction.model_breakdown.composite_rating;
             const marketProbs = prediction.model_breakdown.market_sentiment;
             const qp = prediction.quality_poisson;
-            const defenseProbs = prediction.model_breakdown.defensive_strength; // Added this line
-            const formProbs = prediction.model_breakdown.form_based; // Added this line
+            const defenseProbs = prediction.model_breakdown.defensive_strength;
+            const formProbs = prediction.model_breakdown.form_based;
             
             let adviceLines = [];
 
@@ -554,6 +554,8 @@
             const abet = (defenseProbs.home_win * 100 - parseFloat((finalProbs.away_win * 100 - formProbs.away_win * 100).toFixed(1))) > defenseProbs.away_win * 100;
             const hbee = (marketProbs.home_win > marketProbs.away_win || marketProbs.home_win > compositeProbs.home_win) && (marketProbs.home_win > qp.home_win);
             const abee = (marketProbs.home_win < marketProbs.away_win || marketProbs.away_win > compositeProbs.away_win) && (marketProbs.away_win > qp.away_win);
+            const acheck = (compositeProbs.away_win - compositeProbs.draw) > (marketProbs.home_win - marketProbs.draw);
+            const hcheck = (compositeProbs.home_win - compositeProbs.draw) > (marketProbs.away_win - marketProbs.draw);
 
             if (ho > awa && aub && atry < htry && !abee) {
                 adviceLines.push('H-O-M-E__W-I-N');
@@ -568,11 +570,11 @@
             } else if (ho < awa && hub && htry < atry && hbee) {
                 adviceLines.push('HOME-DRAW');
             } else if (ho > awa && aub && atry > htry && abee && ho > awa && htry < atry && h_odd > a_odd) {
-                adviceLines.push(`HOME-DNB ----W   ${htip}`);
+                adviceLines.push(`HOME-DNB ----W   ${htip} ${hcheck}`);
             } else if (ho > awa && aub && atry > htry && abee) {
                 adviceLines.push('H-O-M-E__D-N-B');
             } else if (ho < awa && hub && htry > atry && hbee && ho < awa && htry > atry && h_odd < a_odd) {
-                adviceLines.push(`AWAY-DNB -----W   ${atip}`);
+                adviceLines.push(`AWAY-DNB -----W   ${atip} ${acheck}`);
             } else if (ho < awa && hub && htry > atry && hbee) {
                 adviceLines.push('A-W-A-Y__D-N-B');
             } else if (ho > awa && hub && atry > htry && hbee && hbet && compositeProbs.home_win > compositeProbs.away_win) {
@@ -645,4 +647,4 @@
         });
     </script>
 </body>
-</html>
+    </html>
