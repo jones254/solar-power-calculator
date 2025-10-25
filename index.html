@@ -219,48 +219,38 @@
                 <h2>Home Team</h2>
                 <div class="form-group">
                     <label for="home_avg_score">Average Scored</label>
-                    <input type="number" id="home_avg_score" step="0.01" value="1.56">
-                </div>
+                    <input type="number" id="home_avg_score" step="0.01" value="1.3"> </div>
                 <div class="form-group">
                     <label for="home_avg_conceded">Average Conceded</label>
-                    <input type="number" id="home_avg_conceded" step="0.01" value="0.97">
-                </div>
+                    <input type="number" id="home_avg_conceded" step="0.01" value="2.3"> </div>
                 <div class="form-group">
                     <label for="home_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="home_score_percentage" step="1" value="88">
-                </div>
+                    <input type="number" id="home_score_percentage" step="1" value="74"> </div>
                 <div class="form-group">
                     <label for="home_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="home_cleansheet" step="1" value="47">
-                </div>
+                    <input type="number" id="home_cleansheet" step="1" value="15"> </div>
                 <div class="form-group">
                     <label for="home_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="home_difficulty" step="1" min="1" max="5" value="4">
-                </div>
+                    <input type="number" id="home_difficulty" step="1" min="1" max="5" value="2"> </div>
             </div>
 
             <div class="team-box">
                 <h2>Away Team</h2>
                 <div class="form-group">
                     <label for="away_avg_score">Average Scored</label>
-                    <input type="number" id="away_avg_score" step="0.01" value="0.68">
-                </div>
+                    <input type="number" id="away_avg_score" step="0.01" value="1.67"> </div>
                 <div class="form-group">
                     <label for="away_avg_conceded">Average Conceded</label>
-                    <input type="number" id="away_avg_conceded" step="0.01" value="1.15">
-                </div>
+                    <input type="number" id="away_avg_conceded" step="0.01" value="1.37"> </div>
                 <div class="form-group">
                     <label for="away_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="away_score_percentage" step="1" value="56">
-                </div>
+                    <input type="number" id="away_score_percentage" step="1" value="78"> </div>
                 <div class="form-group">
                     <label for="away_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="away_cleansheet" step="1" value="35">
-                </div>
+                    <input type="number" id="away_cleansheet" step="1" value="26"> </div>
                 <div class="form-group">
                     <label for="away_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="2">
-                </div>
+                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="1"> </div>
             </div>
 
             <div class="odds-box">
@@ -268,16 +258,13 @@
                  <div class="probabilities-grid">
                     <div class="form-group">
                         <label for="home_odds">Home Win Odds</label>
-                        <input type="number" id="home_odds" step="0.01" value="1.6">
-                    </div>
+                        <input type="number" id="home_odds" step="0.01" value="3.3"> </div>
                     <div class="form-group">
                         <label for="draw_odds">Draw Odds</label>
-                        <input type="number" id="draw_odds" step="0.01" value="3.9">
-                    </div>
+                        <input type="number" id="draw_odds" step="0.01" value="3.7"> </div>
                     <div class="form-group">
                         <label for="away_odds">Away Win Odds</label>
-                        <input type="number" id="away_odds" step="0.01" value="5.5">
-                    </div>
+                        <input type="number" id="away_odds" step="0.01" value="1.91"> </div>
                 </div>
             </div>
         </div>
@@ -286,16 +273,14 @@
 
         <div id="results-section" class="hidden">
             <div class="result-card">
-                 <h3>🧠 Wagering Advice</h3>
-                 <div id="wagering-advice"></div>
+                 <h3>🧠 Wagering Advice</h3> <div id="wagering-advice"></div>
             </div>
 
             <div class="result-card">
                 <h3>📊 Prediction Analysis</h3>
                 <p style="text-align:center; color: var(--light-text);">Predicted Outcome: <strong id="predicted-outcome">Home Win</strong> with <strong id="confidence-level">0.0%</strong> confidence.</p>
 
-                <h4>📊 Final Probabilities:</h4>
-                <div class="probabilities-grid">
+                <h4>📊 Final Probabilities:</h4> <div class="probabilities-grid">
                     <div class="prob-item">
                         <div class="label">Home Win</div>
                         <div class="value" id="final-prob-home">0.0%</div>
@@ -310,8 +295,7 @@
                     </div>
                 </div>
 
-                <h4>⚽ Expected Goals:</h4>
-                 <div class="stats-grid">
+                <h4>⚽ Expected Goals:</h4> <div class="stats-grid">
                      <div class="stat-item">
                          <div class="label">Home Team</div>
                          <div class="value" id="expected-goals-home">0.00</div>
@@ -322,8 +306,7 @@
                      </div>
                  </div>
 
-                <h4>🏆 Team Quality Scores:</h4>
-                 <div class="stats-grid">
+                <h4>🏆 Team Quality Scores:</h4> <div class="stats-grid">
                      <div class="stat-item">
                          <div class="label">Home Team</div>
                          <div class="value" id="quality-score-home">0.00</div>
@@ -334,8 +317,7 @@
                      </div>
                  </div>
 
-                <h4>🎯 Quality-Adjusted Poisson:</h4>
-                <div class="stats-grid">
+                <h4>🎯 Quality-Adjusted Poisson:</h4> <div class="stats-grid">
                     <div class="stat-item">
                         <div class="label">H-Check</div>
                         <div class="value" id="q-poisson-hcheck">0.00</div>
@@ -360,8 +342,7 @@
                     </div>
                 </div>
 
-                <h4 style="margin-top: 25px;">🔍 Model Breakdown:</h4>
-                <div class="breakdown-grid">
+                <h4 style="margin-top: 25px;">🔍 Model Breakdown:</h4> <div class="breakdown-grid">
                     <div id="breakdown-poisson" class="breakdown-item"></div>
                     <div id="breakdown-form_based" class="breakdown-item"></div>
                     <div id="breakdown-defensive_strength" class="breakdown-item"></div>
@@ -375,7 +356,7 @@
     <script>
         class FootballPredictor {
             constructor() {
-                this.weights = { 'poisson': 0.25, 'form_based': 0.20, 'defensive_strength': 0.15, 'market_sentiment': 0.20, 'composite_rating': 0.20 }; // [cite: 2]
+                this.weights = { 'poisson': 0.25, 'form_based': 0.20, 'defensive_strength': 0.15, 'market_sentiment': 0.20, 'composite_rating': 0.20 }; // [cite: 49]
                 this.factorialCache = {0: 1};
             }
 
@@ -389,275 +370,280 @@
                 return result;
             }
 
-            _poissonProb(k, lam) { // [cite: 3]
-                if (lam <= 0) return k === 0 ? 1.0 : 0.0; // [cite: 3]
+            _poissonProb(k, lam) { // [cite: 50]
+                if (lam <= 0) return k === 0 ? 1.0 : 0.0; // [cite: 50]
                 // Using Math.pow for exponentiation and Math.exp for e^x
-                return (Math.pow(lam, k) * Math.exp(-lam)) / this._factorial(k); // [cite: 3]
+                return (Math.pow(lam, k) * Math.exp(-lam)) / this._factorial(k); // [cite: 50]
             }
 
-            calculatePoissonProbabilities(matchData) { // [cite: 3]
-                const homeAttackStrength = matchData.home_avg_score * (6 - matchData.away_difficulty) / 5; // [cite: 4]
-                const awayAttackStrength = matchData.away_avg_score * (6 - matchData.home_difficulty) / 5; // [cite: 4]
-                const homeDefenseStrength = matchData.home_avg_conceded * (matchData.away_difficulty / 5); // [cite: 4]
-                const awayDefenseStrength = matchData.away_avg_conceded * (matchData.home_difficulty / 5); // [cite: 4]
-                const homeExpectedGoals = (homeAttackStrength + awayDefenseStrength) / 2; // [cite: 4]
-                const awayExpectedGoals = (awayAttackStrength + homeDefenseStrength) / 2; // [cite: 4]
+            calculatePoissonProbabilities(matchData) { // [cite: 50]
+                const homeAttackStrength = matchData.home_avg_score * (6 - matchData.away_difficulty) / 5; // [cite: 51]
+                const awayAttackStrength = matchData.away_avg_score * (6 - matchData.home_difficulty) / 5; // [cite: 51]
+                const homeDefenseStrength = matchData.home_avg_conceded * (matchData.away_difficulty / 5); // [cite: 51]
+                const awayDefenseStrength = matchData.away_avg_conceded * (matchData.home_difficulty / 5); // [cite: 51]
+                const homeExpectedGoals = (homeAttackStrength + awayDefenseStrength) / 2; // [cite: 51]
+                const awayExpectedGoals = (awayAttackStrength + homeDefenseStrength) / 2; // [cite: 51]
 
-                const maxGoals = 4; // [cite: 5]
+                const maxGoals = 4; // [cite: 52]
                 let homeWin = 0, draw = 0, awayWin = 0;
                 // Simpler loop structure
-                for (let h = 0; h <= maxGoals; h++) { // [cite: 5]
-                    for (let a = 0; a <= maxGoals; a++) { // [cite: 5]
-                        const prob_h = this._poissonProb(h, homeExpectedGoals); // [cite: 5]
-                        const prob_a = this._poissonProb(a, awayExpectedGoals); // [cite: 5]
-                        const cellProb = prob_h * prob_a; // [cite: 6]
-                        if (h > a) homeWin += cellProb; // [cite: 6]
-                        else if (h === a) draw += cellProb; // [cite: 6, 7]
-                        else awayWin += cellProb; // [cite: 7]
+                for (let h = 0; h <= maxGoals; h++) { // [cite: 52]
+                    for (let a = 0; a <= maxGoals; a++) { // [cite: 52]
+                        const prob_h = this._poissonProb(h, homeExpectedGoals); // [cite: 52]
+                        const prob_a = this._poissonProb(a, awayExpectedGoals); // [cite: 52]
+                        const cellProb = prob_h * prob_a; // [cite: 53]
+                        if (h > a) homeWin += cellProb; // [cite: 53]
+                        else if (h === a) draw += cellProb; // [cite: 53, 54]
+                        else awayWin += cellProb; // [cite: 54]
                     }
                 }
-                return { home_win: homeWin, draw: draw, away_win: awayWin, expected_goals: { home: homeExpectedGoals, away: awayExpectedGoals } }; // [cite: 7, 8]
+                return { home_win: homeWin, draw: draw, away_win: awayWin, expected_goals: { home: homeExpectedGoals, away: awayExpectedGoals } }; // [cite: 54, 55]
             }
 
-            calculatePoissonForQuality(hcheck, acheck) { // [cite: 8]
-                const maxGoals = 4; // [cite: 8]
+            calculatePoissonForQuality(hcheck, acheck) { // [cite: 55]
+                const maxGoals = 4; // [cite: 55]
                 let homeWin = 0, draw = 0, awayWin = 0;
                 // Simpler loop structure
-                for (let h = 0; h <= maxGoals; h++) { // [cite: 9]
-                    for (let a = 0; a <= maxGoals; a++) { // [cite: 9]
-                        const prob_h = this._poissonProb(h, hcheck); // [cite: 9]
-                        const prob_a = this._poissonProb(a, acheck); // [cite: 9]
-                        const cellProb = prob_h * prob_a; // [cite: 9]
-                        if (h > a) homeWin += cellProb; // [cite: 10]
-                        else if (h === a) draw += cellProb; // [cite: 10]
-                        else awayWin += cellProb; // [cite: 11]
+                for (let h = 0; h <= maxGoals; h++) { // [cite: 56]
+                    for (let a = 0; a <= maxGoals; a++) { // [cite: 56]
+                        const prob_h = this._poissonProb(h, hcheck); // [cite: 56]
+                        const prob_a = this._poissonProb(a, acheck); // [cite: 56]
+                        const cellProb = prob_h * prob_a; // [cite: 56]
+                        if (h > a) homeWin += cellProb; // [cite: 57]
+                        else if (h === a) draw += cellProb; // [cite: 57]
+                        else awayWin += cellProb; // [cite: 58]
                     }
                 }
                 // Return raw values, rounding happens later if needed
-                return { home_win: homeWin, draw: draw, away_win: awayWin }; // [cite: 11]
+                return { home_win: homeWin, draw: draw, away_win: awayWin }; // [cite: 58]
             }
 
-            calculateFormBasedPrediction(matchData) { // [cite: 12]
-                let homeForm = matchData.home_score_percentage / 100.0; // [cite: 12]
-                let awayForm = matchData.away_score_percentage / 100.0; // [cite: 12]
-                const totalForm = homeForm + awayForm; // [cite: 12]
+            calculateFormBasedPrediction(matchData) { // [cite: 59]
+                let homeForm = matchData.home_score_percentage / 100.0; // [cite: 59]
+                let awayForm = matchData.away_score_percentage / 100.0; // [cite: 59]
+                const totalForm = homeForm + awayForm; // [cite: 59]
                 let homeFormAdvantage, awayFormAdvantage;
-                if (totalForm > 0) { // [cite: 12]
-                    homeFormAdvantage = homeForm / totalForm; // [cite: 12]
-                    awayFormAdvantage = awayForm / totalForm; // [cite: 12]
+                if (totalForm > 0) { // [cite: 59]
+                    homeFormAdvantage = homeForm / totalForm; // [cite: 59]
+                    awayFormAdvantage = awayForm / totalForm; // [cite: 59]
                 } else {
-                    homeFormAdvantage = awayFormAdvantage = 0.5; // [cite: 13]
+                    homeFormAdvantage = awayFormAdvantage = 0.5; // [cite: 60]
                 }
-                homeFormAdvantage += 0.07; // [cite: 13]
-                const formSum = homeFormAdvantage + awayFormAdvantage; // [cite: 13]
-                homeFormAdvantage /= formSum; // [cite: 13]
-                awayFormAdvantage /= formSum; // [cite: 13]
-                const formDifference = Math.abs(homeFormAdvantage - awayFormAdvantage); // [cite: 13]
-                let drawProb = 0.35 - (formDifference * 0.2); // [cite: 13]
-                drawProb = Math.max(0.15, Math.min(0.45, drawProb)); // [cite: 13]
-                const remainingProb = 1.0 - drawProb; // [cite: 14]
-                return { home_win: homeFormAdvantage * remainingProb, draw: drawProb, away_win: awayFormAdvantage * remainingProb }; // [cite: 14]
+                homeFormAdvantage += 0.07; // [cite: 60]
+                const formSum = homeFormAdvantage + awayFormAdvantage; // [cite: 60]
+                homeFormAdvantage /= formSum; // [cite: 60]
+                awayFormAdvantage /= formSum; // [cite: 60]
+                const formDifference = Math.abs(homeFormAdvantage - awayFormAdvantage); // [cite: 60]
+                let drawProb = 0.35 - (formDifference * 0.2); // [cite: 60]
+                drawProb = Math.max(0.15, Math.min(0.45, drawProb)); // [cite: 60]
+                const remainingProb = 1.0 - drawProb; // [cite: 61]
+                return { home_win: homeFormAdvantage * remainingProb, draw: drawProb, away_win: awayFormAdvantage * remainingProb }; // [cite: 61]
             }
 
-            calculateDefensiveStrengthModel(matchData) { // [cite: 14]
-                const homeDefenseRating = (matchData.home_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.home_avg_conceded)); // [cite: 14]
-                const awayDefenseRating = (matchData.away_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.away_avg_conceded)); // [cite: 15]
-                const homeAttackVsAwayDefense = matchData.home_avg_score / Math.max(0.1, matchData.away_avg_conceded); // [cite: 15]
-                const awayAttackVsHomeDefense = matchData.away_avg_score / Math.max(0.1, matchData.home_avg_conceded); // [cite: 15]
-                const totalAttackRatio = homeAttackVsAwayDefense + awayAttackVsHomeDefense; // [cite: 15]
+            calculateDefensiveStrengthModel(matchData) { // [cite: 61]
+                const homeDefenseRating = (matchData.home_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.home_avg_conceded)); // [cite: 61]
+                const awayDefenseRating = (matchData.away_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.away_avg_conceded)); // [cite: 62]
+                const homeAttackVsAwayDefense = matchData.home_avg_score / Math.max(0.1, matchData.away_avg_conceded); // [cite: 62]
+                const awayAttackVsHomeDefense = matchData.away_avg_score / Math.max(0.1, matchData.home_avg_conceded); // [cite: 62]
+                const totalAttackRatio = homeAttackVsAwayDefense + awayAttackVsHomeDefense; // [cite: 62]
                 let homeAttackNorm, awayAttackNorm;
-                if (totalAttackRatio > 0) { // [cite: 15]
-                    homeAttackNorm = homeAttackVsAwayDefense / totalAttackRatio; // [cite: 15]
-                    awayAttackNorm = awayAttackVsHomeDefense / totalAttackRatio; // [cite: 15]
+                if (totalAttackRatio > 0) { // [cite: 62]
+                    homeAttackNorm = homeAttackVsAwayDefense / totalAttackRatio; // [cite: 62]
+                    awayAttackNorm = awayAttackVsHomeDefense / totalAttackRatio; // [cite: 62]
                 } else {
-                    homeAttackNorm = awayAttackNorm = 0.5; // [cite: 16]
+                    homeAttackNorm = awayAttackNorm = 0.5; // [cite: 63]
                 }
-                const avgDefenseStrength = (homeDefenseRating + awayDefenseRating) / 2; // [cite: 16]
-                const drawBoost = Math.min(0.15, avgDefenseStrength * 0.3); // [cite: 16]
-                const baseDraw = 0.25 + drawBoost; // [cite: 16]
-                const remainingProb = 1.0 - baseDraw; // [cite: 16]
-                return { home_win: homeAttackNorm * remainingProb, draw: baseDraw, away_win: awayAttackNorm * remainingProb }; // [cite: 16, 17]
+                const avgDefenseStrength = (homeDefenseRating + awayDefenseRating) / 2; // [cite: 63]
+                const drawBoost = Math.min(0.15, avgDefenseStrength * 0.3); // [cite: 63]
+                const baseDraw = 0.25 + drawBoost; // [cite: 63]
+                const remainingProb = 1.0 - baseDraw; // [cite: 63]
+                return { home_win: homeAttackNorm * remainingProb, draw: baseDraw, away_win: awayAttackNorm * remainingProb }; // [cite: 63, 64]
             }
 
-            calculateMarketSentimentModel(matchData) { // [cite: 17]
-                const homeImplied = 1 / matchData.home_odds; // [cite: 17]
-                const drawImplied = 1 / matchData.draw_odds; // [cite: 17]
-                const awayImplied = 1 / matchData.away_odds; // [cite: 17]
-                const totalImplied = homeImplied + drawImplied + awayImplied; // [cite: 17]
-                const homeProb = homeImplied / totalImplied; // [cite: 17, 18]
-                const drawProb = drawImplied / totalImplied; // [cite: 18]
-                const awayProb = awayImplied / totalImplied; // [cite: 18]
-                return { home_win: homeProb, draw: drawProb, away_win: awayProb }; // [cite: 18]
+            calculateMarketSentimentModel(matchData) { // [cite: 64]
+                const homeImplied = 1 / matchData.home_odds; // [cite: 64]
+                const drawImplied = 1 / matchData.draw_odds; // [cite: 64]
+                const awayImplied = 1 / matchData.away_odds; // [cite: 64]
+                const totalImplied = homeImplied + drawImplied + awayImplied; // [cite: 64]
+                const homeProb = homeImplied / totalImplied; // [cite: 64, 65]
+                const drawProb = drawImplied / totalImplied; // [cite: 65]
+                const awayProb = awayImplied / totalImplied; // [cite: 65]
+                return { home_win: homeProb, draw: drawProb, away_win: awayProb }; // [cite: 65]
             }
 
-            calculateCompositeRatingModel(matchData) { // [cite: 18]
-                const homeQuality = (matchData.home_avg_score * 0.3) + ((1 / Math.max(0.1, matchData.home_avg_conceded)) * 0.2) + ((matchData.home_score_percentage / 100) * 0.25) + ((matchData.home_cleansheet / 100) * 0.15) + (((6 - matchData.home_difficulty) / 5) * 0.1); // [cite: 18, 19]
-                const awayQuality = (matchData.away_avg_score * 0.3) + ((1 / Math.max(0.1, matchData.away_avg_conceded)) * 0.2) + ((matchData.away_score_percentage / 100) * 0.25) + ((matchData.away_cleansheet / 100) * 0.15) + (((6 - matchData.away_difficulty) / 5) * 0.1); // [cite: 19, 20]
-                const qualityDiff = homeQuality - awayQuality; // [cite: 21]
-                const qualitySum = homeQuality + awayQuality; // [cite: 21]
+            calculateCompositeRatingModel(matchData) { // [cite: 65]
+                const homeQuality = (matchData.home_avg_score * 0.3) + ((1 / Math.max(0.1, matchData.home_avg_conceded)) * 0.2) + ((matchData.home_score_percentage / 100) * 0.25) + ((matchData.home_cleansheet / 100) * 0.15) + (((6 - matchData.home_difficulty) / 5) * 0.1); // [cite: 65, 66]
+                const awayQuality = (matchData.away_avg_score * 0.3) + ((1 / Math.max(0.1, matchData.away_avg_conceded)) * 0.2) + ((matchData.away_score_percentage / 100) * 0.25) + ((matchData.away_cleansheet / 100) * 0.15) + (((6 - matchData.away_difficulty) / 5) * 0.1); // [cite: 66, 67]
+                const qualityDiff = homeQuality - awayQuality; // [cite: 68]
+                const qualitySum = homeQuality + awayQuality; // [cite: 68]
                 let homeBaseProb, awayBaseProb;
-                if (qualitySum > 0) { // [cite: 21]
+                if (qualitySum > 0) { // [cite: 68]
                     // Using Math.exp for e^x
-                    homeBaseProb = 1 / (1 + Math.exp(-qualityDiff * 3)); // [cite: 21, 22]
-                    awayBaseProb = 1 - homeBaseProb; // [cite: 22]
+                    homeBaseProb = 1 / (1 + Math.exp(-qualityDiff * 3)); // [cite: 68]
+                    awayBaseProb = 1 - homeBaseProb; // [cite: 68]
                 } else {
-                    homeBaseProb = awayBaseProb = 0.5; // [cite: 22]
+                    homeBaseProb = awayBaseProb = 0.5; // [cite: 68]
                 }
                 // Using Math.sqrt for square root
-                const contextFactor = Math.sqrt(homeQuality * awayQuality); // [cite: 22]
-                let drawProb = 0.2 + (contextFactor * 0.15); // [cite: 22]
-                drawProb = Math.min(0.4, drawProb); // [cite: 22]
-                const remaining = 1.0 - drawProb; // [cite: 22]
-                const home_win_prob = homeBaseProb * remaining; // [cite: 22, 23]
-                const away_win_prob = awayBaseProb * remaining; // [cite: 23]
-                return { home_win: home_win_prob, draw: drawProb, away_win: away_win_prob, home_quality: homeQuality, away_quality: awayQuality }; // [cite: 23]
+                const contextFactor = Math.sqrt(homeQuality * awayQuality); // [cite: 69]
+                let drawProb = 0.2 + (contextFactor * 0.15); // [cite: 69]
+                drawProb = Math.min(0.4, drawProb); // [cite: 69]
+                const remaining = 1.0 - drawProb; // [cite: 69]
+                const home_win_prob = homeBaseProb * remaining; // [cite: 69]
+                const away_win_prob = awayBaseProb * remaining; // [cite: 69]
+                return { home_win: home_win_prob, draw: drawProb, away_win: away_win_prob, home_quality: homeQuality, away_quality: awayQuality }; // [cite: 69, 70]
             }
 
-            predictMatch(matchData) { // [cite: 23]
+            predictMatch(matchData) { // [cite: 70]
                 const models = {
-                    poisson: this.calculatePoissonProbabilities(matchData), // [cite: 23]
-                    form_based: this.calculateFormBasedPrediction(matchData), // [cite: 23]
-                    defensive_strength: this.calculateDefensiveStrengthModel(matchData), // [cite: 23]
-                    market_sentiment: this.calculateMarketSentimentModel(matchData), // [cite: 23]
-                    composite_rating: this.calculateCompositeRatingModel(matchData) // [cite: 24]
+                    poisson: this.calculatePoissonProbabilities(matchData), // [cite: 70]
+                    form_based: this.calculateFormBasedPrediction(matchData), // [cite: 70]
+                    defensive_strength: this.calculateDefensiveStrengthModel(matchData), // [cite: 70]
+                    market_sentiment: this.calculateMarketSentimentModel(matchData), // [cite: 70]
+                    composite_rating: this.calculateCompositeRatingModel(matchData) // [cite: 71]
                 };
 
-                const hcheck = (models.poisson.expected_goals.home + models.composite_rating.home_quality) / 2; // [cite: 24]
-                const acheck = (models.poisson.expected_goals.away + models.composite_rating.away_quality) / 2; // [cite: 24]
-                const qualityPoissonRaw = this.calculatePoissonForQuality(hcheck, acheck); // [cite: 24, 25]
+                const hcheck = (models.poisson.expected_goals.home + models.composite_rating.home_quality) / 2; // [cite: 71]
+                const acheck = (models.poisson.expected_goals.away + models.composite_rating.away_quality) / 2; // [cite: 71]
+                const qualityPoissonRaw = this.calculatePoissonForQuality(hcheck, acheck); // [cite: 71]
 
                 let finalHome = 0, finalDraw = 0, finalAway = 0;
                 for (const modelName in this.weights) {
-                    finalHome += models[modelName]['home_win'] * this.weights[modelName]; // [cite: 24, 25]
-                    finalDraw += models[modelName]['draw'] * this.weights[modelName]; // [cite: 25, 26]
-                    finalAway += models[modelName]['away_win'] * this.weights[modelName]; // [cite: 26, 27]
+                    finalHome += models[modelName]['home_win'] * this.weights[modelName]; // [cite: 71, 72]
+                    finalDraw += models[modelName]['draw'] * this.weights[modelName]; // [cite: 72, 73]
+                    finalAway += models[modelName]['away_win'] * this.weights[modelName]; // [cite: 73, 74]
                 }
 
-                const total = finalHome + finalDraw + finalAway; // [cite: 28]
-                finalHome /= total; // [cite: 28]
-                finalDraw /= total; // [cite: 28]
-                finalAway /= total; // [cite: 28]
+                const total = finalHome + finalDraw + finalAway; // [cite: 75]
+                finalHome /= total; // [cite: 75]
+                finalDraw /= total; // [cite: 75]
+                finalAway /= total; // [cite: 75]
 
-                const maxProb = Math.max(finalHome, finalDraw, finalAway); // [cite: 28]
+                const maxProb = Math.max(finalHome, finalDraw, finalAway); // [cite: 75]
                 let predictedOutcome; // Use string directly
-                if (maxProb === finalHome) predictedOutcome = "Home Win"; // [cite: 28]
-                else if (maxProb === finalDraw) predictedOutcome = "Draw"; // [cite: 28]
-                else predictedOutcome = "Away Win"; // [cite: 29]
+                if (maxProb === finalHome) predictedOutcome = "Home Win"; // [cite: 75]
+                else if (maxProb === finalDraw) predictedOutcome = "Draw"; // [cite: 75]
+                else predictedOutcome = "Away Win"; // [cite: 76]
 
-                const probs = [finalHome, finalDraw, finalAway]; // [cite: 29]
+                const probs = [finalHome, finalDraw, finalAway]; // [cite: 76]
                 // Using Math.log for natural logarithm
-                const entropy = -probs.reduce((sum, p) => sum + p * Math.log(p + 1e-10), 0); // [cite: 29]
-                const max_entropy = Math.log(3); // [cite: 29]
-                const confidence = 1 - (entropy / max_entropy); // [cite: 29]
+                const entropy = -probs.reduce((sum, p) => sum + p * Math.log(p + 1e-10), 0); // [cite: 76]
+                const max_entropy = Math.log(3); // [cite: 76]
+                const confidence = 1 - (entropy / max_entropy); // [cite: 76]
 
                 // Rounding directly in the return object for clarity
-                return { // [cite: 29]
+                return { // [cite: 76]
                     predicted_outcome: predictedOutcome,
-                    probabilities: { // [cite: 30]
-                        home_win: parseFloat(finalHome.toFixed(4)), // [cite: 30]
-                        draw: parseFloat(finalDraw.toFixed(4)), // [cite: 30]
-                        away_win: parseFloat(finalAway.toFixed(4)) // [cite: 30]
+                    probabilities: { // [cite: 77]
+                        home_win: parseFloat(finalHome.toFixed(4)), // [cite: 77]
+                        draw: parseFloat(finalDraw.toFixed(4)), // [cite: 77]
+                        away_win: parseFloat(finalAway.toFixed(4)) // [cite: 77]
                     },
-                    confidence: parseFloat(confidence.toFixed(4)), // [cite: 30]
-                    expected_goals: models.poisson.expected_goals, // [cite: 31]
-                    model_breakdown: { // [cite: 31]
-                        poisson: { home_win: parseFloat(models.poisson.home_win.toFixed(4)), draw: parseFloat(models.poisson.draw.toFixed(4)), away_win: parseFloat(models.poisson.away_win.toFixed(4)) }, // [cite: 31]
-                        form_based: { home_win: parseFloat(models.form_based.home_win.toFixed(4)), draw: parseFloat(models.form_based.draw.toFixed(4)), away_win: parseFloat(models.form_based.away_win.toFixed(4)) }, // [cite: 32]
-                        defensive_strength: { home_win: parseFloat(models.defensive_strength.home_win.toFixed(4)), draw: parseFloat(models.defensive_strength.draw.toFixed(4)), away_win: parseFloat(models.defensive_strength.away_win.toFixed(4)) }, // [cite: 33]
-                        market_sentiment: { home_win: parseFloat(models.market_sentiment.home_win.toFixed(4)), draw: parseFloat(models.market_sentiment.draw.toFixed(4)), away_win: parseFloat(models.market_sentiment.away_win.toFixed(4)) }, // [cite: 34]
-                        composite_rating: { home_win: parseFloat(models.composite_rating.home_win.toFixed(4)), draw: parseFloat(models.composite_rating.draw.toFixed(4)), away_win: parseFloat(models.composite_rating.away_win.toFixed(4)) } // [cite: 35]
+                    confidence: parseFloat(confidence.toFixed(4)), // [cite: 77]
+                    expected_goals: models.poisson.expected_goals, // [cite: 78]
+                    model_breakdown: { // [cite: 78]
+                        poisson: { home_win: parseFloat(models.poisson.home_win.toFixed(4)), draw: parseFloat(models.poisson.draw.toFixed(4)), away_win: parseFloat(models.poisson.away_win.toFixed(4)) }, // [cite: 78]
+                        form_based: { home_win: parseFloat(models.form_based.home_win.toFixed(4)), draw: parseFloat(models.form_based.draw.toFixed(4)), away_win: parseFloat(models.form_based.away_win.toFixed(4)) }, // [cite: 79]
+                        defensive_strength: { home_win: parseFloat(models.defensive_strength.home_win.toFixed(4)), draw: parseFloat(models.defensive_strength.draw.toFixed(4)), away_win: parseFloat(models.defensive_strength.away_win.toFixed(4)) }, // [cite: 80]
+                        market_sentiment: { home_win: parseFloat(models.market_sentiment.home_win.toFixed(4)), draw: parseFloat(models.market_sentiment.draw.toFixed(4)), away_win: parseFloat(models.market_sentiment.away_win.toFixed(4)) }, // [cite: 81]
+                        composite_rating: { home_win: parseFloat(models.composite_rating.home_win.toFixed(4)), draw: parseFloat(models.composite_rating.draw.toFixed(4)), away_win: parseFloat(models.composite_rating.away_win.toFixed(4)) } // [cite: 82]
                     },
-                    team_quality_scores: { // [cite: 36]
-                        home: parseFloat(models.composite_rating.home_quality.toFixed(4)), // [cite: 36]
-                        away: parseFloat(models.composite_rating.away_quality.toFixed(4)) // [cite: 36]
+                    team_quality_scores: { // [cite: 83]
+                        home: parseFloat(models.composite_rating.home_quality.toFixed(4)), // [cite: 83]
+                        away: parseFloat(models.composite_rating.away_quality.toFixed(4)) // [cite: 83]
                     },
-                    quality_poisson: { // [cite: 36]
+                    quality_poisson: { // [cite: 83]
                         // Note: Python rounds poisson_for_quality internally, JS does not. Applying rounding here.
-                        home_win: parseFloat(qualityPoissonRaw.home_win.toFixed(4)), // [cite: 37, 11]
-                        draw: parseFloat(qualityPoissonRaw.draw.toFixed(4)), // [cite: 37, 11]
-                        away_win: parseFloat(qualityPoissonRaw.away_win.toFixed(4)), // [cite: 37, 11]
-                        hcheck: parseFloat(hcheck.toFixed(3)), // [cite: 37]
-                        acheck: parseFloat(acheck.toFixed(3)) // [cite: 37]
+                        home_win: parseFloat(qualityPoissonRaw.home_win.toFixed(4)), // [cite: 84]
+                        draw: parseFloat(qualityPoissonRaw.draw.toFixed(4)), // [cite: 84]
+                        away_win: parseFloat(qualityPoissonRaw.away_win.toFixed(4)), // [cite: 84]
+                        hcheck: parseFloat(hcheck.toFixed(3)), // [cite: 84]
+                        acheck: parseFloat(acheck.toFixed(3)) // [cite: 84]
                     }
                 };
             }
         }
 
         // *** UPDATED based on the new multi-part wagering advice logic ***
-        function getWageringAdvice(prediction) { // [cite: 41]
-            const finalProbs = prediction.probabilities; // [cite: 41]
-            const poissonProbs = prediction.model_breakdown.poisson; // [cite: 41]
-            const compositeProbs = prediction.model_breakdown.composite_rating; // [cite: 41]
-            const formProbs = prediction.model_breakdown.form_based; // [cite: 41]
-            const defenseProbs = prediction.model_breakdown.defensive_strength; // [cite: 41]
-            const marketProbs = prediction.model_breakdown.market_sentiment; // [cite: 41]
-            const qp = prediction.quality_poisson; // [cite: 40]
+        function getWageringAdvice(prediction) { //
+            const finalProbs = prediction.probabilities; // [cite: 88]
+            const poissonProbs = prediction.model_breakdown.poisson; // [cite: 88]
+            const compositeProbs = prediction.model_breakdown.composite_rating; // [cite: 88]
+            const formProbs = prediction.model_breakdown.form_based; // [cite: 88]
+            const defenseProbs = prediction.model_breakdown.defensive_strength; // [cite: 88]
+            const marketProbs = prediction.model_breakdown.market_sentiment; // [cite: 88]
+            const qp = prediction.quality_poisson; // [cite: 88]
 
             let adviceLines = [];
 
             // Define all variables from the Python script
-            const h_odd = defenseProbs.home_win - defenseProbs.draw; // [cite: 42]
-            const h_hub = formProbs.home_win - defenseProbs.away_win > formProbs.away_win - defenseProbs.home_win; // [cite: 42]
-            const a_aub = formProbs.home_win - defenseProbs.away_win < formProbs.away_win - defenseProbs.home_win; // [cite: 42]
-            const a_odd = defenseProbs.away_win - defenseProbs.draw; // [cite: 42]
-            const acheck = (compositeProbs.away_win - compositeProbs.draw) > (marketProbs.home_win - marketProbs.draw); // [cite: 42]
-            const hcheck = (compositeProbs.home_win - compositeProbs.draw) > (marketProbs.away_win - marketProbs.draw); // [cite: 42]
-            const htry = parseFloat((((marketProbs.home_win + compositeProbs.home_win) - poissonProbs.home_win) / poissonProbs.home_win * 100).toFixed(1)); // [cite: 42]
-            const atry = parseFloat((((marketProbs.away_win + compositeProbs.away_win) - poissonProbs.away_win) / poissonProbs.away_win * 100).toFixed(1)); // [cite: 42, 43]
-            const htip = compositeProbs.home_win > compositeProbs.away_win; // [cite: 43]
-            const atip = compositeProbs.away_win > compositeProbs.home_win; // [cite: 43]
-            const ho = qp.home_win - compositeProbs.home_win; // [cite: 43]
-            const awa = qp.away_win - compositeProbs.away_win; // [cite: 43]
-            const hub = formProbs.home_win - defenseProbs.home_win > formProbs.away_win - defenseProbs.away_win; // [cite: 43]
-            const aub = formProbs.home_win - defenseProbs.home_win < formProbs.away_win - defenseProbs.away_win; // [cite: 43]
-            const hbet = (defenseProbs.away_win * 100 - parseFloat((finalProbs.home_win * 100 - formProbs.home_win * 100).toFixed(1))) > defenseProbs.home_win * 100; // [cite: 43, 44]
-            const abet = (defenseProbs.home_win * 100 - parseFloat((finalProbs.away_win * 100 - formProbs.away_win * 100).toFixed(1))) > defenseProbs.away_win * 100; // [cite: 44]
-            const hbee = (marketProbs.home_win > marketProbs.away_win || marketProbs.home_win > compositeProbs.home_win) && (marketProbs.home_win > qp.home_win); // [cite: 44]
-            const abee = (marketProbs.home_win < marketProbs.away_win || marketProbs.away_win > compositeProbs.away_win) && (marketProbs.away_win > qp.away_win); // [cite: 44]
+            const h_odd = defenseProbs.home_win - defenseProbs.draw; // [cite: 89]
+            const h_hub = formProbs.home_win - defenseProbs.away_win > formProbs.away_win - defenseProbs.home_win; // [cite: 89]
+            const a_aub = formProbs.home_win - defenseProbs.away_win < formProbs.away_win - defenseProbs.home_win; // [cite: 89]
+            const a_odd = defenseProbs.away_win - defenseProbs.draw; // [cite: 89]
+            const acheck = (compositeProbs.away_win - compositeProbs.draw) > (marketProbs.home_win - marketProbs.draw); // [cite: 89]
+            const hcheck = (compositeProbs.home_win - compositeProbs.draw) > (marketProbs.away_win - marketProbs.draw); // [cite: 89]
+            const htry = parseFloat((((marketProbs.home_win + compositeProbs.home_win) - poissonProbs.home_win) / poissonProbs.home_win * 100).toFixed(1)); // [cite: 89]
+            const atry = parseFloat((((marketProbs.away_win + compositeProbs.away_win) - poissonProbs.away_win) / poissonProbs.away_win * 100).toFixed(1)); // [cite: 89, 90]
+            const htip = compositeProbs.home_win > compositeProbs.away_win; // [cite: 90]
+            const atip = compositeProbs.away_win > compositeProbs.home_win; // [cite: 90]
+            const ho = qp.home_win - compositeProbs.home_win; // [cite: 90]
+            const awa = qp.away_win - compositeProbs.away_win; // [cite: 90]
+            const hub = formProbs.home_win - defenseProbs.home_win > formProbs.away_win - defenseProbs.away_win; // [cite: 90]
+            const aub = formProbs.home_win - defenseProbs.home_win < formProbs.away_win - defenseProbs.away_win; // [cite: 90]
+            const hbet = (defenseProbs.away_win * 100 - parseFloat((finalProbs.home_win * 100 - formProbs.home_win * 100).toFixed(1))) > defenseProbs.home_win * 100; // [cite: 90, 91]
+            const abet = (defenseProbs.home_win * 100 - parseFloat((finalProbs.away_win * 100 - formProbs.away_win * 100).toFixed(1))) > defenseProbs.away_win * 100; // [cite: 91]
+            const hbee = (marketProbs.home_win > marketProbs.away_win || marketProbs.home_win > compositeProbs.home_win) && (marketProbs.home_win > qp.home_win); // [cite: 91]
+            const abee = (marketProbs.home_win < marketProbs.away_win || marketProbs.away_win > compositeProbs.away_win) && (marketProbs.away_win > qp.away_win); // [cite: 91]
 
 
             // Block 1: Try Bet Advice (using h_hub, a_aub)
-            if (h_hub && defenseProbs.away_win < defenseProbs.draw) { // [cite: 45]
-                adviceLines.push(`TRY HOME WIN         super ${compositeProbs.away_win < compositeProbs.draw}`); // [cite: 45]
-            } else if (a_aub && defenseProbs.home_win < defenseProbs.draw) { // [cite: 45]
-                adviceLines.push(`TRY AWAY WIN         super ${compositeProbs.home_win < compositeProbs.draw}`); // [cite: 45]
-            } else if (h_hub) { // [cite: 45]
-                adviceLines.push(`TRY HOME - DRAW       super ${compositeProbs.away_win < compositeProbs.draw}`); // [cite: 45]
-            } else if (a_aub) { // [cite: 45, 46]
-                adviceLines.push(`TRY AWAY - DRAW          super ${compositeProbs.home_win < compositeProbs.draw}`); // [cite: 46]
+            const tryHomeSuperBool1 = compositeProbs.away_win < compositeProbs.draw; // [cite: 92]
+            const tryHomeSuperBool2 = (qp.home_win > qp.away_win) && (marketProbs.home_win > compositeProbs.home_win); // [cite: 92]
+            const tryAwaySuperBool1 = compositeProbs.home_win < compositeProbs.draw; // [cite: 92]
+            const tryAwaySuperBool2 = (qp.home_win < qp.away_win) && (marketProbs.away_win > compositeProbs.away_win); // [cite: 92, 93]
+
+            if (h_hub && defenseProbs.away_win < defenseProbs.draw) { // [cite: 92]
+                adviceLines.push(`TRY HOME WIN         super ${tryHomeSuperBool1}   ${tryHomeSuperBool2}`); // [cite: 92]
+            } else if (a_aub && defenseProbs.home_win < defenseProbs.draw) { // [cite: 92]
+                adviceLines.push(`TRY AWAY WIN         super ${tryAwaySuperBool1}        ${tryAwaySuperBool2}`); // [cite: 92, 93]
+            } else if (h_hub) { // [cite: 93]
+                adviceLines.push(`TRY HOME - DRAW       super ${tryHomeSuperBool1}    ${tryHomeSuperBool2}`); // [cite: 93]
+            } else if (a_aub) { // [cite: 93]
+                adviceLines.push(`TRY AWAY - DRAW          super ${tryAwaySuperBool1}     ${tryAwaySuperBool2}`); // [cite: 93]
             }
 
             // Block 2: Main Bet Advice
-            if (ho > awa && aub && atry < htry && !abee) { // [cite: 46]
-                adviceLines.push('H-O-M-E__W-I-N'); // [cite: 46]
-            } else if (ho > awa && aub && atry < htry && abee && htry < atry && (marketProbs.home_win + compositeProbs.home_win) > (marketProbs.away_win + compositeProbs.away_win) && h_odd > a_odd) { // [cite: 46, 47]
-                adviceLines.push('HOME'); // [cite: 47]
-            } else if (ho > awa && aub && atry < htry && abee) { // [cite: 47]
-                adviceLines.push('AWAY-DRAW'); // [cite: 47]
-            } else if (ho < awa && hub && htry < atry && !hbee) { // [cite: 47]
-                adviceLines.push('A-W-A-Y__W-I-N'); // [cite: 47]
-            } else if (ho < awa && hub && htry < atry && hbee && htry > atry && (marketProbs.home_win + compositeProbs.home_win) < (marketProbs.away_win + compositeProbs.away_win) && h_odd < a_odd) { // [cite: 47, 48]
-                adviceLines.push('AWAY'); // [cite: 48]
-            } else if (ho < awa && hub && htry < atry && hbee) { // [cite: 48]
-                adviceLines.push('HOME-DRAW'); // [cite: 48]
-            } else if (ho > awa && aub && atry > htry && abee && ho > awa && htry < atry && h_odd > a_odd) { // [cite: 48]
-                adviceLines.push(`HOME-DNB ----W   ${htip} ${hcheck}`); // [cite: 48]
-            } else if (ho > awa && aub && atry > htry && abee) { // [cite: 48, 49]
-                adviceLines.push('H-O-M-E__D-N-B'); // [cite: 49]
-            } else if (ho < awa && hub && htry > atry && hbee && ho < awa && htry > atry && h_odd < a_odd) { // [cite: 49]
-                adviceLines.push(`AWAY-DNB -----W   ${atip} ${acheck}`); // [cite: 49]
-            } else if (ho < awa && hub && htry > atry && hbee) { // [cite: 49]
-                adviceLines.push('A-W-A-Y__D-N-B'); // [cite: 49]
-            } else if (ho > awa && hub && atry > htry && hbee && hbet && compositeProbs.home_win > compositeProbs.away_win) { // [cite: 49, 50]
-                adviceLines.push('H->O->M->E--->W->I->N'); // [cite: 50]
-            } else if (ho > awa && hub && atry > htry && hbet && marketProbs.home_win < compositeProbs.home_win) { // [cite: 50]
-                adviceLines.push('H->O->M->E--->D->R->A->W'); // [cite: 50]
-            } else if (ho < awa && aub && atry < htry && abee && abet && compositeProbs.home_win < compositeProbs.away_win) { // [cite: 50]
-                adviceLines.push('A->W->A->Y--->W->I->N'); // [cite: 50]
-            } else if (ho < awa && aub && atry < htry && abet && marketProbs.away_win < compositeProbs.away_win) { // [cite: 50]
-                adviceLines.push('A->W->A->Y--->D->R->A->Y'); // [cite: 50]
+            if (ho > awa && aub && atry < htry && !abee) { // [cite: 93, 94]
+                adviceLines.push('H-O-M-E__W-I-N'); // [cite: 94]
+            } else if (ho > awa && aub && atry < htry && abee && htry < atry && (marketProbs.home_win + compositeProbs.home_win) > (marketProbs.away_win + compositeProbs.away_win) && h_odd > a_odd) { // [cite: 94]
+                adviceLines.push('HOME'); // [cite: 94]
+            } else if (ho > awa && aub && atry < htry && abee) { // [cite: 94]
+                adviceLines.push('AWAY-DRAW'); // [cite: 94]
+            } else if (ho < awa && hub && htry < atry && !hbee) { // [cite: 95]
+                adviceLines.push('A-W-A-Y__W-I-N'); // [cite: 95]
+            } else if (ho < awa && hub && htry < atry && hbee && htry > atry && (marketProbs.home_win + compositeProbs.home_win) < (marketProbs.away_win + compositeProbs.away_win) && h_odd < a_odd) { // [cite: 95]
+                adviceLines.push('AWAY'); // [cite: 95]
+            } else if (ho < awa && hub && htry < atry && hbee) { // [cite: 95, 96]
+                adviceLines.push('HOME-DRAW'); // [cite: 96]
+            } else if (ho > awa && aub && atry > htry && abee && ho > awa && htry < atry && h_odd > a_odd) { // [cite: 96]
+                adviceLines.push(`HOME-DNB ----W   ${htip} ${hcheck}`); // [cite: 96]
+            } else if (ho > awa && aub && atry > htry && abee) { // [cite: 96]
+                adviceLines.push('H-O-M-E__D-N-B'); // [cite: 96]
+            } else if (ho < awa && hub && htry > atry && hbee && ho < awa && htry > atry && h_odd < a_odd) { // [cite: 96, 97]
+                adviceLines.push(`AWAY-DNB -----W   ${atip} ${acheck}`); // [cite: 97]
+            } else if (ho < awa && hub && htry > atry && hbee) { // [cite: 97]
+                adviceLines.push('A-W-A-Y__D-N-B'); // [cite: 97]
+            } else if (ho > awa && hub && atry > htry && hbee && hbet && compositeProbs.home_win > compositeProbs.away_win) { // [cite: 97]
+                adviceLines.push('H->O->M->E--->W->I->N'); // [cite: 97]
+            } else if (ho > awa && hub && atry > htry && hbet && marketProbs.home_win < compositeProbs.home_win) { // [cite: 97]
+                adviceLines.push('H->O->M->E--->D->R->A->W'); // [cite: 97]
+            } else if (ho < awa && aub && atry < htry && abee && abet && compositeProbs.home_win < compositeProbs.away_win) { // [cite: 97, 98]
+                adviceLines.push('A->W->A->Y--->W->I->N'); // [cite: 98]
+            } else if (ho < awa && aub && atry < htry && abet && marketProbs.away_win < compositeProbs.away_win) { // [cite: 98]
+                adviceLines.push('A->W->A->Y--->D->R->A->Y'); // [cite: 98]
             } else {
-                adviceLines.push('AVOID'); // [cite: 51]
+                adviceLines.push('AVOID'); // [cite: 98]
             }
 
             return adviceLines.join('\n\n'); // Separate advice blocks with double newline
@@ -666,19 +652,19 @@
         document.getElementById('predictBtn').addEventListener('click', () => {
             try {
                 const matchData = {
-                    home_avg_score: parseFloat(document.getElementById('home_avg_score').value), // [cite: 1]
-                    away_avg_score: parseFloat(document.getElementById('away_avg_score').value), // [cite: 1]
-                    home_avg_conceded: parseFloat(document.getElementById('home_avg_conceded').value), // [cite: 1]
-                    away_avg_conceded: parseFloat(document.getElementById('away_avg_conceded').value), // [cite: 1]
-                    home_score_percentage: parseFloat(document.getElementById('home_score_percentage').value), // [cite: 1]
-                    away_score_percentage: parseFloat(document.getElementById('away_score_percentage').value), // [cite: 1]
-                    home_cleansheet: parseFloat(document.getElementById('home_cleansheet').value), // [cite: 1]
-                    away_cleansheet: parseFloat(document.getElementById('away_cleansheet').value), // [cite: 1]
-                    home_difficulty: parseInt(document.getElementById('home_difficulty').value), // [cite: 1]
-                    away_difficulty: parseInt(document.getElementById('away_difficulty').value), // [cite: 1]
-                    home_odds: parseFloat(document.getElementById('home_odds').value), // [cite: 1]
-                    draw_odds: parseFloat(document.getElementById('draw_odds').value), // [cite: 1]
-                    away_odds: parseFloat(document.getElementById('away_odds').value) // [cite: 2]
+                    home_avg_score: parseFloat(document.getElementById('home_avg_score').value), // [cite: 48]
+                    away_avg_score: parseFloat(document.getElementById('away_avg_score').value), // [cite: 48]
+                    home_avg_conceded: parseFloat(document.getElementById('home_avg_conceded').value), // [cite: 48]
+                    away_avg_conceded: parseFloat(document.getElementById('away_avg_conceded').value), // [cite: 48]
+                    home_score_percentage: parseFloat(document.getElementById('home_score_percentage').value), // [cite: 48]
+                    away_score_percentage: parseFloat(document.getElementById('away_score_percentage').value), // [cite: 48]
+                    home_cleansheet: parseFloat(document.getElementById('home_cleansheet').value), // [cite: 48]
+                    away_cleansheet: parseFloat(document.getElementById('away_cleansheet').value), // [cite: 48]
+                    home_difficulty: parseInt(document.getElementById('home_difficulty').value), // [cite: 48]
+                    away_difficulty: parseInt(document.getElementById('away_difficulty').value), // [cite: 48]
+                    home_odds: parseFloat(document.getElementById('home_odds').value), // [cite: 48]
+                    draw_odds: parseFloat(document.getElementById('draw_odds').value), // [cite: 48]
+                    away_odds: parseFloat(document.getElementById('away_odds').value) // [cite: 49]
                 };
 
                 // Input validation
@@ -689,8 +675,8 @@
                      }
                  }
 
-                const predictor = new FootballPredictor(); // [cite: 39]
-                const prediction = predictor.predictMatch(matchData); // [cite: 39]
+                const predictor = new FootballPredictor(); // [cite: 49]
+                const prediction = predictor.predictMatch(matchData); // [cite: 70]
                 const advice = getWageringAdvice(prediction); // Generate advice using the prediction results
 
                 // Display results
@@ -701,31 +687,31 @@
                 // Basic check for coloring based on 'AVOID'
                 adviceDiv.className = advice.includes('AVOID') ? 'advice-avoid' : 'advice-bet';
 
-                document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome; // [cite: 29]
-                document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%'; // [cite: 30]
+                document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome; // [cite: 76]
+                document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%'; // [cite: 77]
 
-                document.getElementById('final-prob-home').textContent = (prediction.probabilities.home_win * 100).toFixed(1) + '%'; // [cite: 30]
-                document.getElementById('final-prob-draw').textContent = (prediction.probabilities.draw * 100).toFixed(1) + '%'; // [cite: 30]
-                document.getElementById('final-prob-away').textContent = (prediction.probabilities.away_win * 100).toFixed(1) + '%'; // [cite: 30]
+                document.getElementById('final-prob-home').textContent = (prediction.probabilities.home_win * 100).toFixed(1) + '%'; // [cite: 77]
+                document.getElementById('final-prob-draw').textContent = (prediction.probabilities.draw * 100).toFixed(1) + '%'; // [cite: 77]
+                document.getElementById('final-prob-away').textContent = (prediction.probabilities.away_win * 100).toFixed(1) + '%'; // [cite: 77]
 
-                document.getElementById('expected-goals-home').textContent = prediction.expected_goals.home.toFixed(2); // [cite: 31]
-                document.getElementById('expected-goals-away').textContent = prediction.expected_goals.away.toFixed(2); // [cite: 31]
+                document.getElementById('expected-goals-home').textContent = prediction.expected_goals.home.toFixed(2); // [cite: 78]
+                document.getElementById('expected-goals-away').textContent = prediction.expected_goals.away.toFixed(2); // [cite: 78]
 
-                document.getElementById('quality-score-home').textContent = prediction.team_quality_scores.home.toFixed(3); // [cite: 36]
-                document.getElementById('quality-score-away').textContent = prediction.team_quality_scores.away.toFixed(3); // [cite: 36]
+                document.getElementById('quality-score-home').textContent = prediction.team_quality_scores.home.toFixed(3); // [cite: 83]
+                document.getElementById('quality-score-away').textContent = prediction.team_quality_scores.away.toFixed(3); // [cite: 83]
 
-                const qp = prediction.quality_poisson; // [cite: 40]
-                document.getElementById('q-poisson-hcheck').textContent = qp.hcheck.toFixed(3); // [cite: 37]
-                document.getElementById('q-poisson-acheck').textContent = qp.acheck.toFixed(3); // [cite: 37]
-                document.getElementById('q-prob-home').textContent = (qp.home_win * 100).toFixed(1) + '%'; // [cite: 37]
-                document.getElementById('q-prob-draw').textContent = (qp.draw * 100).toFixed(1) + '%'; // [cite: 37]
-                document.getElementById('q-prob-away').textContent = (qp.away_win * 100).toFixed(1) + '%'; // [cite: 37]
+                const qp = prediction.quality_poisson; // [cite: 83]
+                document.getElementById('q-poisson-hcheck').textContent = qp.hcheck.toFixed(3); // [cite: 84]
+                document.getElementById('q-poisson-acheck').textContent = qp.acheck.toFixed(3); // [cite: 84]
+                document.getElementById('q-prob-home').textContent = (qp.home_win * 100).toFixed(1) + '%'; // [cite: 84]
+                document.getElementById('q-prob-draw').textContent = (qp.draw * 100).toFixed(1) + '%'; // [cite: 84]
+                document.getElementById('q-prob-away').textContent = (qp.away_win * 100).toFixed(1) + '%'; // [cite: 84]
 
                 // Display model breakdown
-                for(const modelName in prediction.model_breakdown) { // [cite: 41]
-                    const probs = prediction.model_breakdown[modelName]; // [cite: 41]
-                    const cleanName = modelName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); // [cite: 41]
-                    document.getElementById(`breakdown-${modelName}`).innerHTML = `<span class="model-name">${cleanName}</span><span class="model-probs">H: ${(probs.home_win * 100).toFixed(1)}% | D: ${(probs.draw * 100).toFixed(1)}% | A: ${(probs.away_win * 100).toFixed(1)}%</span>`; // [cite: 41]
+                for(const modelName in prediction.model_breakdown) { // [cite: 78]
+                    const probs = prediction.model_breakdown[modelName]; //
+                    const cleanName = modelName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); //
+                    document.getElementById(`breakdown-${modelName}`).innerHTML = `<span class="model-name">${cleanName}</span><span class="model-probs">H: ${(probs.home_win * 100).toFixed(1)}% | D: ${(probs.draw * 100).toFixed(1)}% | A: ${(probs.away_win * 100).toFixed(1)}%</span>`; //
                 }
             } catch (error) {
                 console.error("An error occurred during prediction:", error);
@@ -734,4 +720,4 @@
         });
     </script>
 </body>
-    </html>
+</html>
