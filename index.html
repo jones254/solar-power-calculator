@@ -3,721 +3,573 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Football Match Predictor</title>
+    <title>Team Power Rating Calculator</title>
     <style>
-        :root {
-            --primary-color: #007bff;
-            --secondary-color: #f8f9fa;
-            --border-color: #dee2e6;
-            --text-color: #333;
-            --light-text: #6c757d;
-            --background-color: #f0f2f5;
-            --card-bg: #ffffff;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: var(--background-color);
-            color: var(--text-color);
-            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
             padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
+            color: #333;
         }
 
         .container {
-            max-width: 800px;
-            width: 100%;
-            background-color: var(--card-bg);
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        header {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 20px;
         }
 
-        header h1 {
-            color: var(--primary-color);
-            font-size: 28px;
-            margin: 0;
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
         }
 
-        .input-grid {
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .teams-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .team-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #e9ecef;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .team-card h2 {
+            color: #667eea;
             margin-bottom: 20px;
-        }
-
-        .team-box, .odds-box {
-            background-color: var(--secondary-color);
-            padding: 20px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .odds-box {
-            grid-column: 1 / -1;
-        }
-
-        .team-box h2, .odds-box h2 {
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 20px;
-            text-align: center;
-            color: var(--text-color);
+            font-size: 1.8em;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
         }
 
         .form-group {
-            margin-bottom: 12px;
+            margin-bottom: 20px;
         }
 
         .form-group label {
             display: block;
-            font-weight: 500;
-            margin-bottom: 5px;
-            font-size: 14px;
-            color: var(--light-text);
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
         }
 
         .form-group input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 5px;
-            box-sizing: border-box;
-            font-size: 16px;
-        }
-
-        #predictBtn {
-            width: 100%;
-            padding: 15px;
-            font-size: 18px;
-            font-weight: bold;
-            color: #fff;
-            background-color: var(--primary-color);
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-
-        #predictBtn:hover {
-            background-color: #0056b3;
-        }
-
-        #results-section {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .result-card {
-            background: var(--secondary-color);
-            border: 1px solid var(--border-color);
+            padding: 12px;
+            border: 2px solid #dee2e6;
             border-radius: 8px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .result-card h3 {
-            margin-top: 0;
-            text-align: center;
-            color: var(--primary-color);
-        }
-
-        #wagering-advice {
             font-size: 16px;
-            font-weight: bold;
-            text-align: center;
-            padding: 15px;
-            border-radius: 5px;
-            font-family: monospace;
-            white-space: pre-wrap; /* Handles multiple lines */
-            line-height: 1.6;
+            transition: border-color 0.3s ease;
         }
 
-        .advice-avoid {
-            background-color: #ffc107;
-            color: #333;
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
-        .advice-bet {
-            background-color: #28a745;
-            color: white;
+        .recent-matches {
+            margin-top: 20px;
         }
 
-        .probabilities-grid, .stats-grid {
+        .recent-matches h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+
+        .match-row {
             display: grid;
-            gap: 15px;
-            text-align: center;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
         }
 
-        .probabilities-grid { grid-template-columns: repeat(3, 1fr); }
-        .stats-grid { grid-template-columns: repeat(2, 1fr); }
-
-        .prob-item, .stat-item {
+        .match-row select {
             padding: 10px;
-        }
-
-        .prob-item .label, .stat-item .label {
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
             font-size: 14px;
-            color: var(--light-text);
+            background: white;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
         }
 
-        .prob-item .value, .stat-item .value {
-            font-size: 24px;
-            font-weight: bold;
+        .match-row select:focus {
+            outline: none;
+            border-color: #667eea;
         }
 
-        .breakdown-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            border-bottom: 1px solid var(--border-color);
-        }
-        .breakdown-item:last-child {
-            border-bottom: none;
-        }
-
-        .breakdown-item .model-name {
-            font-weight: 500;
-        }
-
-        .breakdown-item .model-probs {
-            font-family: monospace;
+        .match-row input {
+            padding: 10px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
             font-size: 14px;
         }
 
-        .hidden {
+        .calculate-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.3em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+
+        .results {
+            margin-top: 40px;
+            padding: 30px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 15px;
             display: none;
         }
 
-        @media (max-width: 600px) {
-            .input-grid {
+        .results.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .results h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 2em;
+            text-align: center;
+        }
+
+        .result-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            border-left: 5px solid #667eea;
+        }
+
+        .result-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .result-section p {
+            margin-bottom: 10px;
+            line-height: 1.6;
+            font-size: 1.05em;
+        }
+
+        .winner {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .favourite-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+        }
+
+        .not-favourite-box {
+            background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
+            color: #2d3436;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(253, 203, 110, 0.4);
+        }
+
+        .stats-tree {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-size: 1em;
+            line-height: 1.8;
+        }
+
+        .balanced-box {
+            background: linear-gradient(135deg, #74b9ff 0%, #a29bfe 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .teams-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
             }
         }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <header>
-            <h1>⚽ Football Match Predictor</h1>
-        </header>
-
-        <div class="input-grid">
-            <div class="team-box">
-                <h2>Home Team</h2>
-                <div class="form-group">
-                    <label for="home_avg_score">Average Scored</label>
-                    <input type="number" id="home_avg_score" step="0.01" value="1.3"> </div>
-                <div class="form-group">
-                    <label for="home_avg_conceded">Average Conceded</label>
-                    <input type="number" id="home_avg_conceded" step="0.01" value="2.3"> </div>
-                <div class="form-group">
-                    <label for="home_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="home_score_percentage" step="1" value="74"> </div>
-                <div class="form-group">
-                    <label for="home_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="home_cleansheet" step="1" value="15"> </div>
-                <div class="form-group">
-                    <label for="home_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="home_difficulty" step="1" min="1" max="5" value="2"> </div>
-            </div>
-
-            <div class="team-box">
-                <h2>Away Team</h2>
-                <div class="form-group">
-                    <label for="away_avg_score">Average Scored</label>
-                    <input type="number" id="away_avg_score" step="0.01" value="1.67"> </div>
-                <div class="form-group">
-                    <label for="away_avg_conceded">Average Conceded</label>
-                    <input type="number" id="away_avg_conceded" step="0.01" value="1.37"> </div>
-                <div class="form-group">
-                    <label for="away_score_percentage">Scoring Percentage (%)</label>
-                    <input type="number" id="away_score_percentage" step="1" value="78"> </div>
-                <div class="form-group">
-                    <label for="away_cleansheet">Clean Sheet (%)</label>
-                    <input type="number" id="away_cleansheet" step="1" value="26"> </div>
-                <div class="form-group">
-                    <label for="away_difficulty">Difficulty (1-5)</label>
-                    <input type="number" id="away_difficulty" step="1" min="1" max="5" value="1"> </div>
-            </div>
-
-            <div class="odds-box">
-                <h2>Match Odds</h2>
-                 <div class="probabilities-grid">
-                    <div class="form-group">
-                        <label for="home_odds">Home Win Odds</label>
-                        <input type="number" id="home_odds" step="0.01" value="3.3"> </div>
-                    <div class="form-group">
-                        <label for="draw_odds">Draw Odds</label>
-                        <input type="number" id="draw_odds" step="0.01" value="3.7"> </div>
-                    <div class="form-group">
-                        <label for="away_odds">Away Win Odds</label>
-                        <input type="number" id="away_odds" step="0.01" value="1.91"> </div>
-                </div>
-            </div>
+        <div class="header">
+            <h1>⚽ Team Power Rating Calculator</h1>
+            <p>Analyze team performance with favourite detection</p>
         </div>
 
-        <button id="predictBtn">🔮 Predict Match</button>
+        <div class="content">
+            <div class="teams-grid">
+                <!-- HOME TEAM -->
+                <div class="team-card">
+                    <h2>🏠 HOME</h2>
+                    <div class="form-group">
+                        <label>Team Name</label>
+                        <input type="text" id="homeName" value="HOME" placeholder="Enter home team name">
+                    </div>
+                    <div class="form-group">
+                        <label>Current Points</label>
+                        <input type="number" id="homePoints" value="45" placeholder="League points">
+                    </div>
+                    <div class="form-group">
+                        <label>Games Played</label>
+                        <input type="number" id="homeGames" value="26" placeholder="Total games">
+                    </div>
+                    <div class="recent-matches">
+                        <h3>Recent 5 Matches</h3>
+                        <div class="match-row">
+                            <select id="homeResult1">
+                                <option value="win">Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss" selected>Loss</option>
+                            </select>
+                            <input type="number" id="homeOpp1" value="35" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="homeResult2">
+                                <option value="win">Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss" selected>Loss</option>
+                            </select>
+                            <input type="number" id="homeOpp2" value="36" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="homeResult3">
+                                <option value="win">Win</option>
+                                <option value="draw" selected>Draw</option>
+                                <option value="loss">Loss</option>
+                            </select>
+                            <input type="number" id="homeOpp3" value="54" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="homeResult4">
+                                <option value="win">Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss" selected>Loss</option>
+                            </select>
+                            <input type="number" id="homeOpp4" value="27" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="homeResult5">
+                                <option value="win" selected>Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss">Loss</option>
+                            </select>
+                            <input type="number" id="homeOpp5" value="25" placeholder="Opponent pts">
+                        </div>
+                    </div>
+                </div>
 
-        <div id="results-section" class="hidden">
-            <div class="result-card">
-                 <h3>🧠 Wagering Advice</h3> <div id="wagering-advice"></div>
+                <!-- AWAY TEAM -->
+                <div class="team-card">
+                    <h2>🚗 AWAY</h2>
+                    <div class="form-group">
+                        <label>Team Name</label>
+                        <input type="text" id="awayName" value="AWAY" placeholder="Enter away team name">
+                    </div>
+                    <div class="form-group">
+                        <label>Current Points</label>
+                        <input type="number" id="awayPoints" value="51" placeholder="League points">
+                    </div>
+                    <div class="form-group">
+                        <label>Games Played</label>
+                        <input type="number" id="awayGames" value="26" placeholder="Total games">
+                    </div>
+                    <div class="recent-matches">
+                        <h3>Recent 5 Matches</h3>
+                        <div class="match-row">
+                            <select id="awayResult1">
+                                <option value="win" selected>Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss">Loss</option>
+                            </select>
+                            <input type="number" id="awayOpp1" value="35" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="awayResult2">
+                                <option value="win" selected>Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss">Loss</option>
+                            </select>
+                            <input type="number" id="awayOpp2" value="18" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="awayResult3">
+                                <option value="win">Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss" selected>Loss</option>
+                            </select>
+                            <input type="number" id="awayOpp3" value="35" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="awayResult4">
+                                <option value="win">Win</option>
+                                <option value="draw" selected>Draw</option>
+                                <option value="loss">Loss</option>
+                            </select>
+                            <input type="number" id="awayOpp4" value="38" placeholder="Opponent pts">
+                        </div>
+                        <div class="match-row">
+                            <select id="awayResult5">
+                                <option value="win">Win</option>
+                                <option value="draw">Draw</option>
+                                <option value="loss" selected>Loss</option>
+                            </select>
+                            <input type="number" id="awayOpp5" value="39" placeholder="Opponent pts">
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <div class="result-card">
-                <h3>📊 Prediction Analysis</h3>
-                <p style="text-align:center; color: var(--light-text);">Predicted Outcome: <strong id="predicted-outcome">Home Win</strong> with <strong id="confidence-level">0.0%</strong> confidence.</p>
+            <button class="calculate-btn" onclick="calculatePower()">⚡ Calculate Power Ratings</button>
 
-                <h4>📊 Final Probabilities:</h4> <div class="probabilities-grid">
-                    <div class="prob-item">
-                        <div class="label">Home Win</div>
-                        <div class="value" id="final-prob-home">0.0%</div>
-                    </div>
-                    <div class="prob-item">
-                        <div class="label">Draw</div>
-                        <div class="value" id="final-prob-draw">0.0%</div>
-                    </div>
-                    <div class="prob-item">
-                        <div class="label">Away Win</div>
-                        <div class="value" id="final-prob-away">0.0%</div>
-                    </div>
-                </div>
-
-                <h4>⚽ Expected Goals:</h4> <div class="stats-grid">
-                     <div class="stat-item">
-                         <div class="label">Home Team</div>
-                         <div class="value" id="expected-goals-home">0.00</div>
-                     </div>
-                     <div class="stat-item">
-                         <div class="label">Away Team</div>
-                         <div class="value" id="expected-goals-away">0.00</div>
-                     </div>
-                 </div>
-
-                <h4>🏆 Team Quality Scores:</h4> <div class="stats-grid">
-                     <div class="stat-item">
-                         <div class="label">Home Team</div>
-                         <div class="value" id="quality-score-home">0.00</div>
-                     </div>
-                     <div class="stat-item">
-                         <div class="label">Away Team</div>
-                         <div class="value" id="quality-score-away">0.00</div>
-                     </div>
-                 </div>
-
-                <h4>🎯 Quality-Adjusted Poisson:</h4> <div class="stats-grid">
-                    <div class="stat-item">
-                        <div class="label">H-Check</div>
-                        <div class="value" id="q-poisson-hcheck">0.00</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="label">A-Check</div>
-                        <div class="value" id="q-poisson-acheck">0.00</div>
-                    </div>
-                </div>
-                <div class="probabilities-grid">
-                    <div class="prob-item">
-                        <div class="label">Home Win</div>
-                        <div class="value" id="q-prob-home">0.0%</div>
-                    </div>
-                    <div class="prob-item">
-                        <div class="label">Draw</div>
-                        <div class="value" id="q-prob-draw">0.0%</div>
-                    </div>
-                    <div class="prob-item">
-                        <div class="label">Away Win</div>
-                        <div class="value" id="q-prob-away">0.0%</div>
-                    </div>
-                </div>
-
-                <h4 style="margin-top: 25px;">🔍 Model Breakdown:</h4> <div class="breakdown-grid">
-                    <div id="breakdown-poisson" class="breakdown-item"></div>
-                    <div id="breakdown-form_based" class="breakdown-item"></div>
-                    <div id="breakdown-defensive_strength" class="breakdown-item"></div>
-                    <div id="breakdown-market_sentiment" class="breakdown-item"></div>
-                    <div id="breakdown-composite_rating" class="breakdown-item"></div>
-                </div>
+            <div class="results" id="results">
+                <h2>📊 Analysis Results</h2>
+                <div id="resultsContent"></div>
             </div>
         </div>
     </div>
 
     <script>
-        class FootballPredictor {
-            constructor() {
-                this.weights = { 'poisson': 0.25, 'form_based': 0.20, 'defensive_strength': 0.15, 'market_sentiment': 0.20, 'composite_rating': 0.20 }; // [cite: 49]
-                this.factorialCache = {0: 1};
-            }
+        function calculateTeamPower(teamName, teamPoints, recentMatches, maxPoints = 20) {
+            let totalPower = 0;
 
-            _factorial(n) {
-                if (n in this.factorialCache) return this.factorialCache[n];
-                if (n < 0) return NaN;
-                if (n === 0) return 1;
-                let result = 1;
-                for (let i = 2; i <= n; i++) { result *= i; }
-                this.factorialCache[n] = result;
-                return result;
-            }
+            for (let [result, opponentPoints] of recentMatches) {
+                const difficulty = opponentPoints / maxPoints;
+                let matchPower = 0;
 
-            _poissonProb(k, lam) { // [cite: 50]
-                if (lam <= 0) return k === 0 ? 1.0 : 0.0; // [cite: 50]
-                // Using Math.pow for exponentiation and Math.exp for e^x
-                return (Math.pow(lam, k) * Math.exp(-lam)) / this._factorial(k); // [cite: 50]
-            }
-
-            calculatePoissonProbabilities(matchData) { // [cite: 50]
-                const homeAttackStrength = matchData.home_avg_score * (6 - matchData.away_difficulty) / 5; // [cite: 51]
-                const awayAttackStrength = matchData.away_avg_score * (6 - matchData.home_difficulty) / 5; // [cite: 51]
-                const homeDefenseStrength = matchData.home_avg_conceded * (matchData.away_difficulty / 5); // [cite: 51]
-                const awayDefenseStrength = matchData.away_avg_conceded * (matchData.home_difficulty / 5); // [cite: 51]
-                const homeExpectedGoals = (homeAttackStrength + awayDefenseStrength) / 2; // [cite: 51]
-                const awayExpectedGoals = (awayAttackStrength + homeDefenseStrength) / 2; // [cite: 51]
-
-                const maxGoals = 4; // [cite: 52]
-                let homeWin = 0, draw = 0, awayWin = 0;
-                // Simpler loop structure
-                for (let h = 0; h <= maxGoals; h++) { // [cite: 52]
-                    for (let a = 0; a <= maxGoals; a++) { // [cite: 52]
-                        const prob_h = this._poissonProb(h, homeExpectedGoals); // [cite: 52]
-                        const prob_a = this._poissonProb(a, awayExpectedGoals); // [cite: 52]
-                        const cellProb = prob_h * prob_a; // [cite: 53]
-                        if (h > a) homeWin += cellProb; // [cite: 53]
-                        else if (h === a) draw += cellProb; // [cite: 53, 54]
-                        else awayWin += cellProb; // [cite: 54]
-                    }
-                }
-                return { home_win: homeWin, draw: draw, away_win: awayWin, expected_goals: { home: homeExpectedGoals, away: awayExpectedGoals } }; // [cite: 54, 55]
-            }
-
-            calculatePoissonForQuality(hcheck, acheck) { // [cite: 55]
-                const maxGoals = 4; // [cite: 55]
-                let homeWin = 0, draw = 0, awayWin = 0;
-                // Simpler loop structure
-                for (let h = 0; h <= maxGoals; h++) { // [cite: 56]
-                    for (let a = 0; a <= maxGoals; a++) { // [cite: 56]
-                        const prob_h = this._poissonProb(h, hcheck); // [cite: 56]
-                        const prob_a = this._poissonProb(a, acheck); // [cite: 56]
-                        const cellProb = prob_h * prob_a; // [cite: 56]
-                        if (h > a) homeWin += cellProb; // [cite: 57]
-                        else if (h === a) draw += cellProb; // [cite: 57]
-                        else awayWin += cellProb; // [cite: 58]
-                    }
-                }
-                // Return raw values, rounding happens later if needed
-                return { home_win: homeWin, draw: draw, away_win: awayWin }; // [cite: 58]
-            }
-
-            calculateFormBasedPrediction(matchData) { // [cite: 59]
-                let homeForm = matchData.home_score_percentage / 100.0; // [cite: 59]
-                let awayForm = matchData.away_score_percentage / 100.0; // [cite: 59]
-                const totalForm = homeForm + awayForm; // [cite: 59]
-                let homeFormAdvantage, awayFormAdvantage;
-                if (totalForm > 0) { // [cite: 59]
-                    homeFormAdvantage = homeForm / totalForm; // [cite: 59]
-                    awayFormAdvantage = awayForm / totalForm; // [cite: 59]
-                } else {
-                    homeFormAdvantage = awayFormAdvantage = 0.5; // [cite: 60]
-                }
-                homeFormAdvantage += 0.07; // [cite: 60]
-                const formSum = homeFormAdvantage + awayFormAdvantage; // [cite: 60]
-                homeFormAdvantage /= formSum; // [cite: 60]
-                awayFormAdvantage /= formSum; // [cite: 60]
-                const formDifference = Math.abs(homeFormAdvantage - awayFormAdvantage); // [cite: 60]
-                let drawProb = 0.35 - (formDifference * 0.2); // [cite: 60]
-                drawProb = Math.max(0.15, Math.min(0.45, drawProb)); // [cite: 60]
-                const remainingProb = 1.0 - drawProb; // [cite: 61]
-                return { home_win: homeFormAdvantage * remainingProb, draw: drawProb, away_win: awayFormAdvantage * remainingProb }; // [cite: 61]
-            }
-
-            calculateDefensiveStrengthModel(matchData) { // [cite: 61]
-                const homeDefenseRating = (matchData.home_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.home_avg_conceded)); // [cite: 61]
-                const awayDefenseRating = (matchData.away_cleansheet / 100.0) * (1 / Math.max(0.1, matchData.away_avg_conceded)); // [cite: 62]
-                const homeAttackVsAwayDefense = matchData.home_avg_score / Math.max(0.1, matchData.away_avg_conceded); // [cite: 62]
-                const awayAttackVsHomeDefense = matchData.away_avg_score / Math.max(0.1, matchData.home_avg_conceded); // [cite: 62]
-                const totalAttackRatio = homeAttackVsAwayDefense + awayAttackVsHomeDefense; // [cite: 62]
-                let homeAttackNorm, awayAttackNorm;
-                if (totalAttackRatio > 0) { // [cite: 62]
-                    homeAttackNorm = homeAttackVsAwayDefense / totalAttackRatio; // [cite: 62]
-                    awayAttackNorm = awayAttackVsHomeDefense / totalAttackRatio; // [cite: 62]
-                } else {
-                    homeAttackNorm = awayAttackNorm = 0.5; // [cite: 63]
-                }
-                const avgDefenseStrength = (homeDefenseRating + awayDefenseRating) / 2; // [cite: 63]
-                const drawBoost = Math.min(0.15, avgDefenseStrength * 0.3); // [cite: 63]
-                const baseDraw = 0.25 + drawBoost; // [cite: 63]
-                const remainingProb = 1.0 - baseDraw; // [cite: 63]
-                return { home_win: homeAttackNorm * remainingProb, draw: baseDraw, away_win: awayAttackNorm * remainingProb }; // [cite: 63, 64]
-            }
-
-            calculateMarketSentimentModel(matchData) { // [cite: 64]
-                const homeImplied = 1 / matchData.home_odds; // [cite: 64]
-                const drawImplied = 1 / matchData.draw_odds; // [cite: 64]
-                const awayImplied = 1 / matchData.away_odds; // [cite: 64]
-                const totalImplied = homeImplied + drawImplied + awayImplied; // [cite: 64]
-                const homeProb = homeImplied / totalImplied; // [cite: 64, 65]
-                const drawProb = drawImplied / totalImplied; // [cite: 65]
-                const awayProb = awayImplied / totalImplied; // [cite: 65]
-                return { home_win: homeProb, draw: drawProb, away_win: awayProb }; // [cite: 65]
-            }
-
-            calculateCompositeRatingModel(matchData) { // [cite: 65]
-                const homeQuality = (matchData.home_avg_score * 0.3) + ((1 / Math.max(0.1, matchData.home_avg_conceded)) * 0.2) + ((matchData.home_score_percentage / 100) * 0.25) + ((matchData.home_cleansheet / 100) * 0.15) + (((6 - matchData.home_difficulty) / 5) * 0.1); // [cite: 65, 66]
-                const awayQuality = (matchData.away_avg_score * 0.3) + ((1 / Math.max(0.1, matchData.away_avg_conceded)) * 0.2) + ((matchData.away_score_percentage / 100) * 0.25) + ((matchData.away_cleansheet / 100) * 0.15) + (((6 - matchData.away_difficulty) / 5) * 0.1); // [cite: 66, 67]
-                const qualityDiff = homeQuality - awayQuality; // [cite: 68]
-                const qualitySum = homeQuality + awayQuality; // [cite: 68]
-                let homeBaseProb, awayBaseProb;
-                if (qualitySum > 0) { // [cite: 68]
-                    // Using Math.exp for e^x
-                    homeBaseProb = 1 / (1 + Math.exp(-qualityDiff * 3)); // [cite: 68]
-                    awayBaseProb = 1 - homeBaseProb; // [cite: 68]
-                } else {
-                    homeBaseProb = awayBaseProb = 0.5; // [cite: 68]
-                }
-                // Using Math.sqrt for square root
-                const contextFactor = Math.sqrt(homeQuality * awayQuality); // [cite: 69]
-                let drawProb = 0.2 + (contextFactor * 0.15); // [cite: 69]
-                drawProb = Math.min(0.4, drawProb); // [cite: 69]
-                const remaining = 1.0 - drawProb; // [cite: 69]
-                const home_win_prob = homeBaseProb * remaining; // [cite: 69]
-                const away_win_prob = awayBaseProb * remaining; // [cite: 69]
-                return { home_win: home_win_prob, draw: drawProb, away_win: away_win_prob, home_quality: homeQuality, away_quality: awayQuality }; // [cite: 69, 70]
-            }
-
-            predictMatch(matchData) { // [cite: 70]
-                const models = {
-                    poisson: this.calculatePoissonProbabilities(matchData), // [cite: 70]
-                    form_based: this.calculateFormBasedPrediction(matchData), // [cite: 70]
-                    defensive_strength: this.calculateDefensiveStrengthModel(matchData), // [cite: 70]
-                    market_sentiment: this.calculateMarketSentimentModel(matchData), // [cite: 70]
-                    composite_rating: this.calculateCompositeRatingModel(matchData) // [cite: 71]
-                };
-
-                const hcheck = (models.poisson.expected_goals.home + models.composite_rating.home_quality) / 2; // [cite: 71]
-                const acheck = (models.poisson.expected_goals.away + models.composite_rating.away_quality) / 2; // [cite: 71]
-                const qualityPoissonRaw = this.calculatePoissonForQuality(hcheck, acheck); // [cite: 71]
-
-                let finalHome = 0, finalDraw = 0, finalAway = 0;
-                for (const modelName in this.weights) {
-                    finalHome += models[modelName]['home_win'] * this.weights[modelName]; // [cite: 71, 72]
-                    finalDraw += models[modelName]['draw'] * this.weights[modelName]; // [cite: 72, 73]
-                    finalAway += models[modelName]['away_win'] * this.weights[modelName]; // [cite: 73, 74]
+                if (result.toLowerCase() === "win") {
+                    matchPower = 1.0 * difficulty;
+                } else if (result.toLowerCase() === "draw") {
+                    matchPower = 0.5 * difficulty;
+                } else if (result.toLowerCase() === "loss") {
+                    matchPower = -0.5 * (1 - difficulty);
                 }
 
-                const total = finalHome + finalDraw + finalAway; // [cite: 75]
-                finalHome /= total; // [cite: 75]
-                finalDraw /= total; // [cite: 75]
-                finalAway /= total; // [cite: 75]
-
-                const maxProb = Math.max(finalHome, finalDraw, finalAway); // [cite: 75]
-                let predictedOutcome; // Use string directly
-                if (maxProb === finalHome) predictedOutcome = "Home Win"; // [cite: 75]
-                else if (maxProb === finalDraw) predictedOutcome = "Draw"; // [cite: 75]
-                else predictedOutcome = "Away Win"; // [cite: 76]
-
-                const probs = [finalHome, finalDraw, finalAway]; // [cite: 76]
-                // Using Math.log for natural logarithm
-                const entropy = -probs.reduce((sum, p) => sum + p * Math.log(p + 1e-10), 0); // [cite: 76]
-                const max_entropy = Math.log(3); // [cite: 76]
-                const confidence = 1 - (entropy / max_entropy); // [cite: 76]
-
-                // Rounding directly in the return object for clarity
-                return { // [cite: 76]
-                    predicted_outcome: predictedOutcome,
-                    probabilities: { // [cite: 77]
-                        home_win: parseFloat(finalHome.toFixed(4)), // [cite: 77]
-                        draw: parseFloat(finalDraw.toFixed(4)), // [cite: 77]
-                        away_win: parseFloat(finalAway.toFixed(4)) // [cite: 77]
-                    },
-                    confidence: parseFloat(confidence.toFixed(4)), // [cite: 77]
-                    expected_goals: models.poisson.expected_goals, // [cite: 78]
-                    model_breakdown: { // [cite: 78]
-                        poisson: { home_win: parseFloat(models.poisson.home_win.toFixed(4)), draw: parseFloat(models.poisson.draw.toFixed(4)), away_win: parseFloat(models.poisson.away_win.toFixed(4)) }, // [cite: 78]
-                        form_based: { home_win: parseFloat(models.form_based.home_win.toFixed(4)), draw: parseFloat(models.form_based.draw.toFixed(4)), away_win: parseFloat(models.form_based.away_win.toFixed(4)) }, // [cite: 79]
-                        defensive_strength: { home_win: parseFloat(models.defensive_strength.home_win.toFixed(4)), draw: parseFloat(models.defensive_strength.draw.toFixed(4)), away_win: parseFloat(models.defensive_strength.away_win.toFixed(4)) }, // [cite: 80]
-                        market_sentiment: { home_win: parseFloat(models.market_sentiment.home_win.toFixed(4)), draw: parseFloat(models.market_sentiment.draw.toFixed(4)), away_win: parseFloat(models.market_sentiment.away_win.toFixed(4)) }, // [cite: 81]
-                        composite_rating: { home_win: parseFloat(models.composite_rating.home_win.toFixed(4)), draw: parseFloat(models.composite_rating.draw.toFixed(4)), away_win: parseFloat(models.composite_rating.away_win.toFixed(4)) } // [cite: 82]
-                    },
-                    team_quality_scores: { // [cite: 83]
-                        home: parseFloat(models.composite_rating.home_quality.toFixed(4)), // [cite: 83]
-                        away: parseFloat(models.composite_rating.away_quality.toFixed(4)) // [cite: 83]
-                    },
-                    quality_poisson: { // [cite: 83]
-                        // Note: Python rounds poisson_for_quality internally, JS does not. Applying rounding here.
-                        home_win: parseFloat(qualityPoissonRaw.home_win.toFixed(4)), // [cite: 84]
-                        draw: parseFloat(qualityPoissonRaw.draw.toFixed(4)), // [cite: 84]
-                        away_win: parseFloat(qualityPoissonRaw.away_win.toFixed(4)), // [cite: 84]
-                        hcheck: parseFloat(hcheck.toFixed(3)), // [cite: 84]
-                        acheck: parseFloat(acheck.toFixed(3)) // [cite: 84]
-                    }
-                };
+                totalPower += matchPower;
             }
+
+            const avgPower = totalPower / recentMatches.length;
+            const teamStrengthScale = teamPoints / maxPoints;
+            const finalRating = avgPower * teamStrengthScale;
+
+            return {
+                finalRating,
+                avgPower,
+                teamStrengthScale
+            };
         }
 
-        // *** UPDATED based on the new multi-part wagering advice logic ***
-        function getWageringAdvice(prediction) { //
-            const finalProbs = prediction.probabilities; // [cite: 88]
-            const poissonProbs = prediction.model_breakdown.poisson; // [cite: 88]
-            const compositeProbs = prediction.model_breakdown.composite_rating; // [cite: 88]
-            const formProbs = prediction.model_breakdown.form_based; // [cite: 88]
-            const defenseProbs = prediction.model_breakdown.defensive_strength; // [cite: 88]
-            const marketProbs = prediction.model_breakdown.market_sentiment; // [cite: 88]
-            const qp = prediction.quality_poisson; // [cite: 88]
+        function calculatePower() {
+            // Get HOME team data
+            const homeName = document.getElementById('homeName').value;
+            const homePoints = parseFloat(document.getElementById('homePoints').value);
+            const homeGames = parseFloat(document.getElementById('homeGames').value);
+            const homeRecent = [
+                [document.getElementById('homeResult1').value, parseFloat(document.getElementById('homeOpp1').value)],
+                [document.getElementById('homeResult2').value, parseFloat(document.getElementById('homeOpp2').value)],
+                [document.getElementById('homeResult3').value, parseFloat(document.getElementById('homeOpp3').value)],
+                [document.getElementById('homeResult4').value, parseFloat(document.getElementById('homeOpp4').value)],
+                [document.getElementById('homeResult5').value, parseFloat(document.getElementById('homeOpp5').value)]
+            ];
 
-            let adviceLines = [];
+            // Get AWAY team data
+            const awayName = document.getElementById('awayName').value;
+            const awayPoints = parseFloat(document.getElementById('awayPoints').value);
+            const awayGames = parseFloat(document.getElementById('awayGames').value);
+            const awayRecent = [
+                [document.getElementById('awayResult1').value, parseFloat(document.getElementById('awayOpp1').value)],
+                [document.getElementById('awayResult2').value, parseFloat(document.getElementById('awayOpp2').value)],
+                [document.getElementById('awayResult3').value, parseFloat(document.getElementById('awayOpp3').value)],
+                [document.getElementById('awayResult4').value, parseFloat(document.getElementById('awayOpp4').value)],
+                [document.getElementById('awayResult5').value, parseFloat(document.getElementById('awayOpp5').value)]
+            ];
 
-            // Define all variables from the Python script
-            const h_odd = defenseProbs.home_win - defenseProbs.draw; // [cite: 89]
-            const h_hub = formProbs.home_win - defenseProbs.away_win > formProbs.away_win - defenseProbs.home_win; // [cite: 89]
-            const a_aub = formProbs.home_win - defenseProbs.away_win < formProbs.away_win - defenseProbs.home_win; // [cite: 89]
-            const a_odd = defenseProbs.away_win - defenseProbs.draw; // [cite: 89]
-            const acheck = (compositeProbs.away_win - compositeProbs.draw) > (marketProbs.home_win - marketProbs.draw); // [cite: 89]
-            const hcheck = (compositeProbs.home_win - compositeProbs.draw) > (marketProbs.away_win - marketProbs.draw); // [cite: 89]
-            const htry = parseFloat((((marketProbs.home_win + compositeProbs.home_win) - poissonProbs.home_win) / poissonProbs.home_win * 100).toFixed(1)); // [cite: 89]
-            const atry = parseFloat((((marketProbs.away_win + compositeProbs.away_win) - poissonProbs.away_win) / poissonProbs.away_win * 100).toFixed(1)); // [cite: 89, 90]
-            const htip = compositeProbs.home_win > compositeProbs.away_win; // [cite: 90]
-            const atip = compositeProbs.away_win > compositeProbs.home_win; // [cite: 90]
-            const ho = qp.home_win - compositeProbs.home_win; // [cite: 90]
-            const awa = qp.away_win - compositeProbs.away_win; // [cite: 90]
-            const hub = formProbs.home_win - defenseProbs.home_win > formProbs.away_win - defenseProbs.away_win; // [cite: 90]
-            const aub = formProbs.home_win - defenseProbs.home_win < formProbs.away_win - defenseProbs.away_win; // [cite: 90]
-            const hbet = (defenseProbs.away_win * 100 - parseFloat((finalProbs.home_win * 100 - formProbs.home_win * 100).toFixed(1))) > defenseProbs.home_win * 100; // [cite: 90, 91]
-            const abet = (defenseProbs.home_win * 100 - parseFloat((finalProbs.away_win * 100 - formProbs.away_win * 100).toFixed(1))) > defenseProbs.away_win * 100; // [cite: 91]
-            const hbee = (marketProbs.home_win > marketProbs.away_win || marketProbs.home_win > compositeProbs.home_win) && (marketProbs.home_win > qp.home_win); // [cite: 91]
-            const abee = (marketProbs.home_win < marketProbs.away_win || marketProbs.away_win > compositeProbs.away_win) && (marketProbs.away_win > qp.away_win); // [cite: 91]
+            // Calculate power ratings
+            const homeStats = calculateTeamPower(homeName, homePoints, homeRecent);
+            const awayStats = calculateTeamPower(awayName, awayPoints, awayRecent);
 
+            // Generate results HTML
+            let resultsHTML = '';
 
-            // Block 1: Try Bet Advice (using h_hub, a_aub)
-            const tryHomeSuperBool1 = compositeProbs.away_win < compositeProbs.draw; // [cite: 92]
-            const tryHomeSuperBool2 = (qp.home_win > qp.away_win) && (marketProbs.home_win > compositeProbs.home_win); // [cite: 92]
-            const tryAwaySuperBool1 = compositeProbs.home_win < compositeProbs.draw; // [cite: 92]
-            const tryAwaySuperBool2 = (qp.home_win < qp.away_win) && (marketProbs.away_win > compositeProbs.away_win); // [cite: 92, 93]
+            // Team stats
+            resultsHTML += `
+                <div class="result-section">
+                    <h3>🏠 ${homeName} Statistics</h3>
+                    <p><strong>Avg Power:</strong> ${homeStats.avgPower.toFixed(3)} | <strong>Strength:</strong> ${homeStats.teamStrengthScale.toFixed(3)} | <strong>FINAL:</strong> ${homeStats.finalRating.toFixed(3)}</p>
+                </div>
 
-            if (h_hub && defenseProbs.away_win < defenseProbs.draw) { // [cite: 92]
-                adviceLines.push(`TRY HOME WIN         super ${tryHomeSuperBool1}   ${tryHomeSuperBool2}`); // [cite: 92]
-            } else if (a_aub && defenseProbs.home_win < defenseProbs.draw) { // [cite: 92]
-                adviceLines.push(`TRY AWAY WIN         super ${tryAwaySuperBool1}        ${tryAwaySuperBool2}`); // [cite: 92, 93]
-            } else if (h_hub) { // [cite: 93]
-                adviceLines.push(`TRY HOME - DRAW       super ${tryHomeSuperBool1}    ${tryHomeSuperBool2}`); // [cite: 93]
-            } else if (a_aub) { // [cite: 93]
-                adviceLines.push(`TRY AWAY - DRAW          super ${tryAwaySuperBool1}     ${tryAwaySuperBool2}`); // [cite: 93]
-            }
+                <div class="result-section">
+                    <h3>🚗 ${awayName} Statistics</h3>
+                    <p><strong>Avg Power:</strong> ${awayStats.avgPower.toFixed(3)} | <strong>Strength:</strong> ${awayStats.teamStrengthScale.toFixed(3)} | <strong>FINAL:</strong> ${awayStats.finalRating.toFixed(3)}</p>
+                </div>
+            `;
 
-            // Block 2: Main Bet Advice
-            if (ho > awa && aub && atry < htry && !abee) { // [cite: 93, 94]
-                adviceLines.push('H-O-M-E__W-I-N'); // [cite: 94]
-            } else if (ho > awa && aub && atry < htry && abee && htry < atry && (marketProbs.home_win + compositeProbs.home_win) > (marketProbs.away_win + compositeProbs.away_win) && h_odd > a_odd) { // [cite: 94]
-                adviceLines.push('HOME'); // [cite: 94]
-            } else if (ho > awa && aub && atry < htry && abee) { // [cite: 94]
-                adviceLines.push('AWAY-DRAW'); // [cite: 94]
-            } else if (ho < awa && hub && htry < atry && !hbee) { // [cite: 95]
-                adviceLines.push('A-W-A-Y__W-I-N'); // [cite: 95]
-            } else if (ho < awa && hub && htry < atry && hbee && htry > atry && (marketProbs.home_win + compositeProbs.home_win) < (marketProbs.away_win + compositeProbs.away_win) && h_odd < a_odd) { // [cite: 95]
-                adviceLines.push('AWAY'); // [cite: 95]
-            } else if (ho < awa && hub && htry < atry && hbee) { // [cite: 95, 96]
-                adviceLines.push('HOME-DRAW'); // [cite: 96]
-            } else if (ho > awa && aub && atry > htry && abee && ho > awa && htry < atry && h_odd > a_odd) { // [cite: 96]
-                adviceLines.push(`HOME-DNB ----W   ${htip} ${hcheck}`); // [cite: 96]
-            } else if (ho > awa && aub && atry > htry && abee) { // [cite: 96]
-                adviceLines.push('H-O-M-E__D-N-B'); // [cite: 96]
-            } else if (ho < awa && hub && htry > atry && hbee && ho < awa && htry > atry && h_odd < a_odd) { // [cite: 96, 97]
-                adviceLines.push(`AWAY-DNB -----W   ${atip} ${acheck}`); // [cite: 97]
-            } else if (ho < awa && hub && htry > atry && hbee) { // [cite: 97]
-                adviceLines.push('A-W-A-Y__D-N-B'); // [cite: 97]
-            } else if (ho > awa && hub && atry > htry && hbee && hbet && compositeProbs.home_win > compositeProbs.away_win) { // [cite: 97]
-                adviceLines.push('H->O->M->E--->W->I->N'); // [cite: 97]
-            } else if (ho > awa && hub && atry > htry && hbet && marketProbs.home_win < compositeProbs.home_win) { // [cite: 97]
-                adviceLines.push('H->O->M->E--->D->R->A->W'); // [cite: 97]
-            } else if (ho < awa && aub && atry < htry && abee && abet && compositeProbs.home_win < compositeProbs.away_win) { // [cite: 97, 98]
-                adviceLines.push('A->W->A->Y--->W->I->N'); // [cite: 98]
-            } else if (ho < awa && aub && atry < htry && abet && marketProbs.away_win < compositeProbs.away_win) { // [cite: 98]
-                adviceLines.push('A->W->A->Y--->D->R->A->Y'); // [cite: 98]
+            // Determine stronger team
+            let stronger, weaker, strongerRating, weakerRating, diff;
+            let strongerDiffPct, weakerDiffPct;
+
+            if (homeStats.finalRating > awayStats.finalRating) {
+                stronger = homeName;
+                weaker = awayName;
+                strongerRating = homeStats.finalRating;
+                weakerRating = awayStats.finalRating;
+                strongerDiffPct = (homePoints / homeGames - homeStats.avgPower) / homeStats.avgPower * 100;
+                weakerDiffPct = (awayPoints / awayGames - awayStats.avgPower) / awayStats.avgPower * 100;
+                diff = homeStats.finalRating - awayStats.finalRating;
+            } else if (awayStats.finalRating > homeStats.finalRating) {
+                stronger = awayName;
+                weaker = homeName;
+                strongerRating = awayStats.finalRating;
+                weakerRating = homeStats.finalRating;
+                strongerDiffPct = (awayPoints / awayGames - awayStats.avgPower) / awayStats.avgPower * 100;
+                weakerDiffPct = (homePoints / homeGames - homeStats.avgPower) / homeStats.avgPower * 100;
+                diff = awayStats.finalRating - homeStats.finalRating;
             } else {
-                adviceLines.push('AVOID'); // [cite: 98]
+                resultsHTML += `
+                    <div class="balanced-box">
+                        ⚖️ Perfect Balance!
+                    </div>
+                `;
+                document.getElementById('resultsContent').innerHTML = resultsHTML;
+                document.getElementById('results').classList.add('show');
+                document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                return;
             }
 
-            return adviceLines.join('\n\n'); // Separate advice blocks with double newline
+            const confidence = Math.min(100, Math.round((diff / Math.max(homeStats.finalRating, awayStats.finalRating)) * 100 * 10) / 10);
+            const powerEdgePct = (strongerRating - weakerRating) / weakerRating * 100;
+            const netConsistencyEdge = strongerDiffPct - weakerDiffPct;
+
+            resultsHTML += `
+                <div class="winner">
+                    🏆 ${stronger} is stronger than ${weaker}
+                </div>
+                <div class="result-section">
+                    <h3>📈 Detailed Analysis</h3>
+                    <p><strong>Power Diff:</strong> ${diff.toFixed(3)} | <strong>Confidence:</strong> ${confidence}%</p>
+                    <div class="stats-tree">
+   ├─ Power % Edge : ${powerEdgePct.toFixed(2)}%
+   └─ Consistency  : ${strongerDiffPct.toFixed(2)}% – ${weakerDiffPct.toFixed(2)}% = ${netConsistencyEdge.toFixed(2)}%
+                    </div>
+                </div>
+            `;
+
+            // Favourite Detection
+            if (powerEdgePct > confidence) {
+                resultsHTML += `
+                    <div class="favourite-box">
+                        🌟 **${stronger} is the CLEAR FAVOURITE**
+                    </div>
+                `;
+            } else {
+                resultsHTML += `
+                    <div class="not-favourite-box">
+                        ⚔️ ${stronger} leads but not a lock-in favourite yet.
+                    </div>
+                `;
+            }
+
+            // Display results
+            document.getElementById('resultsContent').innerHTML = resultsHTML;
+            document.getElementById('results').classList.add('show');
+            document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
-
-        document.getElementById('predictBtn').addEventListener('click', () => {
-            try {
-                const matchData = {
-                    home_avg_score: parseFloat(document.getElementById('home_avg_score').value), // [cite: 48]
-                    away_avg_score: parseFloat(document.getElementById('away_avg_score').value), // [cite: 48]
-                    home_avg_conceded: parseFloat(document.getElementById('home_avg_conceded').value), // [cite: 48]
-                    away_avg_conceded: parseFloat(document.getElementById('away_avg_conceded').value), // [cite: 48]
-                    home_score_percentage: parseFloat(document.getElementById('home_score_percentage').value), // [cite: 48]
-                    away_score_percentage: parseFloat(document.getElementById('away_score_percentage').value), // [cite: 48]
-                    home_cleansheet: parseFloat(document.getElementById('home_cleansheet').value), // [cite: 48]
-                    away_cleansheet: parseFloat(document.getElementById('away_cleansheet').value), // [cite: 48]
-                    home_difficulty: parseInt(document.getElementById('home_difficulty').value), // [cite: 48]
-                    away_difficulty: parseInt(document.getElementById('away_difficulty').value), // [cite: 48]
-                    home_odds: parseFloat(document.getElementById('home_odds').value), // [cite: 48]
-                    draw_odds: parseFloat(document.getElementById('draw_odds').value), // [cite: 48]
-                    away_odds: parseFloat(document.getElementById('away_odds').value) // [cite: 49]
-                };
-
-                // Input validation
-                for (const key in matchData) {
-                     if (isNaN(matchData[key])) {
-                         alert(`Please enter a valid number for ${key.replace(/_/g, ' ')}.`);
-                         return;
-                     }
-                 }
-
-                const predictor = new FootballPredictor(); // [cite: 49]
-                const prediction = predictor.predictMatch(matchData); // [cite: 70]
-                const advice = getWageringAdvice(prediction); // Generate advice using the prediction results
-
-                // Display results
-                document.getElementById('results-section').classList.remove('hidden');
-
-                const adviceDiv = document.getElementById('wagering-advice');
-                adviceDiv.textContent = advice;
-                // Basic check for coloring based on 'AVOID'
-                adviceDiv.className = advice.includes('AVOID') ? 'advice-avoid' : 'advice-bet';
-
-                document.getElementById('predicted-outcome').textContent = prediction.predicted_outcome; // [cite: 76]
-                document.getElementById('confidence-level').textContent = (prediction.confidence * 100).toFixed(1) + '%'; // [cite: 77]
-
-                document.getElementById('final-prob-home').textContent = (prediction.probabilities.home_win * 100).toFixed(1) + '%'; // [cite: 77]
-                document.getElementById('final-prob-draw').textContent = (prediction.probabilities.draw * 100).toFixed(1) + '%'; // [cite: 77]
-                document.getElementById('final-prob-away').textContent = (prediction.probabilities.away_win * 100).toFixed(1) + '%'; // [cite: 77]
-
-                document.getElementById('expected-goals-home').textContent = prediction.expected_goals.home.toFixed(2); // [cite: 78]
-                document.getElementById('expected-goals-away').textContent = prediction.expected_goals.away.toFixed(2); // [cite: 78]
-
-                document.getElementById('quality-score-home').textContent = prediction.team_quality_scores.home.toFixed(3); // [cite: 83]
-                document.getElementById('quality-score-away').textContent = prediction.team_quality_scores.away.toFixed(3); // [cite: 83]
-
-                const qp = prediction.quality_poisson; // [cite: 83]
-                document.getElementById('q-poisson-hcheck').textContent = qp.hcheck.toFixed(3); // [cite: 84]
-                document.getElementById('q-poisson-acheck').textContent = qp.acheck.toFixed(3); // [cite: 84]
-                document.getElementById('q-prob-home').textContent = (qp.home_win * 100).toFixed(1) + '%'; // [cite: 84]
-                document.getElementById('q-prob-draw').textContent = (qp.draw * 100).toFixed(1) + '%'; // [cite: 84]
-                document.getElementById('q-prob-away').textContent = (qp.away_win * 100).toFixed(1) + '%'; // [cite: 84]
-
-                // Display model breakdown
-                for(const modelName in prediction.model_breakdown) { // [cite: 78]
-                    const probs = prediction.model_breakdown[modelName]; //
-                    const cleanName = modelName.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase()); //
-                    document.getElementById(`breakdown-${modelName}`).innerHTML = `<span class="model-name">${cleanName}</span><span class="model-probs">H: ${(probs.home_win * 100).toFixed(1)}% | D: ${(probs.draw * 100).toFixed(1)}% | A: ${(probs.away_win * 100).toFixed(1)}%</span>`; //
-                }
-            } catch (error) {
-                console.error("An error occurred during prediction:", error);
-                alert("An error occurred. Please check the console for details and ensure all inputs are valid.");
-            }
-        });
     </script>
 </body>
 </html>
