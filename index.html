@@ -227,7 +227,7 @@
         }
 
         .favourite-box {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
             color: white;
             padding: 25px;
             border-radius: 12px;
@@ -235,10 +235,10 @@
             font-size: 1.4em;
             font-weight: 600;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
         }
 
-        .not-favourite-box {
+        .reduced-advantage-box {
             background: linear-gradient(135deg, #ffeaa7 0%, #fdcb6e 100%);
             color: #2d3436;
             padding: 25px;
@@ -247,17 +247,6 @@
             font-size: 1.3em;
             font-weight: 600;
             margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(253, 203, 110, 0.4);
-        }
-
-        .stats-tree {
-            font-family: 'Courier New', monospace;
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-            font-size: 1em;
-            line-height: 1.8;
         }
 
         .balanced-box {
@@ -269,6 +258,26 @@
             font-size: 1.5em;
             font-weight: 600;
             margin-bottom: 20px;
+        }
+
+        .confirmed-box {
+            background: linear-gradient(135deg, #55efc4 0%, #81ecec 100%);
+            color: #2d3436;
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .breakdown {
+            font-family: 'Courier New', monospace;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-size: 0.95em;
         }
 
         @media (max-width: 768px) {
@@ -290,7 +299,7 @@
     <div class="container">
         <div class="header">
             <h1>⚽ Team Power Rating Calculator</h1>
-            <p>Analyze team performance with favourite detection</p>
+            <p>Analyze team performance with adjusted metrics and consistency checks</p>
         </div>
 
         <div class="content">
@@ -484,6 +493,23 @@
             const homeStats = calculateTeamPower(homeName, homePoints, homeRecent);
             const awayStats = calculateTeamPower(awayName, awayPoints, awayRecent);
 
+            // Calculate PPG and Diff%
+            const homePPG = homePoints / homeGames;
+            const awayPPG = awayPoints / awayGames;
+
+            let homeDiffPct, awayDiffPct;
+            if (homeStats.avgPower !== 0) {
+                homeDiffPct = (homePPG - homeStats.avgPower) / Math.abs(homeStats.avgPower) * 100;
+            } else {
+                homeDiffPct = (homePPG === 0) ? 0.0 : Infinity;
+            }
+
+            if (awayStats.avgPower !== 0) {
+                awayDiffPct = (awayPPG - awayStats.avgPower) / Math.abs(awayStats.avgPower) * 100;
+            } else {
+                awayDiffPct = (awayPPG === 0) ? 0.0 : Infinity;
+            }
+
             // Generate results HTML
             let resultsHTML = '';
 
@@ -491,79 +517,156 @@
             resultsHTML += `
                 <div class="result-section">
                     <h3>🏠 ${homeName} Statistics</h3>
-                    <p><strong>Avg Power:</strong> ${homeStats.avgPower.toFixed(3)} | <strong>Strength:</strong> ${homeStats.teamStrengthScale.toFixed(3)} | <strong>FINAL:</strong> ${homeStats.finalRating.toFixed(3)}</p>
+                    <p><strong>Average Match Power:</strong> ${homeStats.avgPower.toFixed(3)}</p>
+                    <p><strong>League Strength Scale:</strong> ${homeStats.teamStrengthScale.toFixed(3)}</p>
+                    <p><strong>Final Power Rating:</strong> ${homeStats.finalRating.toFixed(3)}</p>
                 </div>
 
                 <div class="result-section">
                     <h3>🚗 ${awayName} Statistics</h3>
-                    <p><strong>Avg Power:</strong> ${awayStats.avgPower.toFixed(3)} | <strong>Strength:</strong> ${awayStats.teamStrengthScale.toFixed(3)} | <strong>FINAL:</strong> ${awayStats.finalRating.toFixed(3)}</p>
+                    <p><strong>Average Match Power:</strong> ${awayStats.avgPower.toFixed(3)}</p>
+                    <p><strong>League Strength Scale:</strong> ${awayStats.teamStrengthScale.toFixed(3)}</p>
+                    <p><strong>Final Power Rating:</strong> ${awayStats.finalRating.toFixed(3)}</p>
                 </div>
             `;
 
-            // Determine stronger team
-            let stronger, weaker, strongerRating, weakerRating, diff;
-            let strongerDiffPct, weakerDiffPct;
-
-            if (homeStats.finalRating > awayStats.finalRating) {
-                stronger = homeName;
-                weaker = awayName;
-                strongerRating = homeStats.finalRating;
-                weakerRating = awayStats.finalRating;
-                strongerDiffPct = (homePoints / homeGames - homeStats.avgPower) / homeStats.avgPower * 100;
-                weakerDiffPct = (awayPoints / awayGames - awayStats.avgPower) / awayStats.avgPower * 100;
-                diff = homeStats.finalRating - awayStats.finalRating;
-            } else if (awayStats.finalRating > homeStats.finalRating) {
-                stronger = awayName;
-                weaker = homeName;
-                strongerRating = awayStats.finalRating;
-                weakerRating = homeStats.finalRating;
-                strongerDiffPct = (awayPoints / awayGames - awayStats.avgPower) / awayStats.avgPower * 100;
-                weakerDiffPct = (homePoints / homeGames - homeStats.avgPower) / homeStats.avgPower * 100;
-                diff = awayStats.finalRating - homeStats.finalRating;
-            } else {
+            // Compare ratings
+            if (homeStats.finalRating === awayStats.finalRating) {
                 resultsHTML += `
                     <div class="balanced-box">
-                        ⚖️ Perfect Balance!
+                        ⚖️ Both teams are equally matched based on current form.
                     </div>
+                    <div class="result-section">
+                        <h3>📊 Consistency Advantage (Form vs Power)</h3>
+                        <p><strong>${homeName}:</strong> Points/Game: ${homePPG.toFixed(3)}, Diff%: ${homeDiffPct.toFixed(2)}%</p>
+                        <p><strong>${awayName}:</strong> Points/Game: ${awayPPG.toFixed(3)}, Diff%: ${awayDiffPct.toFixed(2)}%</p>
                 `;
+
+                if (homeDiffPct > awayDiffPct) {
+                    resultsHTML += `<p>✅ <strong>Home team has a consistency advantage.</strong></p>`;
+                } else if (awayDiffPct > homeDiffPct) {
+                    resultsHTML += `<p>✅ <strong>Away team has a consistency advantage.</strong></p>`;
+                } else {
+                    resultsHTML += `<p>⚖️ Both teams are equally consistent in performance vs power.</p>`;
+                }
+                resultsHTML += `</div>`;
+
                 document.getElementById('resultsContent').innerHTML = resultsHTML;
                 document.getElementById('results').classList.add('show');
                 document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 return;
             }
 
-            const confidence = Math.min(100, Math.round((diff / Math.max(homeStats.finalRating, awayStats.finalRating)) * 100 * 10) / 10);
-            const powerEdgePct = (strongerRating - weakerRating) / weakerRating * 100;
-            const netConsistencyEdge = strongerDiffPct - weakerDiffPct;
+            // Determine stronger/weaker
+            let stronger, weaker, strongerRating, weakerRating, strongerDiffPct, weakerDiffPct, diff;
+            
+            if (homeStats.finalRating > awayStats.finalRating) {
+                stronger = homeName;
+                weaker = awayName;
+                strongerRating = homeStats.finalRating;
+                weakerRating = awayStats.finalRating;
+                strongerDiffPct = homeDiffPct;
+                weakerDiffPct = awayDiffPct;
+                diff = homeStats.finalRating - awayStats.finalRating;
+            } else {
+                stronger = awayName;
+                weaker = homeName;
+                strongerRating = awayStats.finalRating;
+                weakerRating = homeStats.finalRating;
+                strongerDiffPct = awayDiffPct;
+                weakerDiffPct = homeDiffPct;
+                diff = awayStats.finalRating - homeStats.finalRating;
+            }
+
+            resultsHTML += `<div class="winner">🏆 ${stronger} is stronger than ${weaker}</div>`;
+
+            // Calculate metrics
+            let relativeStrengthPct;
+            if (weakerRating !== 0) {
+                relativeStrengthPct = (diff / Math.abs(weakerRating)) * 100;
+            } else {
+                relativeStrengthPct = (diff > 0) ? Infinity : 0.0;
+            }
+
+            const adjustedMetric = relativeStrengthPct + strongerDiffPct - weakerDiffPct;
+
+            let confidence;
+            if (strongerRating !== 0) {
+                confidence = Math.min(100, Math.round((diff / Math.abs(strongerRating)) * 100 * 10) / 10);
+            } else {
+                confidence = (diff > 0) ? 100.0 : 0.0;
+            }
 
             resultsHTML += `
-                <div class="winner">
-                    🏆 ${stronger} is stronger than ${weaker}
-                </div>
                 <div class="result-section">
-                    <h3>📈 Detailed Analysis</h3>
-                    <p><strong>Power Diff:</strong> ${diff.toFixed(3)} | <strong>Confidence:</strong> ${confidence}%</p>
-                    <div class="stats-tree">
-   ├─ Power % Edge : ${powerEdgePct.toFixed(2)}%
-   └─ Consistency  : ${strongerDiffPct.toFixed(2)}% – ${weakerDiffPct.toFixed(2)}% = ${netConsistencyEdge.toFixed(2)}%
-                    </div>
+                    <h3>📈 Power Analysis</h3>
+                    <p><strong>Power Difference:</strong> ${diff.toFixed(3)}</p>
+                    <p><strong>Confidence Level:</strong> ${confidence}%</p>
+                    <p><strong>Win Probability:</strong> ${(confidence * 2.5).toFixed(1)}%</p>
+                    <p><strong>Draw Probability:</strong> ${(confidence * 2).toFixed(1)}%</p>
+                </div>
+
+                <div class="result-section">
+                    <h3>🔥 Adjusted Metric (Rel Str % + Consistency)</h3>
+                    <p><strong>Adjusted Metric:</strong> ${adjustedMetric.toFixed(2)}%</p>
+                    <div class="breakdown">(Breakdown: Rel Str ${relativeStrengthPct.toFixed(2)}% + Stronger_Diff ${strongerDiffPct.toFixed(2)}% - Weaker_Diff ${weakerDiffPct.toFixed(2)}%)</div>
                 </div>
             `;
 
-            // Favourite Detection
-            if (powerEdgePct > confidence) {
+            // Favourite determination
+            if (adjustedMetric > confidence) {
                 resultsHTML += `
                     <div class="favourite-box">
-                        🌟 **${stronger} is the CLEAR FAVOURITE**
+                        🔥 **${stronger} is the new combined favourite**<br>
+                        <span style="font-size: 0.85em;">(Adjusted Metric > Confidence)</span>
+                    </div>
+                `;
+            } else if (adjustedMetric < confidence) {
+                resultsHTML += `
+                    <div class="reduced-advantage-box">
+                        ⚠️ ${stronger}'s advantage is reduced by the combined check.
                     </div>
                 `;
             } else {
                 resultsHTML += `
-                    <div class="not-favourite-box">
-                        ⚔️ ${stronger} leads but not a lock-in favourite yet.
+                    <div class="confirmed-box">
+                        ⚖️ Consistency check confirms the initial confidence level.
                     </div>
                 `;
             }
+
+            // Ratio-based prediction
+            const homeRatio = homeStats.teamStrengthScale / awayStats.teamStrengthScale;
+            const awayRatio = awayStats.teamStrengthScale / homeStats.teamStrengthScale;
+            const formRatioHome = awayStats.avgPower !== 0 ? homeStats.avgPower / awayStats.avgPower : Infinity;
+            const formRatioAway = homeStats.avgPower !== 0 ? awayStats.avgPower / homeStats.avgPower : Infinity;
+
+            resultsHTML += `<div class="result-section"><h3>🔍 Prediction Rule</h3>`;
+            if (homeRatio > formRatioHome) {
+                resultsHTML += `<p>🏠 <strong>Home win likely</strong> (${homeName})</p>`;
+            } else if (awayRatio > formRatioAway) {
+                resultsHTML += `<p>🚗 <strong>Away win likely</strong> (${awayName})</p>`;
+            } else {
+                resultsHTML += `<p>⚖️ <strong>Balanced match</strong> (possible draw or close contest)</p>`;
+            }
+            resultsHTML += `</div>`;
+
+            // Consistency advantage
+            resultsHTML += `
+                <div class="result-section">
+                    <h3>📊 Consistency Advantage (Form vs Power)</h3>
+                    <p><strong>${homeName}:</strong> Points/Game: ${homePPG.toFixed(3)}, Diff%: ${homeDiffPct.toFixed(2)}%</p>
+                    <p><strong>${awayName}:</strong> Points/Game: ${awayPPG.toFixed(3)}, Diff%: ${awayDiffPct.toFixed(2)}%</p>
+            `;
+
+            if (homeDiffPct > awayDiffPct) {
+                resultsHTML += `<p>✅ <strong>Home team has a consistency advantage</strong> (form aligns better with power).</p>`;
+            } else if (awayDiffPct > homeDiffPct) {
+                resultsHTML += `<p>✅ <strong>Away team has a consistency advantage</strong> (form aligns better with power).</p>`;
+            } else {
+                resultsHTML += `<p>⚖️ Both teams are equally consistent in performance vs power.</p>`;
+            }
+            resultsHTML += `</div>`;
 
             // Display results
             document.getElementById('resultsContent').innerHTML = resultsHTML;
